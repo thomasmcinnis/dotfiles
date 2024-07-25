@@ -104,3 +104,9 @@ function nvims() {
 
 bindkey -s ^a "nvims\n"
 
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/thomasmcinnis/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/thomasmcinnis/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/thomasmcinnis/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/thomasmcinnis/google-cloud-sdk/completion.zsh.inc'; fi

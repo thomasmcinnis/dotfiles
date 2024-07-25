@@ -3,6 +3,11 @@ return {
   { "akinsho/bufferline.nvim", enabled = false },
   { "nvimdev/dashboard-nvim", enabled = false },
   {
+    "nvim-neo-tree/neo-tree.nvim",
+    dependencies = { "nvim-web-devicons" },
+    opts = { window = { position = "float" }, popup_border_style = "rounded" },
+  },
+  {
     "nvim-web-devicons",
     opts = {
       strict = true,
@@ -14,11 +19,6 @@ return {
         },
       },
     },
-  },
-  {
-    "nvim-neo-tree/neo-tree.nvim",
-    dependencies = { "nvim-web-devicons" },
-    opts = { window = { position = "float" }, popup_border_style = "rounded" },
   },
   {
     "hrsh7th/nvim-cmp",

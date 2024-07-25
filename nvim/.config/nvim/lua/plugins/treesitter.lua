@@ -10,6 +10,8 @@ return {
         "tsx",
         "yaml",
         "html",
+        "http",
+        "hurl",
         "css",
         "prisma",
         "markdown",

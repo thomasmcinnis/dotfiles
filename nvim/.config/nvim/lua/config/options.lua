@@ -31,6 +31,7 @@ vim.diagnostic.config(config)
 
 local opt = vim.opt
 opt.signcolumn = "yes" -- show sign column so that text doesn't shift
+opt.list = false -- hide invisible chars
 opt.exrc = true -- Enable project based config files
 opt.pumblend = 0 -- Popup blend opacity
 opt.scrolloff = 10 -- Increase top and bottom scrolloff to 10
