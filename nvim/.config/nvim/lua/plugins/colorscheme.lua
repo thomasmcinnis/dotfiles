@@ -5,7 +5,7 @@ return {
 	---@class CatppuccinOptions
 	opts = {
 		flavour = "mocha",
-		transparent_background = true,
+		transparent_background = false,
 		integrations = {
 			alpha = true,
 			cmp = true,
