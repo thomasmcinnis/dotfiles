@@ -8,7 +8,10 @@ return {
 			"nvim-tree/nvim-web-devicons", -- optional dependency
 		},
 		config = function()
-			require("barbecue").setup({})
+			require("barbecue").setup({
+				-- prevent nvim-navic from attaching - run based on server from lsp instead
+				attach_navic = false,
+			})
 		end,
 	},
 	{

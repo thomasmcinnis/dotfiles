@@ -4,7 +4,11 @@ return {
 	-- priority = 1000,
 	---@class CatppuccinOptions
 	opts = {
-		flavour = "mocha",
+		flavour = "auto",
+		background = {
+			light = "latte",
+			dark = "mocha",
+		},
 		transparent_background = false,
 		integrations = {
 			alpha = true,

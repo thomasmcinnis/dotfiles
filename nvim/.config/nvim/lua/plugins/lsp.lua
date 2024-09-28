@@ -202,8 +202,18 @@ return {
 								vim.notify("Vue TypeScript Plugin directory not found: " .. vue_typescript_plugin)
 							end
 						end
-
-						require("lspconfig")[server_name].setup(server)
+						require("lspconfig")[server_name].setup({
+							on_attach = function(client, bufnr)
+								-- Attach nvim-navic if the client supports document symbols
+								if server_name == "volar" then
+									require("nvim-navic").attach(client, bufnr)
+								end
+							end,
+							capabilities = server.capabilities,
+							settings = server.settings,
+							filetypes = server.filetypes,
+						})
+						-- require("lspconfig")[server_name].setup(server)
 					end,
 				},
 			})
