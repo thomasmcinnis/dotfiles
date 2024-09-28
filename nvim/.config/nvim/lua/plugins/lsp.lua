@@ -28,6 +28,7 @@ return {
 				opts = {
 					notification = {
 						window = {
+							max_width = 80,
 							winblend = 0,
 							border = "rounded",
 						},
@@ -146,11 +147,7 @@ return {
 
 			local servers = {
 				volar = {},
-				ts_ls = {
-					init_options = {
-						plugins = {},
-						-- You can include any specific init options here
-					},
+				vtsls = {
 					filetypes = {
 						"javascript",
 						"javascriptreact",
@@ -160,7 +157,7 @@ return {
 						"typescript.tsx",
 						"vue",
 					},
-					settings = {},
+					settings = { vtsls = { tsserver = { globalPlugins = {} } } },
 				},
 				clangd = {},
 				lua_ls = {
@@ -180,7 +177,7 @@ return {
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
 				"volar",
-				"ts_ls",
+				"prettier",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -190,16 +187,16 @@ return {
 						local server = servers[server_name] or {}
 						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
 
-						if server_name == "ts_ls" then
+						if server_name == "vtsls" then
 							local vue_typescript_plugin = require("mason-registry")
 								.get_package("vue-language-server")
 								:get_install_path() .. "/node_modules/@vue/language-server" .. "/node_modules/@vue/typescript-plugin"
 
 							if vim.fn.isdirectory(vue_typescript_plugin) == 1 then
-								table.insert(server.init_options.plugins, {
+								table.insert(server.settings.vtsls.tsserver.globalPlugins, {
 									name = "@vue/typescript-plugin",
 									location = vue_typescript_plugin,
-									languages = { "javascript", "typescript", "vue" },
+									languages = { "vue" },
 								})
 							else
 								vim.notify("Vue TypeScript Plugin directory not found: " .. vue_typescript_plugin)

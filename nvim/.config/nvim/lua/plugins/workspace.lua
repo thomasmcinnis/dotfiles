@@ -43,26 +43,22 @@ return {
 			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
 			"MunifTanjim/nui.nvim",
 		},
-		cmd = "Neotree",
 		keys = {
-			{ "<leader>e", ":Neotree reveal<CR>", desc = "NeoTree reveal", silent = true },
+			{
+				"<leader>e",
+				":Neotree filesystem reveal current toggle<CR>",
+				{ silent = true, desc = "[E]xplore Current Working Directory" },
+			},
 		},
 		opts = {
-			filesystem = {
-				window = {
-					position = "current",
-					mappings = {
-						["\\"] = "close_window",
-					},
-				},
-			},
+			popup_border_style = "rounded",
 		},
 	},
 	{
 		"hedyhli/outline.nvim",
 		config = function()
 			-- Example mapping to toggle outline
-			vim.keymap.set("n", "<leader>o", "<cmd>Outline<CR>", { desc = "Toggle Outline" })
+			vim.keymap.set("n", "<leader>o", "<cmd>Outline<CR>", { desc = "Show [O]utline" })
 
 			require("outline").setup({})
 		end,

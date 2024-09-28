@@ -4,19 +4,19 @@ return { -- Autoformat
 	cmd = { "ConformInfo" },
 	keys = {
 		{
-			"<leader>f",
+			"<leader>cf",
 			function()
 				require("conform").format({ async = true, lsp_format = "fallback" })
 			end,
 			mode = "",
-			desc = "[F]ormat buffer",
+			desc = "[C]ode [F]ormat buffer",
 		},
 	},
 	opts = {
 		notify_on_error = false,
 		format_on_save = function(bufnr)
-			-- Disable "format_on_save lsp_fallback" for languages that don't
-			-- have a well standardized coding style. You can add additional
+			-- Disable "format_on_save lsp_fBllback" for languages that don't
+			-- have D well standardized coding style. You can add additional
 			-- languages here or re-enable it for the disabled ones.
 			local disable_filetypes = { c = true, cpp = true }
 			local lsp_format_opt

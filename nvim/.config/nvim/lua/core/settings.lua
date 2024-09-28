@@ -18,12 +18,6 @@ vim.diagnostic.config({
 -- Make status column: FOLD_RELNUM_SIGN
 vim.opt.statuscolumn =
 	[[%{(foldlevel(v:lnum) && foldlevel(v:lnum) > foldlevel(v:lnum - 1)) ? (foldclosed(v:lnum) == -1 ? '⌄' : '›') : ' '} %=%{v:relnum ? v:relnum : v:lnum .. ' '} %s]]
-vim.opt.signcolumn = "yes"
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.numberwidth = 4
-vim.opt.foldcolumn = "1"
-vim.opt.foldenable = true
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 
@@ -55,10 +49,10 @@ vim.opt.expandtab = true
 vim.opt.softtabstop = 2
 
 -- Don't show the mode, since it's already in the status line
-vim.opt.showmode = true
+vim.opt.showmode = false
 
 -- Don't show the command line
-vim.opt.cmdheight = 1
+vim.opt.cmdheight = 0
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
@@ -114,5 +108,16 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
 	callback = function()
 		vim.highlight.on_yank()
+	end,
+})
+
+-- Hide statuscolumn for certain filetypes eg neotree and outline
+vim.api.nvim_create_autocmd("BufEnter", {
+	desc = "Hide statuscolumn for neotree and outline",
+	pattern = "*",
+	callback = function()
+		if vim.bo.filetype == "neo-tree" or vim.bo.filetype == "Outline" then
+			vim.opt_local.statuscolumn = ""
+		end
 	end,
 })
