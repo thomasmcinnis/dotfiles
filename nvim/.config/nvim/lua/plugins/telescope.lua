@@ -31,7 +31,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
 			},
 			defaults = {
 				layout_strategy = "horizontal",
-				layout_config = { prompt_position = "top" },
+				layout_config = { prompt_position = "bottom" },
 				sorting_strategy = "ascending",
 				winblend = 0,
 			},

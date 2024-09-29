@@ -8,10 +8,13 @@ return {
 			"nvim-tree/nvim-web-devicons", -- optional dependency
 		},
 		config = function()
-			require("barbecue").setup({
-				-- prevent nvim-navic from attaching - run based on server from lsp instead
-				attach_navic = false,
+			require("nvim-navic").setup({
+				lsp = {
+					auto_attach = true,
+					preference = { "volar", "vtsls" },
+				},
 			})
+			require("barbecue").setup({})
 		end,
 	},
 	{

@@ -29,7 +29,7 @@ return {
 		-- See `:help ibl`
 		main = "ibl",
 		opts = {
-			indent = { char = "▏" },
+			indent = { highlight = { "Whitespace" }, char = "▏" },
 			scope = {
 				enabled = false,
 			},
@@ -52,6 +52,11 @@ return {
 		},
 		opts = {
 			popup_border_style = "rounded",
+			filesystem = {
+				filtered_items = {
+					hide_dotfiles = false,
+				},
+			},
 		},
 	},
 	{

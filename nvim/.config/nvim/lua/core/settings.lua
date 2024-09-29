@@ -21,9 +21,13 @@ vim.opt.statuscolumn =
 vim.opt.signcolumn = "yes"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
+vim.foldenable = true
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
+
+-- Enable 24-bit RGB support for some plugins
+vim.opt.termguicolors = true
 
 -- [[ Filetype support ]]
 vim.filetype.add({
