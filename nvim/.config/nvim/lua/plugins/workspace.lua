@@ -52,9 +52,23 @@ return {
 		},
 		opts = {
 			popup_border_style = "rounded",
+			window = {
+				mappings = {
+					["h"] = "close_node",
+					["l"] = "open",
+					["<space>"] = "none",
+				},
+			},
 			filesystem = {
 				filtered_items = {
 					hide_dotfiles = false,
+				},
+				window = {
+					mappings = {
+						["h"] = "close_node",
+						["l"] = "open",
+						["<space>"] = "none",
+					},
 				},
 			},
 		},

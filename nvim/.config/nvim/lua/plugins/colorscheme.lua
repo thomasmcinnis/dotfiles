@@ -38,6 +38,12 @@ return {
 				latte = function(colors)
 					return {
 						LineNr = { fg = colors.overlay2 },
+						GitSignsAdd = { fg = colors.green }, -- Adjust the fg/bg as needed
+						GitSignsStagedAdd = { fg = colors.teal }, -- Adjust the fg/bg as needed
+						GitSignsChange = { fg = colors.yellow }, -- Adjust the fg/bg as needed
+						GitSignsStagedChange = { fg = colors.peach }, -- Adjust the fg/bg as needed
+						GitSignsDelete = { fg = colors.flamingo }, -- Adjust the fg/bg as needed
+						GitSignsStagedDelete = { fg = colors.red }, -- Adjust the fg/bg as needed
 					}
 				end,
 			},
@@ -61,14 +67,14 @@ return {
 					maroon = "#793252",
 					pink = "#803449",
 					mauve = "#564858",
-					peach = "#843840",
-					yellow = "#7d5424",
-					green = "#31473c",
-					teal = "#284542",
-					sky = "#254248",
-					sapphire = "#25414a",
-					blue = "#2c3d4c",
-					lavender = "#35384a",
+					peach = "#A27A52",
+					yellow = "#B49B2D",
+					green = "#2D5C45",
+					teal = "#638C79",
+					sapphire = "#265869",
+					sky = "#718E98",
+					blue = "#3E5375",
+					lavender = "#4C557B",
 				},
 			},
 			integrations = {
