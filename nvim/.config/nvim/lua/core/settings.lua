@@ -17,7 +17,7 @@ vim.diagnostic.config({
 
 -- Make status column: FOLD_RELNUM_SIGN
 vim.opt.statuscolumn =
-	[[%{(foldlevel(v:lnum) && foldlevel(v:lnum) > foldlevel(v:lnum - 1)) ? (foldclosed(v:lnum) == -1 ? '⌄' : '›') : ' '} %=%{v:relnum ? v:relnum : v:lnum .. ' '} %s]]
+	[[%s%=%{v:relnum ? v:relnum : v:lnum .. ' '} %{(foldlevel(v:lnum) && foldlevel(v:lnum) > foldlevel(v:lnum - 1)) ? (foldclosed(v:lnum) == -1 ? '⌄' : '›') : ' '} ]]
 vim.opt.signcolumn = "yes"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99

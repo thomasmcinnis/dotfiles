@@ -18,7 +18,58 @@ end
 
 -- Custom Catppuccin Latte theme
 local latte = wezterm.color.get_builtin_schemes()["Catppuccin Latte"]
-latte.background = "#fafaf9"
+latte.rosewater = "#543D4F"
+latte.flamingo = "#ca3f6a"
+latte.red = "#872744"
+latte.maroon = "#793252"
+latte.pink = "#803449"
+latte.mauve = "#564858"
+latte.peach = "#843840"
+latte.yellow = "#7d5424"
+latte.green = "#31473c"
+latte.teal = "#284542"
+latte.sky = "#254248"
+latte.sapphire = "#25414a"
+latte.blue = "#2c3d4c"
+latte.lavender = "#35384a"
+latte.text = "#292524"
+latte.subtext1 = "#44403c"
+latte.subtext0 = "#57534e"
+latte.overlay2 = "#a8a29e"
+latte.overlay1 = "#d6d3d1"
+latte.overlay0 = "#e7e7e4"
+latte.surface2 = "#d6d3d1"
+latte.surface1 = "#e7e7e4"
+latte.surface0 = "#f1f1f1"
+latte.base = "#fafaf9"
+latte.mantle = "#f1f1f1"
+latte.crust = "#e7e5e4"
+
+latte.background = latte.base
+latte.tab_bar = {
+	background = latte.overlay1,
+	active_tab = {
+		bg_color = latte.pink,
+		fg_color = latte.base,
+	},
+	inactive_tab = {
+		bg_color = latte.subtext0,
+		fg_color = latte.overlay1,
+	},
+	inactive_tab_hover = {
+		bg_color = latte.mauve,
+		fg_color = latte.base,
+	},
+	new_tab = {
+		bg_color = latte.surface1,
+		fg_color = latte.pink,
+	},
+	new_tab_hover = {
+		bg_color = latte.surface0,
+		fg_color = latte.red,
+	},
+	innactive_tab_edge = latte.flamingo,
+}
 
 -- Navigation and keybinding helpers
 local direction_keys = {
@@ -95,6 +146,10 @@ return {
 	color_scheme = scheme_for_appearance(get_appearance()),
 	use_fancy_tab_bar = false,
 	tab_bar_at_bottom = true,
+	inactive_pane_hsb = {
+		saturation = 0.6,
+		brightness = 0.9,
+	},
 
 	-- Font settings
 	font_size = 16.0,
@@ -106,6 +161,8 @@ return {
 	window_padding = {
 		top = 0,
 		bottom = 0,
+		left = 0,
+		right = 0,
 	},
 
 	-- Keybindings and mouse bindings
