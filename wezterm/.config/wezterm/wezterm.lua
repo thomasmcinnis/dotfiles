@@ -16,60 +16,66 @@ local function scheme_for_appearance(appearance)
 	end
 end
 
--- Custom Catppuccin Latte theme
+-- Get the built-in Catppuccin Latte scheme
 local latte = wezterm.color.get_builtin_schemes()["Catppuccin Latte"]
-latte.rosewater = "#543D4F"
-latte.flamingo = "#ca3f6a"
-latte.red = "#872744"
-latte.maroon = "#793252"
-latte.pink = "#803449"
-latte.mauve = "#564858"
-latte.peach = "#843840"
-latte.yellow = "#7d5424"
-latte.green = "#31473c"
-latte.teal = "#284542"
-latte.sky = "#254248"
-latte.sapphire = "#25414a"
-latte.blue = "#2c3d4c"
-latte.lavender = "#35384a"
-latte.text = "#292524"
-latte.subtext1 = "#44403c"
-latte.subtext0 = "#57534e"
-latte.overlay2 = "#a8a29e"
-latte.overlay1 = "#d6d3d1"
-latte.overlay0 = "#e7e7e4"
-latte.surface2 = "#d6d3d1"
-latte.surface1 = "#e7e7e4"
-latte.surface0 = "#f1f1f1"
-latte.base = "#fafaf9"
-latte.mantle = "#f1f1f1"
-latte.crust = "#e7e5e4"
 
-latte.background = latte.base
+-- Modify the scheme with your custom colors
+latte.background = "#fafaf9" -- base
+latte.foreground = "#292524" -- text
+
+-- Update the color palette
+latte.ansi = {
+	"#292524", -- black (text)
+	"#872744", -- red
+	"#2D5C45", -- green
+	"#B49B2D", -- yellow
+	"#3E5375", -- blue
+	"#564858", -- mauve (as purple)
+	"#638C79", -- teal (as cyan)
+	"#d6d3d1", -- white (overlay1)
+}
+
+latte.brights = {
+	"#57534e", -- bright black (subtext0)
+	"#ca3f6a", -- bright red (flamingo)
+	"#638C79", -- bright green (teal)
+	"#A27A52", -- bright yellow (peach)
+	"#265869", -- bright blue (sapphire)
+	"#4C557B", -- bright magenta (lavender)
+	"#718E98", -- bright cyan (sky)
+	"#e7e7e4", -- bright white (overlay0)
+}
+
+-- Custom colors
 latte.tab_bar = {
-	background = latte.overlay1,
+	background = "#eeeeec", -- mantle
 	active_tab = {
-		bg_color = latte.pink,
-		fg_color = latte.base,
+		bg_color = "#4C557B", -- lavender
+		fg_color = "#fafaf9", -- base
 	},
 	inactive_tab = {
-		bg_color = latte.subtext0,
-		fg_color = latte.overlay1,
+		bg_color = "#f4f4f3", -- surface1
+		fg_color = "#292524", -- text
 	},
 	inactive_tab_hover = {
-		bg_color = latte.mauve,
-		fg_color = latte.base,
+		bg_color = "#f1f1f0", -- surface2
+		fg_color = "#292524", -- text
 	},
 	new_tab = {
-		bg_color = latte.surface1,
-		fg_color = latte.pink,
+		bg_color = "#f7f7f6", -- surface0
+		fg_color = "#292524", -- text
 	},
 	new_tab_hover = {
-		bg_color = latte.surface0,
-		fg_color = latte.red,
+		bg_color = "#f1f1f0", -- surface2
+		fg_color = "#292524", -- text
 	},
-	innactive_tab_edge = latte.flamingo,
 }
+
+-- Additional custom colors
+latte.cursor_bg = "#292524" -- text
+latte.cursor_fg = "#fafaf9" -- base
+latte.selection_bg = "#e7e7e4" -- overlay0
+latte.selection_fg = "#292524" -- text
 
 -- Navigation and keybinding helpers
 local direction_keys = {
