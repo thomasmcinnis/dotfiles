@@ -90,8 +90,10 @@ local direction_keys = {
 }
 
 local function is_vim(pane)
-	local process_name = pane:get_foreground_process_info().name
-	return process_name == "nvim" or process_name == "vim"
+	-- in vim settings hardcode vim.opt.titlestring = 'nvim'
+	-- this makes it easy to match against to intercept keystrokes if the active pane
+	-- is nvim
+	return pane:get_title() == "nvim"
 end
 
 local function split_nav(resize_or_move, key)
@@ -121,25 +123,47 @@ for _, action in ipairs({ "move", "resize" }) do
 end
 
 -- Generate split key bindings
-local split_keys = {
+local general_keys = {
 	{
+		mods = "LEADER",
 		key = "!",
-		mods = "CTRL|SHIFT",
 		action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
 	},
 	{
-		key = "_",
-		mods = "CTRL|SHIFT",
+		mods = "LEADER",
+		key = "-",
 		action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
+	},
+	{
+		mods = "LEADER",
+		key = "m",
+		action = wezterm.action.TogglePaneZoomState,
+	},
+	{
+		mods = "LEADER",
+		key = "Space",
+		action = wezterm.action.RotatePanes("Clockwise"),
+	},
+	{
+		mods = "LEADER",
+		key = "0",
+		action = wezterm.action.PaneSelect({
+			mode = "SwapWithActive",
+		}),
+	},
+	{
+		mods = "LEADER",
+		key = "Enter",
+		action = wezterm.action.ActivateCopyMode,
 	},
 }
 
--- Combine nav_keys and split_keys
+-- Combine nav_keys and general_keys
 local all_keys = {}
 for _, v in ipairs(nav_keys) do
 	table.insert(all_keys, v)
 end
-for _, v in ipairs(split_keys) do
+for _, v in ipairs(general_keys) do
 	table.insert(all_keys, v)
 end
 
@@ -172,6 +196,7 @@ return {
 	},
 
 	-- Keybindings and mouse bindings
+	leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 },
 	keys = all_keys,
 	mouse_bindings = {
 		{

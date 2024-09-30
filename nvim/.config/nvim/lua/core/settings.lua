@@ -38,6 +38,10 @@ vim.filetype.add({
 })
 
 -- [[ Setting options ]]
+-- Set the title string to support pane identification in Windows
+vim.opt.title = true
+vim.opt.titlestring = "nvim"
+
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = "a"
 
