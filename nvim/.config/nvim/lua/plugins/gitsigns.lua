@@ -3,7 +3,9 @@ return { -- Adds git related signs to the gutter, as well as utilities for manag
 	opts = {
 		on_attach = function(bufnr)
 			local gitsigns = require("gitsigns")
+			local wk = require("which-key")
 
+			-- Used for mapping outside of whichkey
 			local function map(mode, l, r, opts)
 				opts = opts or {}
 				opts.buffer = bufnr
@@ -51,8 +53,8 @@ return { -- Adds git related signs to the gutter, as well as utilities for manag
 			end, { desc = "[H]unk [B]lame Line" })
 
 			-- Editor UI
-			map("n", "<leader>tb", gitsigns.toggle_current_line_blame, { desc = "[T]oggle Git Line [B]lame" })
-			map("n", "<leader>td", gitsigns.toggle_deleted, { desc = "[T]oggle [D]eleted Git Signs" })
+			map("n", "<leader>ub", gitsigns.toggle_current_line_blame, { desc = "Toggle Git Line Blame" })
+			map("n", "<leader>ud", gitsigns.toggle_deleted, { desc = "Toggle Deleted Git Signs" })
 
 			-- Diffing
 			map("n", "<leader>hd", gitsigns.diffthis, { desc = "[H]unk [D]iff" })

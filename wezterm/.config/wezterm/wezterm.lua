@@ -126,7 +126,7 @@ end
 local general_keys = {
 	{
 		mods = "LEADER",
-		key = "!",
+		key = "'",
 		action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
 	},
 	{
@@ -177,8 +177,8 @@ return {
 	use_fancy_tab_bar = false,
 	tab_bar_at_bottom = true,
 	inactive_pane_hsb = {
-		saturation = 0.6,
-		brightness = 0.9,
+		saturation = 0.8,
+		brightness = 0.8,
 	},
 
 	-- Font settings

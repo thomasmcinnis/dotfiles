@@ -1,7 +1,42 @@
 -- [[ UI modifications ]]
 -- Adjust built in lsp floating helper windows to be rounded and floating
 local float = { focusable = true, style = "minimal", border = "rounded" }
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, float)
+-- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, float)
+vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
+	config = vim.tbl_extend("force", float, config or {})
+	config.focus_id = ctx.method
+
+	-- Only process if there's actual content
+	if result and result.contents then
+		local has_content = false
+
+		if type(result.contents) == "string" then
+			has_content = result.contents ~= ""
+		elseif type(result.contents) == "table" then
+			if result.contents[1] ~= nil then -- array-like table
+				for _, content in ipairs(result.contents) do
+					if type(content) == "string" and content ~= "" then
+						has_content = true
+						break
+					elseif type(content) == "table" and content.value and content.value ~= "" then
+						has_content = true
+						break
+					end
+				end
+			else -- non-array table
+				has_content = not vim.tbl_isempty(result.contents)
+			end
+		end
+
+		-- Only show the hover window if we have actual content
+		if has_content then
+			return vim.lsp.handlers.hover(_, result, ctx, config)
+		end
+	end
+
+	-- Return nil without showing any notification for empty results
+	return nil
+end
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, float)
 
 -- Adjust error diagnostics to be floating
@@ -15,19 +50,8 @@ vim.diagnostic.config({
 	},
 })
 
--- Make status column: FOLD_RELNUM_SIGN
-vim.opt.statuscolumn =
-	[[%s%=%{v:relnum ? v:relnum : v:lnum .. ' '} %{(foldlevel(v:lnum) && foldlevel(v:lnum) > foldlevel(v:lnum - 1)) ? (foldclosed(v:lnum) == -1 ? '⌄' : '›') : ' '} ]]
-vim.opt.signcolumn = "yes"
-vim.opt.foldlevel = 99
-vim.opt.foldlevelstart = 99
-vim.foldenable = true
-
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
-
--- Enable 24-bit RGB support for some plugins
-vim.opt.termguicolors = true
 
 -- [[ Filetype support ]]
 vim.filetype.add({
@@ -62,6 +86,18 @@ vim.opt.showmode = false
 
 -- Don't show the command line
 vim.opt.cmdheight = 0
+
+-- Show the signcolumn
+vim.opt.signcolumn = "yes"
+
+-- Enable folding
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+vim.opt.foldenable = true
+
+-- Show line numbers and relative numbers
+vim.wo.relativenumber = true
+vim.wo.number = true
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
@@ -117,6 +153,22 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
 	callback = function()
 		vim.highlight.on_yank()
+	end,
+})
+
+-- Show LSP loading indicator
+vim.api.nvim_create_autocmd("LspProgress", {
+	---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
+	callback = function(ev)
+		local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+		vim.notify(vim.lsp.status(), "info", {
+			id = "lsp_progress",
+			title = "LSP Progress",
+			opts = function(notif)
+				notif.icon = ev.data.params.value.kind == "end" and " "
+					or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
+			end,
+		})
 	end,
 })
 

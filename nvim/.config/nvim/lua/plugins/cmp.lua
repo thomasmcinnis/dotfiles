@@ -29,6 +29,7 @@ return { -- Autocompletion
 		--  into multiple repos for maintenance purposes.
 		"hrsh7th/cmp-nvim-lsp",
 		"hrsh7th/cmp-path",
+		"PaterJason/cmp-conjure",
 	},
 	config = function()
 		-- See `:help cmp`
@@ -69,14 +70,12 @@ return { -- Autocompletion
 				["<Right>"] = cmp.mapping.confirm({ select = true }),
 			},
 			sources = {
-				{
-					name = "lazydev",
-					-- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
-					group_index = 0,
-				},
-				{ name = "nvim_lsp" },
-				{ name = "luasnip" },
-				{ name = "path" },
+				{ name = "lazydev", group_index = 0 },
+				{ name = "nvim_lsp", priority = 1000 },
+				{ name = "luasnip", priority = 750 },
+				{ name = "buffer", priority = 500 },
+				{ name = "path", priority = 250 },
+				{ name = "conjure" },
 			},
 		})
 	end,

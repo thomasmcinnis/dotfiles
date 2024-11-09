@@ -45,9 +45,9 @@ return {
 		},
 		keys = {
 			{
-				"<leader>e",
-				":Neotree filesystem reveal current toggle<CR>",
-				{ silent = true, desc = "[E]xplore Current Working Directory" },
+				"<leader>k",
+				":Neotree reveal current toggle<CR>",
+				{ silent = true, desc = "Browse Current Working Directory" },
 			},
 		},
 		opts = {
