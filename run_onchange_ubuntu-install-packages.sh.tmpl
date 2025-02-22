@@ -1,0 +1,12 @@
+#!/bin/bash
+
+{{ if eq .chezmoi.os "linux" }}
+# Update the package list
+sudo apt-get update -qq
+
+# Install the packages
+sudo apt-get install -y \
+{{ range .packages.ubuntu -}}
+{{ . }} \
+{{ end }}
+{{ end }}

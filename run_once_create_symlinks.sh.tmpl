@@ -1,0 +1,23 @@
+#!/bin/bash
+
+{{ if eq .chezmoi.os "linux" }}
+    {{ if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+
+        # Ensure the ~/bin directory exists
+        mkdir -p "$HOME/bin"
+
+        # Check if the symbolic links already exist
+        if [ -L "$HOME/bin/clip.exe" ] && [ -L "$HOME/bin/powershell.exe" ]; then
+            echo "Symbolic links already exist for clip.exe and powershell.exe in $HOME/bin"
+            exit 0
+        fi
+
+        # Create symbolic links
+        sudo ln -sf /mnt/c/Windows/System32/clip.exe $HOME/bin/clip.exe
+        sudo ln -sf /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe $HOME/bin/powershell.exe
+
+        echo "Symlinks created for clip.exe and powershell.exe in $HOME/bin"
+
+    {{ end }}
+
+{{ end }}

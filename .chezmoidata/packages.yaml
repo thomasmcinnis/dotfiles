@@ -1,0 +1,14 @@
+packages:
+  ubuntu:
+    - build-essential
+    - fd-find
+    - fzf
+    - grep
+    - lsd
+    - ripgrep
+    - sqlite3
+    - tmux
+    - tree
+    - unzip
+    - yq
+    - zsh
