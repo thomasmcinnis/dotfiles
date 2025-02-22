@@ -1,0 +1,11 @@
+export PATH=$PATH:$HOME/.cargo/bin
+export PATH=$PATH:$HOME/bin
+export PATH=$PATH:$HOME/.local/scripts
+export PATH=$PATH:/usr/local/bin
+export PATH=$PATH:/opt/nvim
+
+VIM="nvim"
+
+export EDITOR=$VIM
+export GIT_EDITOR=$VIM
+
