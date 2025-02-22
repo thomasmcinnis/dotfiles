@@ -16,13 +16,9 @@ return {
 		dependencies = {
 			{ "williamboman/mason.nvim", config = true },
 			"williamboman/mason-lspconfig.nvim",
-			-- "hrsh7th/cmp-nvim-lsp",
 			"saghen/blink.cmp",
 		},
 		config = function()
-			--  This function gets run when an LSP attaches to a particular buffer.
-			-- require("lspconfig.ui.windows").default_options.border = "rounded"
-
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
 				callback = function(event)

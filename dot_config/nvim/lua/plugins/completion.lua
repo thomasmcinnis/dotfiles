@@ -15,7 +15,6 @@ return { -- Autocompletion
 	},
 	{
 		'saghen/blink.cmp',
-		optional = true,
 		dependencies = {
 			'rafamadriz/friendly-snippets',
 			'onsails/lspkind.nvim',
