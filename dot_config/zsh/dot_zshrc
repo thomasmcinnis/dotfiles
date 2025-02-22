@@ -6,7 +6,7 @@ fi
 # PLUGINS
 source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $ZDOTDIR/plugins/powerlevel10k/powerlevel10k.zsh-theme
-source $ZDOTDIR/plugins/fast-syntax-highlighting/F-Sy-H.plugin.zsh
+source $ZDOTDIR/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
 # HISTORY
 HISTFILE=~/.histfile
