@@ -1,0 +1,10 @@
+PATH="$HOME/bin:/usr/local/bin:$HOME/.cargo/bin:/opt/nvim:$PATH"
+PATH="$PATH:/mnt/c/Windows/System32"
+PATH="$PATH:/mnt/c/Windows/System32/WindowsPowerShell/v1.0"
+export PATH
+
+VIM="nvim"
+
+export EDITOR=$VIM
+export GIT_EDITOR=$VIM
+
