@@ -1,9 +1,0 @@
-[[plugin.deps]]
-use = "yazi-rs/plugins:no-status"
-rev = "beb586a"
-hash = "513a23ac28e1eaa626f3a1bb6c8130d0"
-
-[[flavor.deps]]
-use = "yazi-rs/flavors:catppuccin-mocha"
-rev = "1a419b2"
-hash = "c40e434318a8ceffd01842f8dfb2390e"
