@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+
+# Flag to enable or disable debug logging
+DEBUG=false
+
+# Parse command-line options
+while getopts "d" opt; do
+    case ${opt} in
+        d ) DEBUG=true
+            ;;
+        \? ) echo "Usage: cmd [-d]"
+            exit 1
+            ;;
+    esac
+done
+shift $((OPTIND -1))
+
+log() {
+    if [ "$DEBUG" = true ]; then
+        echo "[$(date +'%Y-%m-%d %H:%M:%S')] $*"
+    fi
+}
+
+switch_to() {
+    log "Switching to session '$1'"
+    if [[ -z $TMUX ]]; then
+        tmux attach-session -t "$1"
+    else
+        tmux switch-client -t "$1"
+    fi
+}
+
+has_session() {
+    log "Checking if session '$1' exists"
+    tmux list-sessions | grep -q "^$1:"
+}
+
+hydrate() {
+    log "Hydrating session '$1' with configuration from '$2'"
+    if [ -f "$2/.tmux-sessionizer" ]; then
+        tmux send-keys -t "$1" "source $2/.tmux-sessionizer" C-m
+    elif [ -f "$HOME/.tmux-sessionizer" ]; then
+        tmux send-keys -t "$1" "source $HOME/.tmux-sessionizer" C-m
+    fi
+}
+
+if [[ $# -eq 1 ]]; then
+    selected="$1"
+else
+    selected=$(find ~/ ~/notes/ ~/solutions/westpac/ ~/solutions/westpac/applications/ ~/.config -mindepth 1 -maxdepth 1 -type d | fzf)
+fi
+
+if [[ -z $selected ]]; then
+    log "No directory selected, exiting"
+    exit 0
+fi
+
+log "Selected directory: $selected"
+selected_name=$(basename "$selected" | tr ' ' '_')
+log "Session name: $selected_name"
+tmux_running=$(pgrep tmux)
+log "tmux running: $tmux_running"
+
+if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+    log "No tmux session running, creating new session '$selected_name'"
+    tmux new-session -s "$selected_name" -c "$selected"
+    hydrate "$selected_name" "$selected"
+    exit 0
+fi
+
+if ! has_session "$selected_name"; then
+    log "Session '$selected_name' does not exist, creating new detached session"
+    tmux new-session -ds "$selected_name" -c "$selected"
+    hydrate "$selected_name" "$selected"
+fi
+
+switch_to "$selected_name"
