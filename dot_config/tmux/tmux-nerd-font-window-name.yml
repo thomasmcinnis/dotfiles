@@ -1,0 +1,12 @@
+config:
+  fallback-icon: ""
+  multipane-icon: ""
+
+
+icons:
+  nvim: "" 
+  zsh: ""
+  lazygit: ""
+  node: ""
+
+

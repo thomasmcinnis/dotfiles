@@ -1,0 +1,12 @@
+# If there is a .git directory, create a new window for git and open lazygit
+if [ -d .git ]; then
+    tmux new-window -n git
+    tmux send-keys -t git 'lazygit' C-m
+fi
+
+# Create a new window for a shell (for npm or other terminal tasks)
+tmux new-window
+
+# Return to the first window and open nvim
+tmux select-window -t 1
+tmux send-keys 'nvim .' C-m
