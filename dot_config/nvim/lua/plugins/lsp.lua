@@ -92,6 +92,10 @@ return {
 					end,
 				},
 			})
+
+			require("lspconfig").racket_langserver.setup {
+				capabilities = lsp_capabilities,
+			}
 		end,
 	},
 	{

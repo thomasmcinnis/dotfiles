@@ -2,6 +2,8 @@ vim.keymap.set("n", "<Esc>", ":nohlsearch<CR>") -- remove search highlights wiht
 
 vim.keymap.set({ "n" }, "s", "<Nop>")           -- unbind defaul 's'
 
+vim.keymap.set('n', '<leader>k', ':Ex<CR>', { noremap = true, silent = true, desc = "Open netrw" })
+
 -- move text blocks up/down with indetation support
 vim.keymap.set('v', "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
 vim.keymap.set('v', "K", ":m '>-2<CR>gv=gv", { desc = "Move selection up" })

@@ -29,14 +29,11 @@ return { -- Adds git related signs to the gutter, as well as utilities for manag
 			end, { desc = "Previous Git [H]unk" })
 
 			-- Staging
-			map("n", "<leader>hs", gitsigns.stage_hunk, { desc = "[H]unk [S]tage" })
+			map("n", "<leader>hs", gitsigns.stage_hunk, { desc = "Toggle Hunk Stage" })
 			map("v", "<leader>hs", function()
 				gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-			end, { desc = "[H]unk [S]tage" })
+			end, { desc = "Toggle Hunk Stage" })
 			map("n", "<leader>hS", gitsigns.stage_buffer, { desc = "[H]unk [S]tage Buffer" })
-
-			-- Unstaging
-			map("n", "<leader>hu", gitsigns.undo_stage_hunk, { desc = "[H]unk [U]ndo Stage" })
 
 			-- Resetting
 			map("n", "<leader>hr", gitsigns.reset_hunk, { desc = "[H]unk [R]eset" })
@@ -53,7 +50,7 @@ return { -- Adds git related signs to the gutter, as well as utilities for manag
 
 			-- Editor UI
 			map("n", "<leader>ub", gitsigns.toggle_current_line_blame, { desc = "Toggle Git Line Blame" })
-			map("n", "<leader>ud", gitsigns.toggle_deleted, { desc = "Toggle Deleted Git Signs" })
+			map("n", "<leader>ud", gitsigns.preview_hunk_inline(), { desc = "Toggle Deleted Git Signs" })
 
 			-- Diffing
 			map("n", "<leader>hd", gitsigns.diffthis, { desc = "[H]unk [D]iff" })

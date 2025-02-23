@@ -7,9 +7,11 @@ return { -- Autocompletion
 		opts = {
 			suggestion = { enabled = true },
 			filetypes = {
-				markdown = true,
+				markdown = false,
 				help = true,
 				["copilot-chat"] = false,
+				racket = false,
+				scheme = false,
 			},
 		},
 	},
@@ -30,7 +32,11 @@ return { -- Autocompletion
 			-- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
 			-- See the full "keymap" documentation for information on defining your own keymap.
 			keymap = { preset = 'super-tab' },
-			enabled = function() return vim.bo.buftype ~= "prompt" and vim.b.completion ~= false end,
+			enabled = function()
+				return not vim.tbl_contains({ "racket", "markdown" }, vim.bo.filetype)
+					and vim.bo.buftype ~= "prompt"
+					and vim.b.completion ~= false
+			end,
 
 			appearance = {
 				use_nvim_cmp_as_default = false,
