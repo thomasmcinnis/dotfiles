@@ -33,7 +33,7 @@ return { -- Autocompletion
 			-- See the full "keymap" documentation for information on defining your own keymap.
 			keymap = { preset = 'super-tab' },
 			enabled = function()
-				return not vim.tbl_contains({ "racket", "markdown" }, vim.bo.filetype)
+				return not vim.tbl_contains({}, vim.bo.filetype)
 					and vim.bo.buftype ~= "prompt"
 					and vim.b.completion ~= false
 			end,
@@ -83,6 +83,20 @@ return { -- Autocompletion
 					window = { border = "single" },
 					auto_show = false,
 					auto_show_delay_ms = 1000,
+				},
+				accept = {
+					auto_brackets = {
+						kind_resolution = {
+							enabled = true,
+							blocked_filetypes = { 'racket', 'typescriptreact', 'javascriptreact', 'vue' },
+						},
+						semantic_token_resolution = {
+							enabled = true,
+							blocked_filetypes = { 'java', 'racket' },
+							-- How long to wait for semantic tokens to return before assuming no brackets should be added
+							timeout_ms = 400,
+						},
+					}
 				}
 			},
 			signature = {

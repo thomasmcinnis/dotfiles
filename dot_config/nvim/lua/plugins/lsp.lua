@@ -38,6 +38,8 @@ return {
 					-- my preferred binds
 					map("<leader>rn", vim.lsp.buf.rename, "Rename")
 					map("<leader>ca", vim.lsp.buf.code_action, "Code Action", { "n", "x" })
+					map("<leader>uI", "<cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<cr>",
+						"Toggle inlay hints", "n")
 				end,
 			})
 
@@ -95,7 +97,16 @@ return {
 
 			require("lspconfig").racket_langserver.setup {
 				capabilities = lsp_capabilities,
+				filetypes = { 'racket' },
 			}
+
+			-- require("lspconfig").scheme_langserver.setup {
+			-- 	capabilities = lsp_capabilities,
+			-- 	filetypes = { 'scheme' },
+			-- 	root_dir = function()
+			-- 		return vim.fn.getcwd() -- You can modify this to specify the root directory more accurately
+			-- 	end,
+			-- }
 		end,
 	},
 	{
