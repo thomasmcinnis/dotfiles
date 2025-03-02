@@ -34,4 +34,4 @@ require("lazy").setup({
   change_detection = { enabled = false },
 })
 
-vim.cmd.colorscheme "catppuccin"
+vim.cmd.colorscheme "kanagawa"

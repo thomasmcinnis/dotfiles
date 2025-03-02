@@ -57,10 +57,11 @@ local options = {
 	scrolloff = 10,
 	cursorline = false,
 	inccommand = "split",
-	laststatus = 3,
+	laststatus = 2,
 	foldlevel = 99,
 	foldlevelstart = 99,
 	foldenable = true,
+	background = "",
 }
 
 for k, v in pairs(options) do
@@ -93,3 +94,15 @@ if vim.fn.has("wsl") == 1 then
 		vim.notify("clip.exe not found in $PATH. No system clipboard saving possible", vim.log.levels.ERROR)
 	end
 end
+
+vim.api.nvim_create_autocmd("BufRead", {
+	pattern = { "*.sld", "*.sls", "*.sps" },
+	command = "setfiletype scheme",
+})
+
+vim.api.nvim_create_autocmd("BufNewFile", {
+	pattern = { "*.sld", "*.sls", "*.sps" },
+	command = "setfiletype scheme",
+})
+
+vim.g["conjure#mapping#doc_word"] = false
