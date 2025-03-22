@@ -21,9 +21,9 @@ return {
 		lazy = false,
 		priority = 1000,
 		opts = {
-			transparent = true,
+			transparent = false,
 			undercurl = false,
-			theme = "dragon",
+			theme = "wave",
 			colors = {
 				pallete = {
 					samuraiRed = "#E0594C",

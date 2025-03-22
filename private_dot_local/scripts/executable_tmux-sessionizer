@@ -47,7 +47,7 @@ hydrate() {
 if [[ $# -eq 1 ]]; then
     selected="$1"
 else
-    selected=$(find ~/documents/ ~/dev/ ~/.local/scripts/ ~/work/ ~/.config -mindepth 1 -maxdepth 2 -type d | fzf)
+    selected=$(find ~/documents/ ~/dev/ ~/.local/ ~/work/ ~/.config -mindepth 1 -maxdepth 3 -type d | fzf)
 fi
 
 if [[ -z $selected ]]; then

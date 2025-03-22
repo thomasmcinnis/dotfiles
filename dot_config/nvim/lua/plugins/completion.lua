@@ -1,26 +1,9 @@
 return { -- Autocompletion
 	{
-		cmd = "Copilot",
-		"zbirenbaum/copilot.lua",
-		build = ":Copilot auth",
-		event = "InsertEnter",
-		opts = {
-			suggestion = { enabled = true },
-			filetypes = {
-				markdown = false,
-				help = true,
-				["copilot-chat"] = false,
-				racket = false,
-				scheme = false,
-			},
-		},
-	},
-	{
 		'saghen/blink.cmp',
 		dependencies = {
 			'rafamadriz/friendly-snippets',
 			'onsails/lspkind.nvim',
-			'fang2hou/blink-copilot'
 		},
 		version = '*',
 
@@ -41,38 +24,32 @@ return { -- Autocompletion
 			appearance = {
 				use_nvim_cmp_as_default = false,
 				nerd_font_variant = 'mono',
-				kind_icons = {
-					Copilot = "",
-				},
 			},
 			sources = {
 				default = function()
-					local sources = { 'lsp', 'copilot', 'path', 'snippets' }
+					local sources = { 'snippets', 'lsp', 'path' }
 					if vim.bo.filetype ~= "markdown" then
 						table.insert(sources, "buffer")
 					end
 					return sources
 				end,
+				per_filetype = {
+					codecompanion = { "codecompanion" },
+				},
 				providers = {
-					copilot = {
-						name = "copilot",
-						module = "blink-copilot",
-						score_offset = 100,
-						async = true,
-					},
-					cmdline = {
-						-- ignores cmdline completions when executing shell commands cos it hangs in wsl
-						enabled = function()
-							return vim.fn.getcmdtype() ~= ':' or not vim.fn.getcmdline():match("^[%%0-9,'<>%-]*!")
-						end
-					}
+					-- cmdline = {
+					-- 	-- ignores cmdline completions when executing shell commands cos it hangs in wsl
+					-- 	enabled = function()
+					-- 		return vim.fn.getcmdtype() ~= ':' or not vim.fn.getcmdline():match("^[%%0-9,'<>%-]*!")
+					-- 	end
+					-- }
 				}
 			},
 			completion = {
 				list = {
 					selection = { preselect = true, auto_insert = false }
 				},
-				ghost_text = { enabled = true },
+				ghost_text = { enabled = false },
 				menu = {
 					border = "none",
 					draw = {
@@ -81,8 +58,8 @@ return { -- Autocompletion
 				},
 				documentation = {
 					window = { border = "single" },
-					auto_show = false,
-					auto_show_delay_ms = 1000,
+					auto_show = true,
+					auto_show_delay_ms = 500,
 				},
 				accept = {
 					auto_brackets = {

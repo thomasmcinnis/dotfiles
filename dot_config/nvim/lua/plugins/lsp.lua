@@ -1,4 +1,16 @@
 local lsp_capabilities = require('blink.cmp').get_lsp_capabilities()
+local customizations = {
+	{ rule = 'style/*',   severity = 'off', fixable = true },
+	{ rule = 'format/*',  severity = 'off', fixable = true },
+	{ rule = '*-indent',  severity = 'off', fixable = true },
+	{ rule = '*-spacing', severity = 'off', fixable = true },
+	{ rule = '*-spaces',  severity = 'off', fixable = true },
+	{ rule = '*-order',   severity = 'off', fixable = true },
+	{ rule = '*-dangle',  severity = 'off', fixable = true },
+	{ rule = '*-newline', severity = 'off', fixable = true },
+	{ rule = '*quotes',   severity = 'off', fixable = true },
+	{ rule = '*semi',     severity = 'off', fixable = true },
+}
 
 return {
 	{
@@ -19,6 +31,21 @@ return {
 			"saghen/blink.cmp",
 		},
 		config = function()
+			-- If Diff mode is selected don't load any LSP Configs
+			if (vim.opt.diff:get()) then
+				return
+			end
+
+			vim.lsp.handlers["textDocument/hover"] = function(err, result, ctx, config)
+				local client = vim.lsp.get_client_by_id(ctx.client_id)
+				if client then
+					print("Hover provided by: " .. client.name)
+				else
+					print("Hover provider client not found")
+				end
+				vim.lsp.handlers.hover(err, result, ctx, config)
+			end
+
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
 				callback = function(event)
@@ -50,9 +77,49 @@ return {
 						"xhtml",
 					},
 				},
+				tailwindcss = {
+					filetypes = { "vue", "html" }
+				},
 				cssls = {},
 				marksman = {
 					filetypes = { "markdown" },
+				},
+				eslint = {
+					filetypes = {
+						"javascript",
+						"javascriptreact",
+						"javascript.jsx",
+						"typescript",
+						"typescriptreact",
+						"typescript.tsx",
+						"vue",
+						"html",
+						"markdown",
+						"json",
+						"jsonc",
+						"yaml",
+						"toml",
+						"xml",
+						"gql",
+						"graphql",
+						"astro",
+						"svelte",
+						"css",
+						"less",
+						"scss",
+						"pcss",
+						"postcss"
+					},
+					settings = {
+						-- Silent the stylistic rules in you IDE, but still auto fix them
+						rulesCustomizations = customizations,
+					},
+					on_attach = function(client, bufnr)
+						vim.api.nvim_create_autocmd("BufWritePre", {
+							buffer = bufnr,
+							command = "EslintFixAll",
+						})
+					end
 				},
 				volar = {},
 				lua_ls = {
@@ -76,10 +143,6 @@ return {
 			require("mason").setup()
 
 			local ensure_installed = vim.tbl_keys(servers or {})
-			vim.list_extend(ensure_installed, {
-				"eslint",
-				"jsonls",
-			})
 
 			require("mason-lspconfig").setup({
 				automatic_installation = true,
@@ -117,6 +180,13 @@ return {
 			cmd = { "typescript-language-server", "--stdio" },
 		},
 		config = function()
+			---@type lsp.ClientCapabilities
+			local ts_capabilities = vim.deepcopy(lsp_capabilities)
+			---@diagnostic disable-next-line: inject-field
+			ts_capabilities.documentFormattingProvider = false
+			---@diagnostic disable-next-line: inject-field
+			ts_capabilities.documentRangeFormattingProvider = false
+
 			require("typescript-tools").setup({
 				filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "vue" },
 				settings = {
@@ -124,7 +194,7 @@ return {
 						"@vue/typescript-plugin",
 					},
 				},
-				capabilities = lsp_capabilities,
+				capabilities = ts_capabilities,
 			})
 		end,
 	},
