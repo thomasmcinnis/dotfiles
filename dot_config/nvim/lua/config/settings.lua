@@ -36,7 +36,7 @@ vim.g.netrw_banner = 0
 -- diagnostic ui
 vim.diagnostic.config({
     -- virtual_text = { current_line = true },
-    virtual_lines = { current_line = true }
+    virtual_lines = { current_line = false }
 })
 
 
