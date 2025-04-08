@@ -9,9 +9,6 @@ return {
         event = "VeryLazy",
     },
     { -- Better folding based on treesitter nodes
-        -- NOTE:
-        -- for fold settings see /config/settings.lua
-        -- for fold icon in statusline see /plugins/snacks.lua
         "kevinhwang91/nvim-ufo",
         event = "VeryLazy",
         dependencies = "kevinhwang91/promise-async",

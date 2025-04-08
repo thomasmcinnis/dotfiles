@@ -17,9 +17,9 @@ return {
         },
         icons = { mappings = false },
         ---@type wk.Win.opts
-        win = {
-            border = "single",
-        }
+        -- win = {
+        --     border = "single",
+        -- }
     },
     keys = {
         {

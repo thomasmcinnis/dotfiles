@@ -36,39 +36,39 @@ return {
 				return
 			end
 
-			vim.lsp.handlers["textDocument/hover"] = function(err, result, ctx, config)
-				local client = vim.lsp.get_client_by_id(ctx.client_id)
-				if client then
-					print("Hover provided by: " .. client.name)
-				else
-					print("Hover provider client not found")
-				end
-				vim.lsp.handlers.hover(err, result, ctx, config)
-			end
-
-			vim.api.nvim_create_autocmd("LspAttach", {
-				group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
-				callback = function(event)
-					local map = function(keys, func, desc, mode)
-						mode = mode or "n"
-						vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
-					end
-					-- new keybinds to match defaults in nvim 0.11
-					map("grr", "<cmd>lua vim.lsp.buf.references()<cr>", "Go to references")
-					map("gri", "<cmd>lua vim.lsp.buf.implementation()<cr>", "Go to implementation")
-					map("grn", vim.lsp.buf.rename, "Rename")
-					map("gra", "<cmd>lua vim.lsp.buf.code_action()<cr>", "Show Code Actions")
-					map("gO", "<cmd>lua vim.lsp.buf.document_symbol()<cr>", "Pick Document Symbols")
-					map("<C-s>", "<cmd>lua vim.lsp.buf.signature_help()<cr>", "Signature Help", { "i", "s" })
-					map("gq", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", "Format Buffer", { "n", "x" })
-
-					-- my preferred binds
-					map("<leader>rn", vim.lsp.buf.rename, "Rename")
-					map("<leader>ca", vim.lsp.buf.code_action, "Code Action", { "n", "x" })
-					map("<leader>uI", "<cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<cr>",
-						"Toggle inlay hints", "n")
-				end,
-			})
+			-- vim.lsp.handlers["textDocument/hover"] = function(err, result, ctx, config)
+			-- 	local client = vim.lsp.get_client_by_id(ctx.client_id)
+			-- 	if client then
+			-- 		print("Hover provided by: " .. client.name)
+			-- 	else
+			-- 		print("Hover provider client not found")
+			-- 	end
+			-- 	vim.lsp.handlers.hover(err, result, ctx, config)
+			-- end
+			--
+			-- vim.api.nvim_create_autocmd("LspAttach", {
+			-- 	group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
+			-- 	callback = function(event)
+			-- 		local map = function(keys, func, desc, mode)
+			-- 			mode = mode or "n"
+			-- 			vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+			-- 		end
+			-- 		-- new keybinds to match defaults in nvim 0.11
+			-- 		map("grr", "<cmd>lua vim.lsp.buf.references()<cr>", "Go to references")
+			-- 		map("gri", "<cmd>lua vim.lsp.buf.implementation()<cr>", "Go to implementation")
+			-- 		map("grn", vim.lsp.buf.rename, "Rename")
+			-- 		map("gra", "<cmd>lua vim.lsp.buf.code_action()<cr>", "Show Code Actions")
+			-- 		map("gO", "<cmd>lua vim.lsp.buf.document_symbol()<cr>", "Pick Document Symbols")
+			-- 		map("<C-s>", "<cmd>lua vim.lsp.buf.signature_help()<cr>", "Signature Help", { "i", "s" })
+			-- 		map("gq", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", "Format Buffer", { "n", "x" })
+			--
+			-- 		-- my preferred binds
+			-- 		map("<leader>rn", vim.lsp.buf.rename, "Rename")
+			-- 		map("<leader>ca", vim.lsp.buf.code_action, "Code Action", { "n", "x" })
+			-- 		map("<leader>uI", "<cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<cr>",
+			-- 			"Toggle inlay hints", "n")
+			-- 	end,
+			-- })
 
 			local servers = {
 				html = {
