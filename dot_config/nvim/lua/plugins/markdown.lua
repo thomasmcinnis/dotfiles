@@ -29,6 +29,9 @@ return {
 		}
 	},
 	{
-		'preservim/vim-pencil'
+		'preservim/vim-pencil',
+		config = function()
+			vim.keymap.set('n', '<Leader>uw', ':SoftPencil<CR>', { desc = "Toggle soft wrap", silent = true })
+		end
 	}
 }

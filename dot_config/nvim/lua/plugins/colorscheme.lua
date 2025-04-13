@@ -1,5 +1,19 @@
 return {
 	{
+		"f-person/auto-dark-mode.nvim",
+		opts = {
+			update_interval = 1000,
+			set_dark_mode = function()
+				vim.api.nvim_set_option_value("background", "dark", {})
+				vim.cmd("colorscheme kanagawa")
+			end,
+			set_light_mode = function()
+				vim.api.nvim_set_option_value("background", "light", {})
+				vim.cmd("colorscheme github_light")
+			end,
+		},
+	},
+	{
 		"catppuccin/nvim",
 		name = "catppuccin",
 		lazy = false,
@@ -15,6 +29,19 @@ return {
 		}
 	},
 	{ "rose-pine/neovim",            name = "rose-pine" },
+	{
+		"zenbones-theme/zenbones.nvim",
+		-- Optionally install Lush. Allows for more configuration or extending the colorscheme
+		-- If you don't want to install lush, make sure to set g:zenbones_compat = 1
+		-- In Vim, compat mode is turned on as Lush only works in Neovim.
+		dependencies = "rktjmp/lush.nvim",
+		lazy = false,
+		priority = 1000,
+		-- you can set set configuration options here
+		-- config = function()
+		-- 	vim.g.zenbones_lightness = "bright"
+		-- end
+	},
 	{
 		"rebelot/kanagawa.nvim",
 		name = "kanagawa",
