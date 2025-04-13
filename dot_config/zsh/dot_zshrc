@@ -1,12 +1,14 @@
-# Enable Powerlevel10k instant prompt 
+# Enable Powerlevel11k instant prompt
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
+
 
 # PLUGINS
 source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $ZDOTDIR/plugins/powerlevel10k/powerlevel10k.zsh-theme
 source $ZDOTDIR/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+
 
 # HISTORY
 HISTFILE=~/.histfile
@@ -21,11 +23,19 @@ compinit
 
 
 # ALIASES
+
 # Make ls good
-alias ls="ls -lah --color=auto --group-directories-first"
+if [[ $(uname) == "Darwin" ]]; then
+  # macOS specific aliases
+  alias ls="ls -lahG"
+else
+  # Linux specific aliases
+  alias ls="ls -lah --color=auto --group-directories-first"
+fi
+
 #tmux with sessionizer
 alias ts="tmux-sessionizer"
-#cd with fzf 
+#cd with fzf
 alias sd="cd ~ && cd \$(find * -type d | fzf)"
 
 
@@ -37,19 +47,6 @@ setopt histignorealldups	# if cmd duplicated don't add to hist
 
 # KEY BINDINGS
 bindkey -s ^f "tmux-sessionizer\n"
-
-
-# YAZI FILE EXPLORER
-# Enable yazi to exit and change the cwd
-function y() {
-  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-  yazi "$@" --cwd-file="$tmp"
-  if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-    builtin cd -- "$cwd"
-  fi
-  rm -f -- "$tmp"
-}
-
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
