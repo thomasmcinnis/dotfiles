@@ -19,3 +19,6 @@ else
     export VISUAL="vim"
     export GIT_EDITOR="vim"
 fi
+
+# Set nvim to be the manpage interface
+export MANPAGER="nvim +Man!"

@@ -28,4 +28,8 @@ require("lazy").setup({
   change_detection = { enabled = false },
 })
 
-vim.cmd("colorscheme kanagawa-wave")
+-- if vim.o.background == 'light' then
+--   vim.cmd("colorscheme zenbones")
+-- else
+--   vim.cmd("colorscheme kanagawa")
+-- end

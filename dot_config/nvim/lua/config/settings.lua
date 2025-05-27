@@ -28,7 +28,7 @@ vim.o.undolevels = 10000    -- 10x more undo levels
 
 -- define <leader> and <localleader> keys
 vim.g.mapleader = vim.keycode("<space>")
-vim.g.maplocalleader = vim.keycode("<cr>")
+vim.g.maplocalleader = vim.keycode("\\")
 
 -- remove netrw banner for cleaner looking
 vim.g.netrw_banner = 0
@@ -239,7 +239,6 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 
 vim.g["conjure#mapping#doc_word"] = false
 
--- set tab to 3 space when entering a buffer with .lua file
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = { "*.vue" },
     callback = function()
@@ -248,3 +247,25 @@ vim.api.nvim_create_autocmd("BufEnter", {
         vim.opt.softtabstop = 4
     end
 })
+
+vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = { "*.scm" },
+    callback = function()
+        vim.opt.shiftwidth = 2
+        vim.opt.tabstop = 2
+        vim.opt.softtabstop = 2
+    end
+})
+
+vim.api.nvim_create_autocmd("OptionSet", {
+    pattern = { "background" },
+    callback = function()
+        if vim.o.background == "light" then
+            vim.cmd("colorscheme zenbones")
+        else
+            print("Background is dark")
+            vim.cmd("colorscheme kanagawa")
+        end
+    end
+})
+

@@ -138,6 +138,9 @@ return {
 						},
 					},
 				},
+				pyright = {
+					filetypes = { "python" },
+				}
 			}
 
 			require("mason").setup()
