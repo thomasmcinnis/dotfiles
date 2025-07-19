@@ -67,14 +67,14 @@ if command_exists nvim; then
   # Node.js providers for Neovim
   if command_exists npm; then
     print_info "Installing Node.js provider for Neovim"
-    npm install -g neovim
+    npm install --prefix ~/.local neovim
   fi
 fi
 
 # Create development directories
 print_info "Creating development directories"
 mkdir -p "$HOME/work"
-mkdir -p "$HOME/pesonal"
+mkdir -p "$HOME/personal"
 mkdir -p "$HOME/notes"
 
 # Set default shell to zsh if it's not already

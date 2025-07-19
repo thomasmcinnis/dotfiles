@@ -29,7 +29,16 @@ fi
 
 # Install base development packages
 print_info "Installing base development packages"
-sudo pacman -S --needed --noconfirm base-devel git yay
+sudo pacman -S --needed --noconfirm base-devel git
+
+# Install yay if not present
+if ! command_exists yay; then
+  print_info "Installing yay (AUR helper)"
+  cd /tmp
+  git clone https://aur.archlinux.org/yay.git
+  cd yay
+  makepkg -si --noconfirm
+fi
 
 # Update yay database
 print_info "Updating yay database"
