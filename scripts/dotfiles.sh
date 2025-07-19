@@ -143,13 +143,16 @@ if [[ -d "$REPO_ROOT/bin" ]]; then
   # Create ~/.local/bin directory if it doesn't exist
   mkdir -p "$HOME/.local/bin"
 
+  # First ensure all scripts in bin/ are executable
+  find "$REPO_ROOT/bin" -type f -exec chmod +x {} \;
+  print_info "Made all scripts in bin/ executable"
+
   # Loop through all files in bin/
   for script_file in "$REPO_ROOT/bin/"*; do
     if [[ -f "$script_file" ]]; then
       script_name=$(basename "$script_file")
       symlink "$script_file" "$HOME/.local/bin/$script_name"
-      chmod +x "$HOME/.local/bin/$script_name"
-      print_info "Made $script_name executable in ~/.local/bin/"
+      print_info "Symlinked $script_name to ~/.local/bin/"
     fi
   done
 fi
