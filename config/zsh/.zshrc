@@ -1,0 +1,56 @@
+# Enable Powerlevel11k instant prompt
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+
+# PLUGINS
+source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $ZDOTDIR/plugins/powerlevel10k/powerlevel10k.zsh-theme
+source $ZDOTDIR/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+
+
+# HISTORY
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+
+
+# COMPLETION
+zstyle :compinstall ~/.config/zsh/.zshrc
+autoload -Uz compinit
+compinit
+
+
+# ALIASES
+
+# Make ls good
+if [[ $(uname) == "Darwin" ]]; then
+  # macOS specific aliases
+  alias ls="ls -lahG"
+else
+  # Linux specific aliases
+  alias ls="ls -lah --color=auto --group-directories-first"
+fi
+
+#tmux with sessionizer
+alias ts="tmux-sessionizer"
+#cd with fzf
+alias sd="cd ~ && cd \$(find * -type d | fzf)"
+
+
+# OPTIONS
+setopt autocd               # if only dir path entered cd there by default
+setopt nobeep               # no bells
+setopt histignorealldups	# if cmd duplicated don't add to hist
+
+
+# KEY BINDINGS
+bindkey -s ^f "tmux-sessionizer\n"
+
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+# To customize prompt, run `p10k configure` or edit ~/.config//zsh//.p10k.zsh.
+[[ ! -f ~/.config//zsh//.p10k.zsh ]] || source ~/.config//zsh//.p10k.zsh
+
