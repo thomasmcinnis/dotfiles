@@ -1,0 +1,185 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Directory where git profiles are stored
+PROFILES_DIR="$HOME/.config/git/profiles"
+CURRENT_PROFILE="$PROFILES_DIR/.gitconfig.current"
+
+# Available profiles
+WORK_PROFILE="$PROFILES_DIR/.gitconfig.work"
+PERSONAL_PROFILE="$PROFILES_DIR/.gitconfig.personal"
+
+# Colors
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[0;33m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+show_usage() {
+  echo -e "${BLUE}Git Profile Switcher${NC}"
+  echo ""
+  echo "Usage: git profile [command]"
+  echo ""
+  echo "Commands:"
+  echo "  work      Switch to work profile"
+  echo "  personal  Switch to personal profile"
+  echo "  status    Show current active profile"
+  echo "  setup     Guide through initial profile setup"
+  echo ""
+  echo "Running without arguments shows this help message"
+}
+
+get_current_profile() {
+  if [[ ! -f "$CURRENT_PROFILE" ]]; then
+    echo "none"
+    return
+  fi
+  
+  if [[ "$(readlink -f "$CURRENT_PROFILE")" == "$(readlink -f "$WORK_PROFILE")" ]]; then
+    echo "work"
+  elif [[ "$(readlink -f "$CURRENT_PROFILE")" == "$(readlink -f "$PERSONAL_PROFILE")" ]]; then
+    echo "personal"
+  else
+    echo "unknown"
+  fi
+}
+
+switch_to_profile() {
+  local profile_type="$1"
+  local profile_path
+  
+  case "$profile_type" in
+    work)
+      profile_path="$WORK_PROFILE"
+      ;;
+    personal)
+      profile_path="$PERSONAL_PROFILE"
+      ;;
+    *)
+      echo -e "${RED}Invalid profile: $profile_type${NC}"
+      exit 1
+      ;;
+  esac
+  
+  # Check if the profile exists
+  if [[ ! -f "$profile_path" ]]; then
+    echo -e "${RED}Profile '$profile_type' not found at $profile_path${NC}"
+    echo -e "Run ${YELLOW}git profile setup${NC} to create profiles"
+    exit 1
+  fi
+  
+  # Create symbolic link
+  ln -sf "$profile_path" "$CURRENT_PROFILE"
+  echo -e "${GREEN}Switched to $profile_type git profile${NC}"
+  
+  # Show current git user settings
+  echo ""
+  echo -e "${BLUE}Current git user settings:${NC}"
+  git config user.name
+  git config user.email
+}
+
+show_status() {
+  local current=$(get_current_profile)
+  
+  echo -e "${BLUE}Git Profile Status${NC}"
+  echo ""
+  echo -e "Current profile: ${YELLOW}$current${NC}"
+  
+  if [[ "$current" != "none" ]]; then
+    echo ""
+    echo -e "${BLUE}User settings:${NC}"
+    echo -e "Name:  ${GREEN}$(git config user.name)${NC}"
+    echo -e "Email: ${GREEN}$(git config user.email)${NC}"
+  else
+    echo ""
+    echo -e "${YELLOW}No profile is currently active.${NC}"
+    echo -e "Run ${BLUE}git profile setup${NC} to configure profiles."
+  fi
+}
+
+setup_profiles() {
+  mkdir -p "$PROFILES_DIR"
+  
+  echo -e "${BLUE}Git Profile Setup${NC}"
+  echo ""
+  echo -e "Let's set up your ${YELLOW}work${NC} git profile:"
+  echo ""
+  
+  read -p "Work name: " work_name
+  read -p "Work email: " work_email
+  
+  cat > "$WORK_PROFILE" <<EOL
+[user]
+    name = $work_name
+    email = $work_email
+
+[github]
+    user = $(echo "$work_email" | cut -d@ -f1)
+EOL
+  
+  echo ""
+  echo -e "Let's set up your ${YELLOW}personal${NC} git profile:"
+  echo ""
+  
+  read -p "Personal name: " personal_name
+  read -p "Personal email: " personal_email
+  read -p "GitHub username: " github_user
+  
+  cat > "$PERSONAL_PROFILE" <<EOL
+[user]
+    name = $personal_name
+    email = $personal_email
+
+[github]
+    user = $github_user
+EOL
+  
+  echo ""
+  echo -e "${GREEN}Profiles created successfully!${NC}"
+  echo ""
+  echo -e "Now, which profile would you like to activate?"
+  echo "1) Work"
+  echo "2) Personal"
+  read -p "Enter choice [1-2]: " choice
+  
+  case $choice in
+    1)
+      switch_to_profile "work"
+      ;;
+    2)
+      switch_to_profile "personal"
+      ;;
+    *)
+      echo -e "${RED}Invalid choice${NC}"
+      echo -e "Run ${YELLOW}git profile work${NC} or ${YELLOW}git profile personal${NC} to activate a profile."
+      ;;
+  esac
+}
+
+# Create profiles directory if it doesn't exist
+mkdir -p "$PROFILES_DIR"
+
+# Parse command
+if [[ $# -eq 0 ]]; then
+  show_usage
+  exit 0
+fi
+
+case "$1" in
+  work|personal)
+    switch_to_profile "$1"
+    ;;
+  status)
+    show_status
+    ;;
+  setup)
+    setup_profiles
+    ;;
+  *)
+    show_usage
+    exit 1
+    ;;
+esac

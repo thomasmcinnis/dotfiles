@@ -121,6 +121,35 @@ if [[ -d "$CONFIG_DIR/tmux" ]]; then
   fi
 fi
 
+# Symlink git config if it exists
+if [[ -d "$CONFIG_DIR/git" ]]; then
+  print_info "Symlinking Git configs"
+
+  # Create git config directory if it doesn't exist
+  mkdir -p "$HOME/.config/git"
+  mkdir -p "$HOME/.config/git/profiles"
+
+  # Symlink main gitconfig
+  if [[ -f "$CONFIG_DIR/git/.gitconfig" ]]; then
+    symlink "$CONFIG_DIR/git/.gitconfig" "$HOME/.gitconfig"
+  fi
+
+  # Symlink global gitignore
+  if [[ -f "$CONFIG_DIR/git/gitignore_global" ]]; then
+    symlink "$CONFIG_DIR/git/gitignore_global" "$HOME/.config/git/gitignore_global"
+  fi
+
+  # Copy the README for profiles (don't symlink)
+  if [[ -f "$CONFIG_DIR/git/profiles/README.md" ]]; then
+    cp -f "$CONFIG_DIR/git/profiles/README.md" "$HOME/.config/git/profiles/"
+  fi
+
+  # If no profile is set up, inform the user
+  if [[ ! -f "$HOME/.config/git/profiles/.gitconfig.current" ]]; then
+    print_info "No git profile is currently set. Run 'git-profile setup' to configure profiles"
+  fi
+fi
+
 # Symlink bin scripts
 if [[ -d "$CONFIG_DIR/bin" ]]; then
   print_info "Symlinking bin scripts"

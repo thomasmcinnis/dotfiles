@@ -1,0 +1,29 @@
+[include]
+    path = ~/.config/git/profiles/.gitconfig.current
+
+[core]
+    editor = nvim
+    excludesfile = ~/.config/git/gitignore_global
+
+[init]
+    defaultBranch = main
+
+[color]
+    ui = auto
+
+[pull]
+    rebase = false
+
+[push]
+    default = simple
+    autoSetupRemote = true
+
+[alias]
+    s = status
+    co = checkout
+    cb = checkout -b
+    cm = commit -m
+    ca = commit --amend
+    unstage = reset HEAD --
+    last = log -1 HEAD
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
