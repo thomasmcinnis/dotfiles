@@ -90,5 +90,52 @@ if [[ "$SHELL" != *"zsh"* ]]; then
   fi
 fi
 
+setup_zsh_plugins() {
+  print_info "Setting up ZSH plugins"
+
+  # Create plugins directory if it doesn't exist
+  PLUGIN_DIR="$HOME/.config/zsh/plugins"
+  mkdir -p "$PLUGIN_DIR"
+
+  # Install Powerlevel10k
+  if [[ ! -d "$PLUGIN_DIR/powerlevel10k" ]]; then
+    print_info "Installing Powerlevel10k theme"
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$PLUGIN_DIR/powerlevel10k"
+    print_success "Powerlevel10k installed"
+  else
+    print_info "Powerlevel10k is already installed"
+  fi
+
+  # Install zsh-autosuggestions
+  if [[ ! -d "$PLUGIN_DIR/zsh-autosuggestions" ]]; then
+    print_info "Installing zsh-autosuggestions"
+    git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions.git "$PLUGIN_DIR/zsh-autosuggestions"
+    print_success "zsh-autosuggestions installed"
+  else
+    print_info "zsh-autosuggestions is already installed"
+  fi
+
+  # Install fast-syntax-highlighting
+  if [[ ! -d "$PLUGIN_DIR/fast-syntax-highlighting" ]]; then
+    print_info "Installing fast-syntax-highlighting"
+    git clone --depth=1 https://github.com/zdharma-continuum/fast-syntax-highlighting.git "$PLUGIN_DIR/fast-syntax-highlighting"
+    print_success "fast-syntax-highlighting installed"
+  else
+    print_info "fast-syntax-highlighting is already installed"
+  fi
+
+  # Create a default p10k.zsh if none exists
+  if [[ ! -f "$REPO_ROOT/config/zsh/.p10k.zsh" ]]; then
+    print_info "You can generate a p10k config by running 'p10k configure'"
+    print_info "The generated config will be in ~/.p10k.zsh"
+    print_info "You can then copy it to $REPO_ROOT/config/zsh/.p10k.zsh"
+  fi
+}
+
+# Call the setup function if ZSH is installed
+if command_exists zsh; then
+  setup_zsh_plugins
+fi
+
 print_success "Packages installation completed successfully"
 print_info "Run ./scripts/dotfiles.sh next to set up your configuration files"
