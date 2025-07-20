@@ -1,0 +1,5 @@
+typescript
+eslint
+typescript-language-server
+bash-language-server
+pnpm

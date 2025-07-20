@@ -1,87 +1,68 @@
-# Dotfiles
+# Dotfiles and installer
 
-Bash-based dotfiles management system for Arch Linux (including WSL).
+## Prerequisites
 
-## Directory Structure
+Before using this installer on a new machine:
 
-```
-dotfiles/
-├── README.md
-├── install.sh              # Main orchestrator script
-├── scripts/
-│   ├── bootstrap.sh        # Initial setup (yay, basic tools)
-│   ├── packages.sh         # Install dev packages & LSPs
-│   ├── dotfiles.sh         # Symlink dotfiles
-│   ├── update.sh           # Update everything
-│   ├── clean.sh            # Clean caches & orphans
-│   ├── nuke.sh             # Nuclear option - remove everything
-│   └── utils.sh            # Helper functions
-├── bin/                    # Custom scripts that get symlinked to ~/.local/bin
-├── config/                 # Actual dotfiles get symlinked to ~/.config or ~
-└── backup/                 # Store original configs before symlinking
-```
+1. **Install essential packages**:
+   ```bash
+   sudo pacman -S git openssh base-devel
+   ```
 
-## Usage
+2. **Set up SSH keys**:
+   ```bash
+   # Generate SSH key
+   ssh-keygen -t ed25519 -C "email@email.com"
 
-To use this dotfiles manager:
+   # Start the ssh-agent and add key
+   eval "$(ssh-agent -s)"
+   ssh-add ~/.ssh/id_ed25519
 
+   # Copy public key to add to GitHub/GitLab
+   cat ~/.ssh/id_ed25519.pub
+   ```
+
+3. **Add SSH key to GitHub/GitLab** through their web interface
+
+4. **Clone this repository**
+
+## Installation
+
+Run the installer:
 ```bash
-# Make the install script executable
-chmod +x install.sh
-
-# Run in interactive mode
 ./install.sh
-
-# Or run specific modes
-./install.sh full       # Full installation
-./install.sh dotfiles   # Only symlink dotfiles
-./install.sh update     # Update everything
-./install.sh clean      # Clean caches & orphans
-./install.sh nuke       # Remove everything (nuclear option)
 ```
 
-## Setup
+This will:
+- Install system packages defined in `packages.txt`
+- Set up NVM and Node.js
+- Install global npm packages from `packages-npm.txt`
+- Configure ZSH with plugins and theme
+- Symlink configuration files to appropriate locations
 
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/yourusername/dotfiles.git
-   cd dotfiles
-   ```
+## Adding New Packages
 
-2. Import your existing configurations (optional):
-   ```bash
-   ./scripts/import-configs.sh
-   ```
+### System Packages
+To add new system packages:
+```bash
+echo "package-name" >> packages.txt
+./install.sh
+```
 
-3. Run the install script:
-   ```bash
-   ./install.sh
-   ```
+### NPM Packages
+To add new global NPM packages:
+```bash
+echo "package-name" >> packages-npm.txt
+./install.sh
+```
 
-4. Select the desired operation from the interactive menu or pass a command-line argument.
+## Configuration Files
 
-## Customization
+- Config files are organized in `./config/{app-name}/`
+- All files are symlinked to `~/.config/{app-name}/`
+- ZSH configuration is redirected from `~/.zshenv` to `~/.config/zsh/`
 
-Edit the configuration files in the `config/` directory to customize your environment.
+## Maintenance
 
-## Custom Scripts
+After making changes to any configuration re-run `./install.sh` and push a commit.
 
-Place your custom shell scripts in the `bin/` directory. They will automatically be:
-
-1. Symlinked to `~/.local/bin/` when you run `./scripts/dotfiles.sh` or `./install.sh dotfiles`
-2. Made executable
-3. Available in your PATH
-
-## What Gets Symlinked
-
-| Source                  | Destination               | Description                  |
-|-------------------------|--------------------------|-----------------------------|
-| `config/shell/.profile` | `~/.profile`             | Shell login configuration   |
-| `config/zsh/.zshrc`     | `~/.zshrc`               | ZSH configuration           |
-| `config/zsh/.p10k.zsh`  | `~/.p10k.zsh`            | Powerlevel10k theme config  |
-| `config/tmux/.tmux.conf`| `~/.tmux.conf`           | Tmux configuration          |
-| `config/nvim/`          | `~/.config/nvim/`        | Neovim configuration        |
-| `bin/*`                 | `~/.local/bin/*`         | Custom executable scripts   |
-## License
-
-MIT

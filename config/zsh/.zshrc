@@ -40,8 +40,10 @@ setopt share_history         # Share history between sessions
 # COMPLETION
 # --------------------------------------------------------------------------
 zstyle :compinstall ~/.zshrc
+# Set zcompdump location outside of the dotfiles repo
+export ZSH_COMPDUMP="$HOME/.cache/.zcompdump-$ZSH_VERSION"
 autoload -Uz compinit
-compinit
+compinit -d $ZSH_COMPDUMP
 
 # Completion options
 zstyle ':completion:*' menu select                  # Menu-like completion selection
@@ -136,8 +138,8 @@ export NVM_DIR="$HOME/.config/nvm"
 # PLUGINS
 # --------------------------------------------------------------------------
 
-# Set plugin directory to look in .config/zsh/plugins
-PLUGIN_DIR="$HOME/.config/zsh/plugins"
+# Set plugin directory to look in .local/share/zsh/plugins
+PLUGIN_DIR="$HOME/.local/share/zsh/plugins"
 
 # Source plugins if they exist
 [ -f "$PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh" ] && \
@@ -153,7 +155,7 @@ PLUGIN_DIR="$HOME/.config/zsh/plugins"
 # Powerlevel10k
 # --------------------------------------------------------------------------
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh
-[ -f ~/.p10k.zsh ] && source ~/.p10k.zsh
+[ -f "$HOME/.config/zsh/.p10k.zsh" ] && source "$HOME/.config/zsh/.p10k.zsh"
 
 # --------------------------------------------------------------------------
 # Local configuration
@@ -161,3 +163,4 @@ PLUGIN_DIR="$HOME/.config/zsh/plugins"
 # Load a local zshrc if it exists for machine-specific settings
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
