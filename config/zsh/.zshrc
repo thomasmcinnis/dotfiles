@@ -1,9 +1,3 @@
-# Enable Powerlevel11k instant prompt
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-
 # --------------------------------------------------------------------------
 # Path Configuration
 # --------------------------------------------------------------------------
@@ -83,8 +77,8 @@ alias ta="tmux attach"
 alias sd="cd ~ && cd \$(find * -type d | fzf)"
 
 # Quick edit
-alias zshrc="$EDITOR ~/.zshrc"
-alias reload="source ~/.zshrc"
+alias zshrc="$EDITOR ~/.config/zsh/.zshrc"
+alias reload="source ~/.config/zsh/.zshrc"
 
 # --------------------------------------------------------------------------
 # OPTIONS
@@ -100,9 +94,8 @@ setopt interactive_comments # Allow comments in interactive mode
 # --------------------------------------------------------------------------
 # KEY BINDINGS
 # --------------------------------------------------------------------------
-# Emacs keybindings
-bindkey -e
-bindkey -s ^f "tmux-sessionizer\n"
+bindkey -v # Use vi keybindings
+bindkey -s '\C-f' "tmux-sessionizer\n"
 
 # Useful keybindings
 bindkey '^[[H' beginning-of-line                    # Home key
@@ -133,6 +126,7 @@ fi
 # --------------------------------------------------------------------------
 export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # --------------------------------------------------------------------------
 # PLUGINS
@@ -142,25 +136,15 @@ export NVM_DIR="$HOME/.config/nvm"
 PLUGIN_DIR="$HOME/.local/share/zsh/plugins"
 
 # Source plugins if they exist
-[ -f "$PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh" ] && \
-  source "$PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh"
+for plugin_file in $(find "$PLUGIN_DIR" -type f \( -name '*.plugin.zsh' -o -name '*.zsh-theme' \)); do
+    source "$plugin_file"
+done
 
-[ -f "$PLUGIN_DIR/powerlevel10k/powerlevel10k.zsh-theme" ] && \
-  source "$PLUGIN_DIR/powerlevel10k/powerlevel10k.zsh-theme"
-
-[ -f "$PLUGIN_DIR/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh" ] && \
-  source "$PLUGIN_DIR/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
-
-# --------------------------------------------------------------------------
-# Powerlevel10k
-# --------------------------------------------------------------------------
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh
+# Source the p10k theme
+# To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh
 [ -f "$HOME/.config/zsh/.p10k.zsh" ] && source "$HOME/.config/zsh/.p10k.zsh"
 
-# --------------------------------------------------------------------------
-# Local configuration
-# --------------------------------------------------------------------------
-# Load a local zshrc if it exists for machine-specific settings
-[ -f ~/.zshrc.local ] && source ~/.zshrc.local
-
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# Enable instant prompt
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
