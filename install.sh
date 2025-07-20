@@ -130,7 +130,6 @@ done
 
 cat > "$HOME/.zshenv" << 'EOF'
 export ZDOTDIR="$HOME/.config/zsh"
-source "$ZDOTDIR/.zshrc"
 EOF
 print_success "ZSH environment setup complete"
 
