@@ -34,75 +34,47 @@ symlink() {
 }
 
 # --------------------------------------------------------------------------
-# Package Manager Setup
+# System Packages
 # --------------------------------------------------------------------------
 if ! command_exists yay; then
-  print_info "Installing yay (AUR helper)"
+  print_info "Installing yay"
   cd /tmp
   git clone https://aur.archlinux.org/yay.git
   cd yay
   makepkg -si --noconfirm
 fi
 
-# Update yay database
-print_info "Updating yay database"
-yay -Syu --noconfirm
-
-# --------------------------------------------------------------------------
-# System Packages
-# --------------------------------------------------------------------------
 print_info "Installing system packages"
-for package in $(cat packages.txt); do
-  if ! pacman -Q "$package" &>/dev/null && ! yay -Q "$package" &>/dev/null; then
-    print_info "Installing system package: $package"
-    yay -S --needed --noconfirm "$package"
-  else
-    print_info "$package is already installed"
-  fi
-done
+yay -Syu --noconfirm # Update yay
+yay -S --needed --noconfirm $(cat packages.txt)
+print_success "System packages ready"
 
 # --------------------------------------------------------------------------
 # Node.js Setup
 # --------------------------------------------------------------------------
+# Check if NVM is installed, if not, install it
 print_info "Setting up NVM and Node.js"
 export NVM_DIR="$HOME/.config/nvm"
-
 if [[ ! -d "$NVM_DIR" ]]; then
-  print_info "Installing NVM"
   mkdir -p "$NVM_DIR"
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-else
-  print_info "NVM is already installed at $NVM_DIR"
 fi
 
-# Load NVM
+# Load NVM and install Node
 set +u
-export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
-# Install Node LTS if not already installed
-if ! command -v node &>/dev/null || ! node -v | grep -q "v[0-9]"; then
-  print_info "Installing Node.js LTS version"
-  nvm install --lts
-  nvm use --lts
-else
-  print_info "Node.js is already installed: $(node -v)"
+if  ! command -v node &>/dev/null; then
+  nvm install --lts && nvm use --lts
 fi
 set -u
+print_success "NVM and Node.js ready"
 
 # --------------------------------------------------------------------------
 # NPM Global Packages
 # --------------------------------------------------------------------------
 print_info "Installing global npm packages"
-for package in $(cat packages-npm.txt); do
-  # Check if package is already installed globally
-  if ! npm list -g "$package" --silent &>/dev/null; then
-    print_info "Installing npm package: $package"
-    npm install -g "$package" --silent
-  else
-    print_info "Package $package is already installed"
-  fi
-done
+npm install -g $(cat packages-npm.txt) --silent
+print_success "Global npm packages ready"
 
 # --------------------------------------------------------------------------
 # Shell Configuration
@@ -125,7 +97,6 @@ print_info "Made all scripts in bin/ executable"
 for script_file in ./bin/*; do
   script_name=$(basename "$script_file")
   symlink "$REPO_ROOT/$script_file" "$HOME/.local/bin/$script_name"
-  print_info "Symlinked $script_name to ~/.local/bin/"
 done
 
 # --------------------------------------------------------------------------
@@ -138,9 +109,9 @@ for dir in ./config/*; do
 done
 
 # --------------------------------------------------------------------------
-# ZSH Plugins
+# ZSH
 # --------------------------------------------------------------------------
-print_info "Setting up ZSH plugins"
+print_info "Setting up ZSH"
 PLUGIN_DIR="$HOME/.local/share/zsh/plugins"
 mkdir -p "$PLUGIN_DIR"
 declare -A plugins=(
@@ -157,11 +128,10 @@ for name in "${!plugins[@]}"; do
   fi
 done
 
-# --------------------------------------------------------------------------
-# ZSH Environment Setup
-# --------------------------------------------------------------------------
-print_info "Setting up ZSH to use XDG config paths"
 cat > "$HOME/.zshenv" << 'EOF'
 export ZDOTDIR="$HOME/.config/zsh"
 source "$ZDOTDIR/.zshrc"
 EOF
+print_success "ZSH environment setup complete"
+
+print_success "Installation complete!"
