@@ -1,5 +1,8 @@
 typescript
+prettier
 eslint
-typescript-language-server
-bash-language-server
+npm
 pnpm
+neovim
+@vue/language-server
+@vue/typescript-plugin
