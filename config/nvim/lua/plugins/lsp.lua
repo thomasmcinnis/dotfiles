@@ -1,17 +1,17 @@
--- local lsp_capabilities = require('blink.cmp').get_lsp_capabilities()
--- local customizations = {
--- 	{ rule = 'style/*',   severity = 'off', fixable = true },
--- 	{ rule = 'format/*',  severity = 'off', fixable = true },
--- 	{ rule = '*-indent',  severity = 'off', fixable = true },
--- 	{ rule = '*-spacing', severity = 'off', fixable = true },
--- 	{ rule = '*-spaces',  severity = 'off', fixable = true },
--- 	{ rule = '*-order',   severity = 'off', fixable = true },
--- 	{ rule = '*-dangle',  severity = 'off', fixable = true },
--- 	{ rule = '*-newline', severity = 'off', fixable = true },
--- 	{ rule = '*quotes',   severity = 'off', fixable = true },
--- 	{ rule = '*semi',     severity = 'off', fixable = true },
--- }
---
+local lsp_capabilities = require('blink.cmp').get_lsp_capabilities()
+local customizations = {
+	{ rule = 'style/*',   severity = 'off', fixable = true },
+	{ rule = 'format/*',  severity = 'off', fixable = true },
+	{ rule = '*-indent',  severity = 'off', fixable = true },
+	{ rule = '*-spacing', severity = 'off', fixable = true },
+	{ rule = '*-spaces',  severity = 'off', fixable = true },
+	{ rule = '*-order',   severity = 'off', fixable = true },
+	{ rule = '*-dangle',  severity = 'off', fixable = true },
+	{ rule = '*-newline', severity = 'off', fixable = true },
+	{ rule = '*quotes',   severity = 'off', fixable = true },
+	{ rule = '*semi',     severity = 'off', fixable = true },
+}
+
 return {
 	{
 		"folke/lazydev.nvim",
@@ -23,23 +23,6 @@ return {
 		},
 	},
 	{ "Bilal2453/luvit-meta", lazy = true },
-	-- { "mason-org/mason-lspconfig.nvim",
-	-- 	dependencies = { "mason-org/mason.nvim", opts = {}},
-	-- 	opts = {
-	-- 		ensure_installed = {
-	-- 			"html",
-	-- 			"cssls",
-	-- 			"tailwindcss",
-	-- 			"marksman",
-	-- 			"eslint",
-	-- 			"vue_ls",
-	-- 			"lua_ls",
-	-- 			-- "racket_langserver",
-	-- 		},
-	-- 		automatic_installation = true,
-	-- 		automatic_enable = true,
-	-- 	},
-	-- },
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -154,32 +137,6 @@ return {
 			-- 		return vim.fn.getcwd() -- You can modify this to specify the root directory more accurately
 			-- 	end,
 			-- }
-		end,
-	},
-	{
-		"pmizio/typescript-tools.nvim",
-		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-		ft = { "typescript", "typescriptreact", "javascript", "vue" },
-		opts = {
-			cmd = { "typescript-language-server", "--stdio" },
-		},
-		config = function()
-			---@type lsp.ClientCapabilities
-			local ts_capabilities = vim.deepcopy(lsp_capabilities)
-			---@diagnostic disable-next-line: inject-field
-			ts_capabilities.documentFormattingProvider = false
-			---@diagnostic disable-next-line: inject-field
-			ts_capabilities.documentRangeFormattingProvider = false
-
-			require("typescript-tools").setup({
-				filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "vue" },
-				settings = {
-					tsserver_plugins = {
-						"@vue/typescript-plugin",
-					},
-				},
-				capabilities = ts_capabilities,
-			})
 		end,
 	},
 }
