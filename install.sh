@@ -73,7 +73,7 @@ print_success "NVM and Node.js ready"
 # NPM Global Packages
 # --------------------------------------------------------------------------
 print_info "Installing global npm packages"
-npm install -g $(cat packages-npm.txt) --silent
+npm install -g $(cat packages-npm.txt) --no-fund
 print_success "Global npm packages ready"
 
 # --------------------------------------------------------------------------
