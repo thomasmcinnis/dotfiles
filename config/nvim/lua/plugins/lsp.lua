@@ -87,7 +87,6 @@ return {
 						})
 					end
 				},
-				vue_ls = {},
 				lua_ls = {
 					settings = {
 						Lua = {

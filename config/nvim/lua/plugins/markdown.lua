@@ -3,6 +3,9 @@ return {
 		'MeanderingProgrammer/render-markdown.nvim',
 		dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' },
 		enabled = true,
+		ft = { 'markdown', 'codecompanion' },
+		---@module 'render-markdown'
+		---@type render.md.UserConfig
 		opts = {
 			completions = { blink = { enabled = true } },
 			preset = "obsidian",
@@ -22,9 +25,9 @@ return {
 				position = 'inline'
 			},
 			sign = { enabled = false },
-			links = { enabled = false },
+			link = { enabled = false },
 			bullet = { enabled = false },
-			checkboxes = { enabled = false },
+			checkbox = { enabled = false },
 
 		}
 	},

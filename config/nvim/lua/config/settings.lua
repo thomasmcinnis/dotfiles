@@ -35,10 +35,11 @@ vim.g.netrw_banner = 0
 
 -- diagnostic ui
 vim.diagnostic.config({
-    -- virtual_text = { current_line = true },
-    virtual_lines = { current_line = false }
+  virtual_text = false,
+  underline = false,
+  update_in_insert = false,
+  severity_sort = true,
 })
-
 
 -- [[ Clipboard configuration ]]
 -- WSL specific
@@ -339,7 +340,6 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 
 vim.g["conjure#mapping#doc_word"] = false
 
--- set tab to 3 space when entering a buffer with .lua file
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = { "*.vue" },
     callback = function()
