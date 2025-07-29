@@ -1,3 +1,5 @@
+# Amazon Q pre block. Keep at the top of this file.
+[[ -f "${HOME}/.local/share/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/.local/share/amazon-q/shell/zshrc.pre.zsh"
 # --------------------------------------------------------------------------
 # Path Configuration
 # --------------------------------------------------------------------------
@@ -80,6 +82,9 @@ alias sd="cd ~ && cd \$(find * -type d | fzf)"
 alias zshrc="$EDITOR ~/.config/zsh/.zshrc"
 alias reload="source ~/.config/zsh/.zshrc"
 
+# Amazon Q with trusted read-only tools
+alias qc='q chat --trust-tools="atlassian___getAccessibleAtlassianResources,atlassian___getConfluencePage,atlassian___getConfluenceSpaces,atlassian___getPagesInConfluenceSpace,atlassian___getConfluencePageAncestors,atlassian___getConfluencePageDescendants,atlassian___getConfluencePageFooterComments,atlassian___getConfluencePageInlineComments,atlassian___getJiraIssue,atlassian___getJiraIssueRemoteIssueLinks,atlassian___getJiraProjectIssueTypesMetadata,atlassian___getTransitionsForJiraIssue,atlassian___getVisibleJiraProjects,atlassian___lookupJiraAccountId,atlassian___atlassianUserInfo,atlassian___searchConfluenceUsingCql,atlassian___searchJiraIssuesUsingJql,context_7___resolvelibraryid,context_7___getlibrarydocs,fs_read"'
+
 # --------------------------------------------------------------------------
 # OPTIONS
 # --------------------------------------------------------------------------
@@ -148,3 +153,6 @@ done
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
+
+# Amazon Q post block. Keep at the bottom of this file.
+[[ -f "${HOME}/.local/share/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/.local/share/amazon-q/shell/zshrc.post.zsh"
