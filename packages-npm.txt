@@ -1,0 +1,8 @@
+typescript
+prettier
+eslint
+npm
+pnpm
+neovim
+@vue/language-server
+@vue/typescript-plugin

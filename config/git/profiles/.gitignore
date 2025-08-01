@@ -1,0 +1,4 @@
+# Ignore actual profile files with credentials
+.gitconfig.work
+.gitconfig.personal
+.gitconfig.current
