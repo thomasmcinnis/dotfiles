@@ -45,29 +45,16 @@ if ! command_exists yay; then
 fi
 
 print_info "Installing system packages"
-yay -Syu --noconfirm # Update yay
 yay -S --needed --noconfirm $(cat packages.txt)
 print_success "System packages ready"
 
 # --------------------------------------------------------------------------
-# Node.js Setup
+# Runtimes Setup with ASDF
 # --------------------------------------------------------------------------
-# Check if NVM is installed, if not, install it
-print_info "Setting up NVM and Node.js"
-export NVM_DIR="$HOME/.config/nvm"
-if [[ ! -d "$NVM_DIR" ]]; then
-  mkdir -p "$NVM_DIR"
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-fi
-
-# Load NVM and install Node
-set +u
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-if  ! command -v node &>/dev/null; then
-  nvm install --lts && nvm use --lts
-fi
-set -u
-print_success "NVM and Node.js ready"
+print_info "Setting up required tools"
+asdf plugin add nodejs
+asdf install nodejs lts && asdf set -u nodejs lts
+print_success "Node.js ready"
 
 # --------------------------------------------------------------------------
 # NPM Global Packages

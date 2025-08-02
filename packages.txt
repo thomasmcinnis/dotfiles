@@ -1,3 +1,4 @@
+asdf-vm
 base
 base-devel
 bat
@@ -12,7 +13,6 @@ less
 lua
 luarocks
 neovim
-nvm
 mkcert
 openssh
 racket
