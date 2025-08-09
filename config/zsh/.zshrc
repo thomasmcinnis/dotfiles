@@ -12,7 +12,8 @@ case "$(uname 2>/dev/null)" in
     ;;
   Linux*)
     # Linux paths
-    export PATH="$HOME/.local/bin:$HOME/bin:$HOME/.cargo/bin:/usr/local/bin:/usr/bin:/usr/sbin:/snap/bin:$PATH"
+    export PATH="$HOME/.local/bin:$HOME/bin:$HOME/.cargo/bin:/usr/local/bin:/usr/bin:/usr/sbin:/snap/bin:$HOME/.asdf/shims:$PATH"
+
     # WSL-specific paths
     if grep -q "microsoft" /proc/version &>/dev/null; then
       export PATH="$PATH:/mnt/c/Windows/System32:/mnt/c/Windows/System32/WindowsPowerShell/v1.0"
