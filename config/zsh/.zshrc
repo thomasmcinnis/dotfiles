@@ -84,7 +84,7 @@ alias zshrc="$EDITOR ~/.config/zsh/.zshrc"
 alias reload="source ~/.config/zsh/.zshrc"
 
 # Amazon Q with trusted read-only tools
-alias qc='q chat --trust-tools="atlassian___getAccessibleAtlassianResources,atlassian___getConfluencePage,atlassian___getConfluenceSpaces,atlassian___getPagesInConfluenceSpace,atlassian___getConfluencePageAncestors,atlassian___getConfluencePageDescendants,atlassian___getConfluencePageFooterComments,atlassian___getConfluencePageInlineComments,atlassian___getJiraIssue,atlassian___getJiraIssueRemoteIssueLinks,atlassian___getJiraProjectIssueTypesMetadata,atlassian___getTransitionsForJiraIssue,atlassian___getVisibleJiraProjects,atlassian___lookupJiraAccountId,atlassian___atlassianUserInfo,atlassian___searchConfluenceUsingCql,atlassian___searchJiraIssuesUsingJql,context_7___resolvelibraryid,context_7___getlibrarydocs,fs_read"'
+alias qc='q chat --trust-tools="@atlassian/getAccessibleAtlassianResources,@atlassian/getConfluencePage,@atlassian/getConfluenceSpaces,@atlassian/getPagesInConfluenceSpace,@atlassian/getConfluencePageAncestors,@atlassian/getConfluencePageDescendants,@atlassian/getConfluencePageFooterComments,@atlassian/getConfluencePageInlineComments,@atlassian/getJiraIssue,@atlassian/getJiraIssueRemoteIssueLinks,@atlassian/getJiraProjectIssueTypesMetadata,@atlassian/getTransitionsForJiraIssue,@atlassian/getVisibleJiraProjects,@atlassian/lookupJiraAccountId,@atlassian/atlassianUserInfo,@atlassian/searchConfluenceUsingCql,@atlassian/searchJiraIssuesUsingJql,@context_7/resolvelibraryid,@context_7/getlibrarydocs,fs_read"'
 
 # --------------------------------------------------------------------------
 # OPTIONS
