@@ -6,3 +6,4 @@ pnpm
 neovim
 @vue/language-server
 @vue/typescript-plugin
+@azure/static-web-apps-cli
