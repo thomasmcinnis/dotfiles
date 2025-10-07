@@ -1,7 +1,9 @@
+azure-cli
 asdf-vm
 base
 base-devel
 bat
+docker
 eza
 fd
 fzf
