@@ -34,6 +34,23 @@ return {
 			{ "nvim-treesitter/nvim-treesitter", }
 		},
 		opts = {
+			extensions = {
+				mcphub = {
+					callback = "mcphub.extensions.codecompanion",
+					opts = {
+						-- MCP Tools
+						make_tools = true,   -- Make individual tools (@server__tool) and server groups (@server) from MCP servers
+						show_server_tools_in_chat = true, -- Show individual tools in chat completion (when make_tools=true)
+						add_mcp_prefix_to_tool_names = false, -- Add mcp__ prefix (e.g `@mcp__github`, `@mcp__neovim__list_issues`)
+						show_result_in_chat = true, -- Show tool results directly in chat buffer
+						format_tool = nil,   -- function(tool_name:string, tool: CodeCompanion.Agent.Tool) : string Function to format tool names to show in the chat buffer
+						-- MCP Resources
+						make_vars = true,    -- Convert MCP resources to #variables for prompts
+						-- MCP Prompts
+						make_slash_commands = true, -- Add MCP prompts as /slash commands
+					}
+				}
+			},
 			strategies = {
 				chat = {
 					roles = {
@@ -88,8 +105,8 @@ return {
 				action_palette = {
 					width = 95,
 					height = 10,
-					prompt = "Prompt ",     -- Prompt used for interactive LLM calls
-					provider = "snacks",   -- Can be "default", "telescope", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
+					prompt = "Prompt ",   -- Prompt used for interactive LLM calls
+					provider = "snacks",  -- Can be "default", "telescope", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
 					opts = {
 						show_default_actions = true, -- Show the default actions in the action palette?
 						show_default_prompt_library = true, -- Show the default prompt library in the action palette?
@@ -107,5 +124,15 @@ return {
 			{ "<leader>au", "<cmd>CodeCompanion /tests<cr>",     desc = "CodeCompanion - Generate unit tests", mode = "v" },
 			{ "ga",         "<cmd>CodeCompanionChat Add<CR>",    desc = "Add selected text to a chat buffer",  mode = { "n", "v" } },
 		}
-	}
+	},
+	{
+		"ravitemer/mcphub.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+		build = "npm install -g mcp-hub@latest", -- Installs `mcp-hub` node binary globally
+		config = function()
+			require("mcphub").setup()
+		end
+	},
 }

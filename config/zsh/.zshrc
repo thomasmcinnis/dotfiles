@@ -1,5 +1,3 @@
-# Amazon Q pre block. Keep at the top of this file.
-[[ -f "${HOME}/.local/share/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/.local/share/amazon-q/shell/zshrc.pre.zsh"
 # --------------------------------------------------------------------------
 # Path Configuration
 # --------------------------------------------------------------------------
@@ -12,7 +10,7 @@ case "$(uname 2>/dev/null)" in
     ;;
   Linux*)
     # Linux paths
-    export PATH="$HOME/.local/bin:$HOME/bin:$HOME/.cargo/bin:/usr/local/bin:/usr/bin:/usr/sbin:/snap/bin:$HOME/.asdf/shims:$PATH"
+    export PATH="$HOME/.opencode/bin:$HOME/.local/bin:$HOME/bin:$HOME/.cargo/bin:/usr/local/bin:/usr/bin:/usr/sbin:/snap/bin:$HOME/.asdf/shims:$PATH"
 
     # WSL-specific paths
     if grep -q "microsoft" /proc/version &>/dev/null; then
@@ -83,8 +81,21 @@ alias sd="cd ~ && cd \$(find * -type d | fzf)"
 alias zshrc="$EDITOR ~/.config/zsh/.zshrc"
 alias reload="source ~/.config/zsh/.zshrc"
 
-# Amazon Q with trusted read-only tools
-alias qc='q chat --trust-tools="@atlassian/getAccessibleAtlassianResources,@atlassian/getConfluencePage,@atlassian/getConfluenceSpaces,@atlassian/getPagesInConfluenceSpace,@atlassian/getConfluencePageAncestors,@atlassian/getConfluencePageDescendants,@atlassian/getConfluencePageFooterComments,@atlassian/getConfluencePageInlineComments,@atlassian/getJiraIssue,@atlassian/getJiraIssueRemoteIssueLinks,@atlassian/getJiraProjectIssueTypesMetadata,@atlassian/getTransitionsForJiraIssue,@atlassian/getVisibleJiraProjects,@atlassian/lookupJiraAccountId,@atlassian/atlassianUserInfo,@atlassian/searchConfluenceUsingCql,@atlassian/searchJiraIssuesUsingJql,@context_7/resolvelibraryid,@context_7/getlibrarydocs,fs_read"'
+# MCP Server tool lists
+export Q_ATLASSIAN_TOOLS="@atlassian/getAccessibleAtlassianResources,@atlassian/getConfluencePage,@atlassian/getConfluenceSpaces,@atlassian/getPagesInConfluenceSpace,@atlassian/getConfluencePageAncestors,@atlassian/getConfluencePageDescendants,@atlassian/getConfluencePageFooterComments,@atlassian/getConfluencePageInlineComments,@atlassian/getJiraIssue,@atlassian/getJiraIssueRemoteIssueLinks,@atlassian/getJiraProjectIssueTypesMetadata,@atlassian/getTransitionsForJiraIssue,@atlassian/getVisibleJiraProjects,@atlassian/lookupJiraAccountId,@atlassian/atlassianUserInfo,@atlassian/searchConfluenceUsingCql,@atlassian/searchJiraIssuesUsingJql"
+
+export Q_CONTEXT7_TOOLS="@context_7/resolvelibraryid,@context_7/getlibrarydocs"
+
+export Q_NUXT_UI_TOOLS="@nuxt-ui/list_components,@nuxt-ui/get_component,@nuxt-ui/get_component_metadata,@nuxt-ui/list_examples,@nuxt-ui/get_example,@nuxt-ui/list_templates,@nuxt-ui/get_template,@nuxt-ui/list_documentation_pages,@nuxt-ui/get_documentation_page,@nuxt-ui/list_composables,@nuxt-ui/get_migration_guide,@nuxt-ui/list_getting_started_guides,@nuxt-ui/search_components_by_category"
+
+export Q_SYSTEM_TOOLS="fs_read"
+
+# Amazon Q with all trusted tools
+alias qc='q chat --trust-tools="$Q_ATLASSIAN_TOOLS,$Q_CONTEXT7_TOOLS,$Q_NUXT_UI_TOOLS,$Q_SYSTEM_TOOLS"'
+
+# Azure Resource Group for OpenCode
+export AZURE_RESOURCE_NAME="ai-prototyping-poc"
+
 
 # --------------------------------------------------------------------------
 # OPTIONS
@@ -155,5 +166,14 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Amazon Q post block. Keep at the bottom of this file.
-[[ -f "${HOME}/.local/share/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/.local/share/amazon-q/shell/zshrc.post.zsh"
+
+# WSL Browser integration for Azure CLI
+export BROWSER="/mnt/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"
+
+# pnpm
+export PNPM_HOME="/home/thomasmcinnis/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
