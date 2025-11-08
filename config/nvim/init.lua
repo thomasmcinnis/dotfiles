@@ -5,6 +5,9 @@ require 'config.keymaps'
 -- The lspconfig plugin adds default LSP configs for any LSP installed with Mason
 -- For any which are not in the Mason registry they have to be manually installed and enabled
 vim.lsp.enable("racket_langserver") -- installed with rako
+vim.lsp.config("racket_langserver", {
+  filetypes = { "racket" },
+})
 
 -- Special handling for vue_ls which needs the plugin mounted in vtsls or ts_ls
 local vue_language_server_path = vim.fn.stdpath('data') .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"

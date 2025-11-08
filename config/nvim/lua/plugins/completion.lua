@@ -26,7 +26,7 @@ return {
 		},
 		sources = {
 			default = function()
-				local sources = { 'snippets', 'lsp', 'path' }
+				local sources = { 'omni', 'snippets', 'lsp', 'path' }
 				if vim.bo.filetype ~= "markdown" then
 					table.insert(sources, "buffer")
 				end
