@@ -30,4 +30,6 @@ vim.lsp.config('vtsls', {
 	filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
 })
 
+vim.cmd.colorscheme("latch-909")
+
 -- vim: ts=2 sts=2 sw=2 et
