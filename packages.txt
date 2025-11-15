@@ -19,6 +19,7 @@ mkcert
 openssh
 racket
 ripgrep
+roswell
 sudo
 tmux
 tree
