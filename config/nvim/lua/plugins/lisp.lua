@@ -12,4 +12,10 @@ return {
 			vim.g['conjure#client#guile#socket#enable_completions'] = true
 		end,
 	},
+	{
+		"kovisoft/slimv",
+		enabled = true,
+		ft = { "lisp" },
+		lazy = true,
+	},
 }
