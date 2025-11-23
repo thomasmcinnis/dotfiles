@@ -57,13 +57,19 @@ local colors = {
 ---
 
 hi("LineNr", { ctermfg = colors.br_black })
-hi("StatusLine", { cterm = "underline" })
-hi("StatusLineNC", { cterm = "underline" })
+hi("StatusLine", { ctermfg = colors.black, ctermbg = colors.br_white,  cterm = "none" })
+hi("StatusLineNC", { ctermfg = colors.br_black, ctermbg = colors.br_white, cterm = "none" })
+hi("VertSplit", { ctermfg = colors.br_black })
 hi("SpellBad", { ctermfg = colors.red, cterm = "underline" })
 hi("SpellCap", { ctermfg = colors.blue, cterm = "underline" })
 hi("SpellLocal", { ctermfg = colors.cyan, cterm = "underline" })
 hi("SpellRare", { ctermfg = colors.magenta, cterm = "underline" })
 
+-- Diff highlighting
+hi("DiffAdd", { ctermfg = colors.green, cterm = "bold" })
+hi("DiffChange", { ctermfg = colors.yellow })
+hi("DiffDelete", { ctermfg = colors.red, cterm = "bold" })
+hi("DiffText", { ctermfg = colors.br_yellow, cterm = "bold" })
 
 ---
 -- Syntax highlights

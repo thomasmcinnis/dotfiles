@@ -9,7 +9,6 @@ vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.o.termguicolors = false -- enable rgb colors - disabled to test terminal only color theme
 vim.o.cursorline = false    -- enable cursor line
 vim.o.number = true         -- enable line number
-vim.o.statuscolumn = "%s%l │ " -- make right border
 vim.o.relativenumber = false   -- no relative line number
 vim.o.signcolumn = "yes:1"  -- always show sign column
 vim.o.mouse = "a"           -- allow right click on things
@@ -36,7 +35,7 @@ vim.g.netrw_banner = 0
 
 -- diagnostic ui
 vim.diagnostic.config({
-  virtual_text = false,
+  virtual_text = true,
   underline = false,
   update_in_insert = false,
   severity_sort = true,

@@ -17,5 +17,16 @@ return {
 		enabled = true,
 		ft = { "lisp" },
 		lazy = true,
+		init = function()
+			vim.g["slimv_swank_cmd"] = "! tmux new-window -d -n REPL-SBCL \"ros run -e '(ql:quickload :swank) (swank:create-server :dont-close t)'\""
+			vim.g["slimv_lisp"] = 'ros run'
+			vim.g["slimv_impl"] = 'sbcl'
+			vim.g["slimv_keybindings"] = 2
+			vim.g["slimv_repl_split"] = 4
+			vim.g["slimv_repl_split_size"] = 80
+			vim.g["slimv_balloon"] = true
+
+-- ! tmux new-window -d -n REPL-SBCL "ros run --eval '(ql:quickload :swank) (swank:create-server :dont-close t)'"
+		end,
 	},
 }
