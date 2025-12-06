@@ -1,0 +1,14 @@
+# theme = light:light,dark:dark
+theme = dark
+
+# font-family = "JetBrains Mono NL Nerd Font Mono"
+font-family = "JetBrainsMonoNL NF Medium"
+font-size = 12
+font-feature = -calt
+adjust-cell-height = 30%
+adjust-cursor-height = 31%
+
+mouse-hide-while-typing = true
+
+macos-titlebar-proxy-icon = hidden
+

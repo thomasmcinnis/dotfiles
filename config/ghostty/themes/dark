@@ -1,0 +1,24 @@
+# Dark
+
+background = #1a1d21
+foreground = #dfdccf
+cursor-color = #dfdccf
+cursor-text = #1a1d21
+selection-background = #dfdccf
+selection-foreground = #1a1d21
+palette = 0=#1d1f21
+palette = 1=#907676
+palette = 2=#909283
+palette = 3=#aa9f91
+palette = 4=#89939b
+palette = 5=#9b959c
+palette = 6=#85918f
+palette = 7=#807e79
+palette = 8=#535250
+palette = 9=#c0a0a0
+palette = 10=#b8bba5
+palette = 11=#d2c5b5
+palette = 12=#bcc8d3
+palette = 13=#beb3c0
+palette = 14=#bbcbca
+palette = 15=#dfdccf

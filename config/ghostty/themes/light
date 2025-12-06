@@ -1,0 +1,22 @@
+# Light
+
+background = #f0efeb
+foreground = #282c33
+cursor-color = #4a4d51
+cursor-text = #f0efeb
+palette = 0=#f0efeb
+palette = 1=#8b6666
+palette = 2=#5a6b5a
+palette = 3=#8b7e52
+palette = 4=#406483
+palette = 5=#8d425a
+palette = 6=#647d7d
+palette = 7=#74716c
+palette = 8=#c5c1bb
+palette = 9=#794b4b
+palette = 10=#4a664a
+palette = 11=#82723f
+palette = 12=#295275
+palette = 13=#7f2d47
+palette = 14=#446d6d
+palette = 15=#282c33
