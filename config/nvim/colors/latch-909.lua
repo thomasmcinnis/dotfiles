@@ -18,7 +18,7 @@ local function hi(group, opts)
 		cmd = cmd .. " ctermfg=" .. opts.ctermfg
 	end
 	-- Add terminal background color if specified
-	if opts. ctermbg then
+	if opts.ctermbg then
 		cmd = cmd .. " ctermbg=" .. opts.ctermbg
 	end
 	-- Add terminal attributes (bold, italic, etc.) if specified
@@ -35,341 +35,313 @@ end
 
 local colors = {
 	bg = 0,			-- ansi 0 - black
-	bg_soft = 8,	-- ansi 8 - bright black
-	fg_soft = 7,     -- ansi 7 - white
+	bg_muted = 8,	-- ansi 8 - bright black
 	fg = 15,		-- ansi 15 - bright white
-	red = 1,        -- ansi 1 - red
-	red_strong = 9,     -- ansi 9 - bright red
-	green = 2,      -- ansi 2 - green
-	green_strong = 10,  -- ansi 10 - bright green
-	yellow = 3,     -- ansi 3 - yellow
-	yellow_strong = 11, -- ansi 11 - bright yellow
-	blue = 4,       -- ansi 4 - blue (keywords, info)
-	blue_strong = 12,   -- ansi 12 - bright blue
-	magenta = 5,    -- ansi 5 - magenta
-	magenta_strong = 13, -- ansi 13 - bright magenta
+	fg_muted = 7,	-- ansi 7 - white
+	red = 1,		-- ansi 1 - red
+	red_br = 9,		-- ansi 9 - bright red
+	green = 2,		-- ansi 2 - green
+	green_br = 10,  -- ansi 10 - bright green
+	yellow = 3,		-- ansi 3 - yellow
+	yellow_br = 11, -- ansi 11 - bright yellow
+	blue = 4,		-- ansi 4 - blue (keywords, info)
+	blue_br = 12,   -- ansi 12 - bright blue
+	magenta = 5,	-- ansi 5 - magenta
+	magenta_br = 13,-- ansi 13 - bright magenta
 	cyan = 6,       -- ansi 6 - cyan
-	cyan_strong = 14,   -- ansi 14 - bright cyan
+	cyan_br = 14,   -- ansi 14 - bright cyan
 }
 
 ---
--- Simplified semantic syntax map
--- Grouped by visual treatment with base and special variants
+-- Semantic syntax map
 ---
 
-local syntax_map = {
+local syntax = {
 	-- Comments (muted/gray)
-	comment = { ctermfg = colors.fg_soft },
-	comment_special = { ctermfg = colors.fg_soft, cterm = "italic" },
-
-	-- Keywords & Control Flow (bright blue)
-	keyword = { ctermfg = colors.blue_strong },
+	comment = { ctermfg = colors.fg_muted },
+	comment_special = { ctermfg = colors.fg_muted, cterm = "italic" },
+	-- Keywords & Control Flow (blue)
+	keyword = { ctermfg = colors.blue_br },
 	keyword_special = { ctermfg = colors.blue, cterm = "bold" },
-
-	-- Functions & Methods (bright yellow)
-	function_name = { ctermfg = colors.yellow_strong },
-	function_special = { ctermfg = colors.yellow_strong, cterm = "bold" },
-
-	-- Types & Classes (warm yellow)
+	-- Functions & Methods (yellow)
+	function_name = { ctermfg = colors.yellow_br },
+	function_special = { ctermfg = colors.yellow_br, cterm = "bold" },
+	-- Types & Classes (yellow)
 	type_name = { ctermfg = colors.yellow },
-	type_special = { ctermfg = colors.yellow_strong },
-
-	-- Constants (magenta/purple)
-	constant = { ctermfg = colors.magenta_strong },
-	constant_special = { ctermfg = colors.magenta_strong, cterm = "bold" },
-
-	-- Variables (neutral white/gray)
+	type_special = { ctermfg = colors.yellow_br },
+	-- Constants (magenta)
+	constant = { ctermfg = colors.magenta_br },
+	constant_special = { ctermfg = colors.magenta_br, cterm = "bold" },
+	-- Variables (neutral)
 	variable = { ctermfg = colors.fg },
-	variable_special = { ctermfg = colors.yellow_strong },
-
+	variable_special = { ctermfg = colors.yellow_br },
 	-- Strings & Characters (green)
-	string = { ctermfg = colors.green_strong },
-	string_special = { ctermfg = colors.green_strong, cterm = "bold" },
-
-	-- Numbers (bright red)
-	number = { ctermfg = colors.red_strong },
-	number_special = { ctermfg = colors.red_strong, cterm = "bold" },
-
+	string = { ctermfg = colors.green_br },
+	string_special = { ctermfg = colors.green_br, cterm = "bold" },
+	-- Numbers (red)
+	number = { ctermfg = colors.red_br },
+	number_special = { ctermfg = colors.red_br, cterm = "bold" },
 	-- Operators & Punctuation (neutral)
 	operator = { ctermfg = colors.fg },
 	punctuation = { ctermfg = colors.fg },
-	punctuation_special = { ctermfg = colors.green_strong },
-
+	punctuation_special = { ctermfg = colors.green_br },
 	-- Properties & Fields (cyan)
 	property = { ctermfg = colors.cyan },
-	property_special = { ctermfg = colors.cyan_strong },
-
+	property_special = { ctermfg = colors.cyan_br },
 	-- Preprocessor & Includes (magenta)
-	preprocessor = { ctermfg = colors.magenta_strong },
-	include = { ctermfg = colors.magenta_strong },
-
+	preprocessor = { ctermfg = colors.magenta_br },
+	include = { ctermfg = colors.magenta_br },
 	-- Attributes & Annotations (blue)
-	attribute = { ctermfg = colors.blue_strong },
+	attribute = { ctermfg = colors.blue_br },
 	attribute_special = { ctermfg = colors.blue, cterm = "italic" },
-
 	-- Text & Markup (neutral with modifiers)
-	text = { ctermfg = colors.fg_soft },
-	text_bold = { ctermfg = colors.fg_soft, cterm = "bold" },
-	text_italic = { ctermfg = colors.fg_soft, cterm = "italic" },
-	text_underline = { ctermfg = colors.fg_soft, cterm = "underline" },
-	text_strike = { ctermfg = colors.fg_soft, cterm = "strikethrough" },
-	text_title = { ctermfg = colors.blue, cterm = "bold" },
+	text = { ctermfg = colors.fg },
+	text_bold = { ctermfg = colors.fg_muted, cterm = "bold" },
+	text_italic = { ctermfg = colors.fg_muted, cterm = "italic" },
+	text_underline = { ctermfg = colors.fg_muted, cterm = "underline" },
+	text_strike = { ctermfg = colors.fg_muted, cterm = "strikethrough" },
+	text_title = { ctermfg = colors.blue_br },
 	text_code = { ctermfg = colors.green },
-	text_uri = { ctermfg = colors.green_strong, cterm = "underline" },
-
+	text_uri = { ctermfg = colors.green_br, cterm = "underline" },
 	-- Tags (HTML/XML)
-	tag = { ctermfg = colors.blue_strong },
+	tag = { ctermfg = colors.blue_br },
 	tag_attribute = { ctermfg = colors.cyan },
 	tag_special = { ctermfg = colors.blue },
-
 	-- Special elements (errors, warnings, etc.)
-	error = { ctermfg = colors.red_strong },
-	warning = { ctermfg = colors.yellow_strong, cterm = "bold" },
-	info = { ctermfg = colors.blue_strong, cterm = "bold" },
-	debug = { ctermfg = colors.red_strong },
-
-	-- Diff highlighting
-	diff_add = { ctermfg = colors.green_strong, cterm = "bold" },
-	diff_change = { ctermfg = colors.yellow_strong },
-	diff_delete = { ctermfg = colors.red_strong, cterm = "bold" },
-
-	-- Spell checking
-	spell_bad = { ctermfg = colors.red, cterm = "underline" },
-	spell_cap = { ctermfg = colors.blue, cterm = "underline" },
-	spell_local = { ctermfg = colors.cyan, cterm = "underline" },
-	spell_rare = { ctermfg = colors.magenta, cterm = "underline" },
-
-	-- UI elements
-	line_nr = { ctermfg = colors.bg_soft },
-	status_line = { ctermfg = colors.bg, ctermbg = colors.fg_soft, cterm = "none" },
-	status_line_nc = { ctermfg = colors.bg_soft, ctermbg = colors.fg_soft, cterm = "none" },
-	vert_split = { ctermfg = colors.fg_soft },
+	error = { ctermfg = colors.red_br },
+	error_strong = { ctermfg = colors.red_br, cterm = "bold" },
+	warning = { ctermfg = colors.yellow_br },
+	warning_strong = { ctermfg = colors.yellow_br, cterm = "bold" },
+	info = { ctermfg = colors.blue_br },
+	info_strong = { ctermfg = colors.blue_br, cterm = "bold" },
+	success = { ctermfg = colors.green_br },
+	success_strong = { ctermfg = colors.green_br, cterm = "bold" },
 }
 
 ---
 -- Editor interface
 ---
 
-hi("LineNr", syntax_map.line_nr)
-hi("StatusLine", syntax_map.status_line)
-hi("StatusLineNC", syntax_map.status_line_nc)
-hi("VertSplit", syntax_map.vert_split)
-hi("SpellBad", syntax_map.spell_bad)
-hi("SpellCap", syntax_map.spell_cap)
-hi("SpellLocal", syntax_map.spell_local)
-hi("SpellRare", syntax_map.spell_rare)
+hi("LineNr", { ctermfg = colors.bg_muted })
+hi("StatusLine", { ctermfg = colors.bg, ctermbg = colors.fg_muted, cterm = "none" })
+hi("StatusLineNC", { ctermfg = colors.bg_muted, ctermbg = colors.fg_muted, cterm = "none" })
+hi("VertSplit", { ctermfg = colors.fg_muted })
+hi("SpellBad", { ctermfg = colors.red, cterm = "underline" })
+hi("SpellCap", { ctermfg = colors.blue, cterm = "underline" })
+hi("SpellLocal", { ctermfg = colors.cyan, cterm = "underline" })
+hi("SpellRare", { ctermfg = colors.magenta, cterm = "underline" })
 
 -- Diff highlighting
-hi("DiffAdd", syntax_map.diff_add)
-hi("DiffChange", syntax_map.diff_change)
-hi("DiffDelete", syntax_map.diff_delete)
-hi("DiffText", syntax_map.diff_change)
+hi("DiffAdd", syntax.success)
+hi("DiffChange", syntax.warning)
+hi("DiffDelete", syntax.error)
+hi("DiffText", syntax.info)
 
 ---
 -- Syntax highlights
 ---
 
-hi("Comment", syntax_map.comment)
-hi("String", syntax_map.string)
-hi("Character", syntax_map.string)
-hi("Number", syntax_map.number)
-hi("Float", syntax_map.number)
-hi("Boolean", syntax_map.constant)
-hi("Constant", syntax_map.constant)
-hi("Identifier", syntax_map.variable)
-hi("Function", syntax_map.function_name)
-hi("Statement", syntax_map.keyword)
-hi("Conditional", syntax_map.keyword_special)
-hi("Repeat", syntax_map.keyword_special)
-hi("Label", syntax_map.type_name)
-hi("Operator", syntax_map.operator)
-hi("Keyword", syntax_map.keyword)
-hi("Exception", syntax_map.error)
-hi("PreProc", syntax_map.preprocessor)
-hi("Include", syntax_map.include)
-hi("Define", syntax_map.preprocessor)
-hi("Macro", syntax_map.preprocessor)
-hi("PreCondit", syntax_map.preprocessor)
-hi("Type", syntax_map.type_special)
-hi("StorageClass", syntax_map.keyword)
-hi("Structure", syntax_map.type_special)
-hi("Typedef", syntax_map.type_name)
-hi("Special", syntax_map.constant)
-hi("SpecialChar", syntax_map.punctuation_special)
-hi("Tag", syntax_map.tag)
-hi("Delimiter", syntax_map.punctuation)
-hi("SpecialComment", syntax_map.comment_special)
-hi("Debug", syntax_map.debug)
-hi("Class", syntax_map.type_special)
-hi("Variable", syntax_map.variable)
-hi("Property", syntax_map.property_special)
-hi("Method", syntax_map.function_name)
+hi("Comment", syntax.comment)
+hi("String", syntax.string)
+hi("Character", syntax.string)
+hi("Number", syntax.number)
+hi("Float", syntax.number)
+hi("Boolean", syntax.constant)
+hi("Constant", syntax.constant)
+hi("Identifier", syntax.variable)
+hi("Function", syntax.function_name)
+hi("Statement", syntax.keyword)
+hi("Conditional", syntax.keyword_special)
+hi("Repeat", syntax.keyword_special)
+hi("Label", syntax.type_name)
+hi("Operator", syntax.operator)
+hi("Keyword", syntax.keyword)
+hi("Exception", syntax.error)
+hi("PreProc", syntax.preprocessor)
+hi("Include", syntax.include)
+hi("Define", syntax.preprocessor)
+hi("Macro", syntax.preprocessor)
+hi("PreCondit", syntax.preprocessor)
+hi("Type", syntax.type_special)
+hi("StorageClass", syntax.keyword)
+hi("Structure", syntax.type_special)
+hi("Typedef", syntax.type_name)
+hi("Special", syntax.constant)
+hi("SpecialChar", syntax.punctuation_special)
+hi("Tag", syntax.tag)
+hi("Delimiter", syntax.punctuation)
+hi("SpecialComment", syntax.comment_special)
+hi("Debug", syntax.warning)
+hi("Class", syntax.type_special)
+hi("Variable", syntax.variable)
+hi("Property", syntax.property_special)
+hi("Method", syntax.function_name)
 
 ---
 -- Treesitter
 ---
 
 -- Annotations and attributes
-hi("@annotation", syntax_map.attribute)
-hi("@attribute", syntax_map.attribute)
-hi("@decorator", syntax_map.attribute)
+hi("@annotation", syntax.attribute)
+hi("@attribute", syntax.attribute)
+hi("@decorator", syntax.attribute)
 
 -- Booleans, characters, and constants
-hi("@boolean", syntax_map.constant)
-hi("@character", syntax_map.string)
-hi("@character.special", syntax_map.string_special)
+hi("@boolean", syntax.constant)
+hi("@character", syntax.string)
+hi("@character.special", syntax.string_special)
 
 -- Comments
-hi("@comment", syntax_map.comment)
-hi("@comment.documentation", syntax_map.comment_special)
+hi("@comment", syntax.comment)
+hi("@comment.documentation", syntax.comment_special)
 
 -- Control flow
-hi("@conditional", syntax_map.keyword_special)
-hi("@repeat", syntax_map.keyword_special)
-hi("@exception", syntax_map.error)
-hi("@keyword", syntax_map.keyword)
-hi("@keyword.function", syntax_map.function_name)
-hi("@keyword.operator", syntax_map.keyword)
-hi("@keyword.return", syntax_map.keyword)
+hi("@conditional", syntax.keyword_special)
+hi("@repeat", syntax.keyword_special)
+hi("@exception", syntax.error)
+hi("@keyword", syntax.keyword)
+hi("@keyword.function", syntax.function_name)
+hi("@keyword.operator", syntax.keyword)
+hi("@keyword.return", syntax.keyword)
 
 -- Constants and variables
-hi("@constant", syntax_map.constant)
-hi("@constant.builtin", syntax_map.constant)
-hi("@constant.macro", syntax_map.constant_special)
-hi("@variable", syntax_map.variable)
-hi("@variable.builtin", syntax_map.variable_special)
-hi("@parameter", syntax_map.variable)
-hi("@parameter.reference", syntax_map.variable)
+hi("@constant", syntax.constant)
+hi("@constant.builtin", syntax.constant)
+hi("@constant.macro", syntax.constant_special)
+hi("@variable", syntax.variable)
+hi("@variable.builtin", syntax.variable_special)
+hi("@parameter", syntax.variable)
+hi("@parameter.reference", syntax.variable)
 
 -- Functions and methods
-hi("@function", syntax_map.function_name)
-hi("@function.builtin", syntax_map.function_special)
-hi("@function.call", syntax_map.function_name)
-hi("@function.macro", syntax_map.function_special)
-hi("@method", syntax_map.function_name)
-hi("@method.call", syntax_map.function_name)
-hi("@constructor", syntax_map.type_name)
+hi("@function", syntax.function_name)
+hi("@function.builtin", syntax.function_special)
+hi("@function.call", syntax.function_name)
+hi("@function.macro", syntax.function_special)
+hi("@method", syntax.function_name)
+hi("@method.call", syntax.function_name)
+hi("@constructor", syntax.type_name)
 
 -- Types and structures
-hi("@type", syntax_map.type_name)
-hi("@type.builtin", syntax_map.type_name)
-hi("@type.definition", syntax_map.type_name)
-hi("@type.qualifier", syntax_map.keyword)
-hi("@namespace", syntax_map.type_name)
-hi("@storageclass", syntax_map.keyword)
+hi("@type", syntax.type_name)
+hi("@type.builtin", syntax.type_name)
+hi("@type.definition", syntax.type_name)
+hi("@type.qualifier", syntax.keyword)
+hi("@namespace", syntax.type_name)
+hi("@storageclass", syntax.keyword)
 
 -- Properties and fields
-hi("@property", syntax_map.property)
-hi("@field", syntax_map.property)
+hi("@property", syntax.property)
+hi("@field", syntax.property)
 
 -- Strings and numbers
-hi("@string", syntax_map.string)
-hi("@string.escape", syntax_map.string_special)
-hi("@string.regex", syntax_map.string)
-hi("@string.special", syntax_map.string_special)
-hi("@number", syntax_map.number)
-hi("@float", syntax_map.number)
+hi("@string", syntax.string)
+hi("@string.escape", syntax.string_special)
+hi("@string.regex", syntax.string)
+hi("@string.special", syntax.string_special)
+hi("@number", syntax.number)
+hi("@float", syntax.number)
 
 -- Operators and punctuation
-hi("@operator", syntax_map.operator)
-hi("@punctuation.bracket", syntax_map.punctuation)
-hi("@punctuation.delimiter", syntax_map.punctuation)
-hi("@punctuation.special", syntax_map.punctuation_special)
+hi("@operator", syntax.operator)
+hi("@punctuation.bracket", syntax.punctuation)
+hi("@punctuation.delimiter", syntax.punctuation)
+hi("@punctuation.special", syntax.punctuation_special)
 
 -- Special elements
-hi("@symbol", syntax_map.constant)
-hi("@label", syntax_map.type_name)
-hi("@include", syntax_map.include)
-hi("@define", syntax_map.preprocessor)
-hi("@debug", syntax_map.debug)
-hi("@error", syntax_map.error)
+hi("@symbol", syntax.constant)
+hi("@label", syntax.type_name)
+hi("@include", syntax.include)
+hi("@define", syntax.preprocessor)
+hi("@debug", syntax.warning)
+hi("@error", syntax.error)
 
 -- Tags (HTML/XML)
-hi("@tag", syntax_map.tag)
-hi("@tag.attribute", syntax_map.tag_attribute)
-hi("@tag.delimiter", syntax_map.tag_special)
+hi("@tag", syntax.tag)
+hi("@tag.attribute", syntax.tag_attribute)
+hi("@tag.delimiter", syntax.tag_special)
 
 -- Text elements (Markdown, etc.)
-hi("@text", syntax_map.text)
-hi("@text.strong", syntax_map.text_bold)
-hi("@text.emphasis", syntax_map.text_italic)
-hi("@text.underline", syntax_map.text_underline)
-hi("@text.strike", syntax_map.text_strike)
-hi("@text.title", syntax_map.text_title)
-hi("@text.literal", syntax_map.text_code)
-hi("@text.uri", syntax_map.text_uri)
-hi("@text.math", syntax_map.constant)
-hi("@text.environment", syntax_map.keyword)
-hi("@text.environment.name", syntax_map.function_name)
-hi("@text.reference", syntax_map.constant)
-hi("@text.todo", syntax_map.warning)
-hi("@text.note", syntax_map.info)
-hi("@text.warning", syntax_map.warning)
-hi("@text.danger", syntax_map.error)
+hi("@text", syntax.text)
+hi("@text.strong", syntax.text_bold)
+hi("@text.emphasis", syntax.text_italic)
+hi("@text.underline", syntax.text_underline)
+hi("@text.strike", syntax.text_strike)
+hi("@text.title", syntax.text_title)
+hi("@text.literal", syntax.text_code)
+hi("@text.uri", syntax.text_uri)
+hi("@text.math", syntax.constant)
+hi("@text.environment", syntax.keyword)
+hi("@text.environment.name", syntax.function_name)
+hi("@text.reference", syntax.constant)
+hi("@text.todo", syntax.warning)
+hi("@text.note", syntax.info)
+hi("@text.warning", syntax.warning)
+hi("@text.danger", syntax.error)
 
 -- Language-specific highlights
-hi("@variable.builtin.vim", syntax_map.variable_special)
-hi("@function.builtin.vim", syntax_map.function_special)
+hi("@variable.builtin.vim", syntax.variable_special)
+hi("@function.builtin.vim", syntax.function_special)
 
 -- HTML
-hi("@tag.html", syntax_map.tag)
-hi("@tag.delimiter.html", syntax_map.tag_special)
-hi("@tag.attribute.html", syntax_map.tag_attribute)
+hi("@tag.html", syntax.tag)
+hi("@tag.delimiter.html", syntax.tag_special)
+hi("@tag.attribute.html", syntax.tag_attribute)
 
 -- CSS
-hi("@property.css", syntax_map.property_special)
-hi("@type.css", syntax_map.keyword)
-hi("@string.css", syntax_map.string)
-hi("@number.css", syntax_map.property_special)
+hi("@property.css", syntax.property_special)
+hi("@type.css", syntax.keyword)
+hi("@string.css", syntax.string)
+hi("@number.css", syntax.property_special)
 
 -- JavaScript/TypeScript
-hi("@constructor.javascript", syntax_map.function_special)
-hi("@constructor.typescript", syntax_map.function_special)
-hi("@variable.builtin.javascript", syntax_map.variable_special)
-hi("@variable.builtin.typescript", syntax_map.variable_special)
+hi("@constructor.javascript", syntax.function_special)
+hi("@constructor.typescript", syntax.function_special)
+hi("@variable.builtin.javascript", syntax.variable_special)
+hi("@variable.builtin.typescript", syntax.variable_special)
 
 ---
 -- LSP
 ---
 
 -- LSP semantic tokens
-hi("@lsp.type.class", syntax_map.type_special)
-hi("@lsp.type.comment", syntax_map.comment)
-hi("@lsp.type.decorator", syntax_map.attribute)
-hi("@lsp.type.enum", syntax_map.type_name)
-hi("@lsp.type.enumMember", syntax_map.constant)
-hi("@lsp.type.event", syntax_map.error)
-hi("@lsp.type.function", syntax_map.function_name)
-hi("@lsp.type.interface", syntax_map.type_name)
-hi("@lsp.type.keyword", syntax_map.keyword)
-hi("@lsp.type.macro", syntax_map.preprocessor)
-hi("@lsp.type.method", syntax_map.function_name)
-hi("@lsp.type.modifier", syntax_map.attribute)
-hi("@lsp.type.namespace", syntax_map.type_name)
-hi("@lsp.type.number", syntax_map.number)
-hi("@lsp.type.operator", syntax_map.operator)
-hi("@lsp.type.parameter", syntax_map.variable)
-hi("@lsp.type.property", syntax_map.property_special)
-hi("@lsp.type.regexp", syntax_map.string)
-hi("@lsp.type.string", syntax_map.string)
-hi("@lsp.type.struct", syntax_map.type_special)
-hi("@lsp.type.type", syntax_map.type_special)
-hi("@lsp.type.typeParameter", syntax_map.type_name)
-hi("@lsp.type.variable", syntax_map.variable)
+hi("@lsp.type.class", syntax.type_special)
+hi("@lsp.type.comment", syntax.comment)
+hi("@lsp.type.decorator", syntax.attribute)
+hi("@lsp.type.enum", syntax.type_name)
+hi("@lsp.type.enumMember", syntax.constant)
+hi("@lsp.type.event", syntax.error)
+hi("@lsp.type.function", syntax.function_name)
+hi("@lsp.type.interface", syntax.type_name)
+hi("@lsp.type.keyword", syntax.keyword)
+hi("@lsp.type.macro", syntax.preprocessor)
+hi("@lsp.type.method", syntax.function_name)
+hi("@lsp.type.modifier", syntax.attribute)
+hi("@lsp.type.namespace", syntax.type_name)
+hi("@lsp.type.number", syntax.number)
+hi("@lsp.type.operator", syntax.operator)
+hi("@lsp.type.parameter", syntax.variable)
+hi("@lsp.type.property", syntax.property_special)
+hi("@lsp.type.regexp", syntax.string)
+hi("@lsp.type.string", syntax.string)
+hi("@lsp.type.struct", syntax.type_special)
+hi("@lsp.type.type", syntax.type_special)
+hi("@lsp.type.typeParameter", syntax.type_name)
+hi("@lsp.type.variable", syntax.variable)
 
 -- Diagnostic highlights
-hi("DiagnosticError", { ctermfg = colors.red_strong })
-hi("DiagnosticWarn", { ctermfg = colors.yellow_strong })
-hi("DiagnosticInfo", { ctermfg = colors.blue_strong })
-hi("DiagnosticHint", { ctermfg = colors.cyan_strong })
-hi("DiagnosticOk", { ctermfg = colors.green })
+hi("DiagnosticError", syntax.error)
+hi("DiagnosticWarn", syntax.warning)
+hi("DiagnosticInfo", syntax.info)
+hi("DiagnosticHint", syntax.info)
+hi("DiagnosticOk", syntax.success)
 
 -- Diagnostic virtual text
-hi("DiagnosticVirtualTextError", { ctermfg = colors.red })
-hi("DiagnosticVirtualTextWarn", { ctermfg = colors.yellow })
-hi("DiagnosticVirtualTextInfo", { ctermfg = colors.blue })
-hi("DiagnosticVirtualTextHint", { ctermfg = colors.cyan })
-hi("DiagnosticVirtualTextOk", { ctermfg = colors.green })
+hi("DiagnosticVirtualTextError", syntax.error)
+hi("DiagnosticVirtualTextWarn", syntax.warning)
+hi("DiagnosticVirtualTextInfo", syntax.info)
+hi("DiagnosticVirtualTextHint", syntax.info)
+hi("DiagnosticVirtualTextOk", syntax.success)
 
 -- Diagnostic underlines
 hi("DiagnosticUnderlineError", { ctermfg = colors.red, cterm = "underline" })
@@ -379,28 +351,28 @@ hi("DiagnosticUnderlineHint", { ctermfg = colors.cyan, cterm = "underline" })
 hi("DiagnosticUnderlineOk", { ctermfg = colors.green, cterm = "underline" })
 
 -- Diagnostic signs
-hi("DiagnosticSignError", { ctermfg = colors.red })
-hi("DiagnosticSignWarn", { ctermfg = colors.yellow })
-hi("DiagnosticSignInfo", { ctermfg = colors.blue })
-hi("DiagnosticSignHint", { ctermfg = colors.cyan })
-hi("DiagnosticSignOk", { ctermfg = colors.green })
+hi("DiagnosticSignError", syntax.error_strong)
+hi("DiagnosticSignWarn", syntax.warning_strong)
+hi("DiagnosticSignInfo", syntax.info_strong)
+hi("DiagnosticSignHint", syntax.info_strong)
+hi("DiagnosticSignOk", syntax.success_strong)
 
 -- Floating window highlights
-hi("DiagnosticFloatingError", { ctermfg = colors.red })
-hi("DiagnosticFloatingWarn", { ctermfg = colors.yellow })
-hi("DiagnosticFloatingInfo", { ctermfg = colors.blue })
-hi("DiagnosticFloatingHint", { ctermfg = colors.cyan })
-hi("DiagnosticFloatingOk", { ctermfg = colors.green })
+hi("DiagnosticFloatingError", syntax.error)
+hi("DiagnosticFloatingWarn", syntax.warning)
+hi("DiagnosticFloatingInfo", syntax.info)
+hi("DiagnosticFloatingHint", syntax.info)
+hi("DiagnosticFloatingOk", syntax.success)
 
 -- LSP signature help
-hi("LspSignatureActiveParameter", { ctermfg = colors.green_strong, cterm = "bold" })
+hi("LspSignatureActiveParameter", { ctermfg = colors.green_br, cterm = "bold" })
 
 -- LSP code lens
-hi("LspCodeLens", { ctermfg = colors.bg_soft })
-hi("LspCodeLensSeparator", { ctermfg = colors.bg_soft })
+hi("LspCodeLens", { ctermfg = colors.bg_muted })
+hi("LspCodeLensSeparator", { ctermfg = colors.bg_muted })
 
 -- LSP inlay hints
-hi("LspInlayHint", { ctermfg = colors.bg_soft, ctermbg = colors.bg })
+hi("LspInlayHint", { ctermfg = colors.bg_muted, ctermbg = colors.bg })
 
 ---
 -- Plugin Mini.icons
@@ -409,7 +381,7 @@ hi("MiniIconsAzure", { ctermfg = colors.cyan })
 hi("MiniIconsBlue", { ctermfg = colors.blue })
 hi("MiniIconsCyan", { ctermfg = colors.cyan })
 hi("MiniIconsGreen", { ctermfg = colors.green })
-hi("MiniIconsGrey", { ctermfg = colors.fg_soft })
+hi("MiniIconsGrey", { ctermfg = colors.fg_muted })
 hi("MiniIconsOrange", { ctermfg = colors.yellow })
 hi("MiniIconsPurple", { ctermfg = colors.magenta })
 hi("MiniIconsRed", { ctermfg = colors.red })
@@ -418,13 +390,12 @@ hi("MiniIconsYellow", { ctermfg = colors.yellow })
 ---
 -- Plugin Mini.diff
 ---
-
-hi("MiniDiffSignAdd", { ctermfg = colors.green })
-hi("MiniDiffSignChange", { ctermfg = colors.yellow })
-hi("MiniDiffSignDelete", { ctermfg = colors.red })
-hi("MiniDiffOverAdd", { ctermfg = colors.green, ctermbg = colors.bg_soft })
-hi("MiniDiffOverChange", { ctermfg = colors.yellow, ctermbg = colors.bg_soft })
-hi("MiniDiffOverDelete", { ctermfg = colors.red, ctermbg = colors.bg_soft })
+hi("MiniDiffSignAdd", syntax.success)
+hi("MiniDiffSignChange", syntax.warning)
+hi("MiniDiffSignDelete", syntax.error)
+hi("MiniDiffOverAdd", syntax.success)
+hi("MiniDiffOverChange", syntax.warning)
+hi("MiniDiffOverDelete", syntax.error)
 
 ---
 -- Markdown
@@ -441,14 +412,14 @@ hi("RenderMarkdownCode", { ctermbg = colors.bg })
 hi("RenderMarkdownCodeInline", { ctermbg = colors.bg })
 hi("RenderMarkdownBullet", { ctermfg = colors.blue })
 hi("RenderMarkdownTableHead", { ctermfg = colors.blue, cterm = "bold" })
-hi("RenderMarkdownTableRow", { ctermfg = colors.fg_soft })
+hi("RenderMarkdownTableRow", { ctermfg = colors.blue })
 hi("RenderMarkdownSuccess", { ctermfg = colors.green })
-hi("RenderMarkdownInfo", { ctermfg = colors.blue_strong })
-hi("RenderMarkdownHint", { ctermfg = colors.cyan_strong })
-hi("RenderMarkdownWarn", { ctermfg = colors.yellow_strong })
-hi("RenderMarkdownError", { ctermfg = colors.red_strong })
-hi("RenderMarkdownQuote", { ctermfg = colors.bg_soft })
-hi("RenderMarkdownLink", { ctermfg = colors.green_strong, cterm = "underline" })
+hi("RenderMarkdownInfo", { ctermfg = colors.blue_br })
+hi("RenderMarkdownHint", { ctermfg = colors.cyan_br })
+hi("RenderMarkdownWarn", { ctermfg = colors.yellow_br })
+hi("RenderMarkdownError", { ctermfg = colors.red_br })
+hi("RenderMarkdownQuote", { ctermfg = colors.bg_muted })
+hi("RenderMarkdownLink", { ctermfg = colors.green_br, cterm = "underline" })
 hi("RenderMarkdownImage", { ctermfg = colors.red })
 
 ---
@@ -458,34 +429,34 @@ hi("RenderMarkdownImage", { ctermfg = colors.red })
 -- Blink completion menu
 hi("BlinkCmpMenu", { ctermfg = colors.fg })
 hi("BlinkCmpMenuBorder", { ctermfg = colors.fg })
-hi("BlinkCmpMenuSelection", { ctermfg = colors.bg, ctermbg = colors.fg_soft })
-hi("BlinkCmpMenuSearchMatch", { ctermfg = colors.bg_soft, ctermbg = colors.yellow })
+hi("BlinkCmpMenuSelection", { ctermfg = colors.bg, ctermbg = colors.fg_muted })
+hi("BlinkCmpMenuSearchMatch", { ctermfg = colors.bg_muted, ctermbg = colors.yellow })
 
 -- Blink completion items
 hi("BlinkCmpLabel", { ctermfg = colors.fg })
 hi("BlinkCmpLabelDetail", { ctermfg = colors.bg })
-hi("BlinkCmpLabelDescription", { ctermfg = colors.bg_soft })
+hi("BlinkCmpLabelDescription", { ctermfg = colors.bg_muted })
 hi("BlinkCmpLabelMatch", { ctermfg = colors.red })
-hi("BlinkCmpLabelDeprecated", { ctermfg = colors.bg_soft, cterm = "strikethrough" })
+hi("BlinkCmpLabelDeprecated", { ctermfg = colors.bg_muted, cterm = "strikethrough" })
 
 -- Blink signature help
-hi("BlinkCmpSignature", { ctermfg = colors.fg_soft, ctermbg = colors.bg_soft })
-hi("BlinkCmpSignatureBorder", { ctermfg = colors.bg_soft, ctermbg = colors.bg_soft })
-hi("BlinkCmpSignatureActiveParameter", { ctermfg = colors.red, ctermbg = colors.bg_soft })
+hi("BlinkCmpSignature", { ctermfg = colors.fg_muted, ctermbg = colors.bg_muted })
+hi("BlinkCmpSignatureBorder", { ctermfg = colors.bg_muted, ctermbg = colors.bg_muted })
+hi("BlinkCmpSignatureActiveParameter", { ctermfg = colors.red, ctermbg = colors.bg_muted })
 
 -- Blink scrollbar
 hi("BlinkCmpScrollbar", { ctermfg = colors.fg, ctermbg = colors.fg })
-hi("BlinkCmpScrollbarThumb", { ctermfg = colors.fg_soft, ctermbg = colors.fg })
+hi("BlinkCmpScrollbarThumb", { ctermfg = colors.fg_muted, ctermbg = colors.fg })
 
 -- Blink completion ghost text
-hi("BlinkCmpGhostText", { ctermfg = colors.bg_soft })
+hi("BlinkCmpGhostText", { ctermfg = colors.bg_muted })
 
 -- Blink completion scrollbar
-hi("BlinkCmpScrollbar", { ctermfg = colors.bg_soft, ctermbg = colors.bg_soft })
-hi("BlinkCmpScrollbarThumb", { ctermfg = colors.fg_soft, ctermbg = colors.bg_soft })
+hi("BlinkCmpScrollbar", { ctermfg = colors.bg_muted, ctermbg = colors.bg_muted })
+hi("BlinkCmpScrollbarThumb", { ctermfg = colors.fg_muted, ctermbg = colors.bg_muted })
 
 -- Blink completion signature help
-hi("BlinkCmpSignature", { ctermfg = colors.fg_soft })
+hi("BlinkCmpSignature", { ctermfg = colors.fg_muted })
 hi("BlinkCmpSignatureBorder", { ctermfg = colors.fg })
 hi("BlinkCmpSignatureActiveParameter", { ctermfg = colors.red })
 
@@ -493,62 +464,15 @@ hi("BlinkCmpSignatureActiveParameter", { ctermfg = colors.red })
 -- IndentBlankLine.nvim
 ---
 
--- Indent Blankline v2 (legacy)
-hi("IndentBlanklineChar", { ctermfg = colors.bg_soft })
-hi("IndentBlanklineContextChar", { ctermfg = colors.blue_strong })
-hi("IndentBlanklineContextStart", { cterm = "underline" })
-hi("IndentBlanklineSpaceChar", { ctermfg = colors.bg_soft })
-hi("IndentBlanklineSpaceCharBlankline", { ctermfg = colors.bg_soft })
-
 -- Indent Blankline v3 (current)
-hi("IblIndent", { ctermfg = colors.bg_soft })
-hi("IblWhitespace", { ctermfg = colors.bg_soft })
-hi("IblScope", { ctermfg = colors.blue_strong })
-
--- Rainbow indent colors for v3
-hi("RainbowDelimiterRed", { ctermfg = colors.red_strong })
-hi("RainbowDelimiterYellow", { ctermfg = colors.yellow_strong })
-hi("RainbowDelimiterBlue", { ctermfg = colors.blue_strong })
-hi("RainbowDelimiterOrange", { ctermfg = colors.green_strong })
-hi("RainbowDelimiterGreen", { ctermfg = colors.green })
-hi("RainbowDelimiterViolet", { ctermfg = colors.red })
-hi("RainbowDelimiterCyan", { ctermfg = colors.green })
+hi("IblIndent", { ctermfg = colors.bg_muted })
+hi("IblWhitespace", { ctermfg = colors.bg_muted })
+hi("IblScope", { ctermfg = colors.blue_br })
 
 -- Indent highlight groups for different nesting levels
-hi("IndentLevel1", { ctermfg = colors.bg_soft })
-hi("IndentLevel2", { ctermfg = colors.bg_soft })
-hi("IndentLevel3", { ctermfg = colors.bg_soft })
-hi("IndentLevel4", { ctermfg = colors.bg_soft })
-hi("IndentLevel5", { ctermfg = colors.bg_soft })
-hi("IndentLevel6", { ctermfg = colors.bg_soft })
-
--- Context highlighting
-hi("IndentContext", { ctermfg = colors.blue_strong })
-hi("IndentContextStart", { cterm = "underline" })
-hi("IndentContextEnd", { cterm = "underline" })
-
--- Scope highlighting
-hi("IndentScope", { ctermfg = colors.blue_strong })
-hi("IndentScopeActive", { ctermfg = colors.blue_strong, cterm = "bold" })
-hi("IndentScopeInactive", { ctermfg = colors.bg_soft })
-
--- Error highlighting
-hi("IndentError", { ctermfg = colors.red_strong })
-hi("IndentWarning", { ctermfg = colors.yellow_strong })
-
--- Custom bracket highlighting
-hi("IndentBracket", { ctermfg = colors.fg_soft })
-hi("IndentBracketActive", { ctermfg = colors.blue_strong, cterm = "bold" })
-
--- Fold integration
-hi("IndentFold", { ctermfg = colors.bg_soft })
-hi("IndentFoldActive", { ctermfg = colors.blue_strong })
-
--- Virtual text
-hi("IndentVirtualText", { ctermfg = colors.bg_soft })
-hi("IndentVirtualTextActive", { ctermfg = colors.blue_strong })
-
--- Line highlighting
-hi("IndentLine", { ctermfg = colors.bg_soft })
-hi("IndentLineActive", { ctermfg = colors.blue_strong })
-hi("IndentLineContext", { ctermfg = colors.blue_strong, ctermbg = colors.bg_soft })
+hi("IndentLevel1", { ctermfg = colors.bg_muted })
+hi("IndentLevel2", { ctermfg = colors.bg_muted })
+hi("IndentLevel3", { ctermfg = colors.bg_muted })
+hi("IndentLevel4", { ctermfg = colors.bg_muted })
+hi("IndentLevel5", { ctermfg = colors.bg_muted })
+hi("IndentLevel6", { ctermfg = colors.bg_muted })
