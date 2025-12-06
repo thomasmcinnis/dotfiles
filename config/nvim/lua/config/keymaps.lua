@@ -18,7 +18,7 @@ vim.keymap.set('v', "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
 vim.keymap.set('v', "K", ":m '>-2<CR>gv=gv", { desc = "Move selection up" })
 
 -- Turn off macro recording I'm not cracked enough
-vim.keymap.set("n", "q", "<Nop")
+-- vim.keymap.set("n", "q", "<Nop")
 
 -- don't add single char to clipboard on del
 vim.keymap.set("n", "x", '"_x')

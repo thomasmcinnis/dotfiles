@@ -35,7 +35,7 @@ vim.g.netrw_banner = 0
 
 -- diagnostic ui
 vim.diagnostic.config({
-  virtual_text = true,
+  virtual_text = false,
   underline = false,
   update_in_insert = false,
   severity_sort = true,
