@@ -34,12 +34,12 @@ local palette = {
 
 local theme = {
 	ui = {
-		fg = palette.white_br,
-		fg_dim = palette.white,
+		fg_0 = palette.white_br,
+		fg_1 = palette.white,
 		fg_reverse = palette.black,
-		bg = palette.black,
-		bg_light = palette.black_br,
-		bg_search = palette.yellow,
+		bg_0 = palette.black,
+		bg_1 = palette.black_br,
+		bg_search = palette.black_br,
 	},
 	diff = {
 		add = palette.green,
@@ -78,8 +78,8 @@ local theme = {
 
 local bindings = {
 	editor = {
-		CursorLine = { ctermfg = theme.ui.bg, ctermbg = theme.ui.fg_dim },
-		CurSearch = { ctermfg = theme.ui.fg, ctermbg = theme.ui.bg_search },
+		CursorLine = { ctermfg = theme.ui.bg_0, ctermbg = theme.ui.fg_1 },
+		CurSearch = { ctermfg = palette.red_br, ctermbg = theme.ui.bg_search },
 		Search = { link = "CurSearch" },
 
 		DiagnosticError = { ctermfg = theme.diag.error },
@@ -110,26 +110,27 @@ local bindings = {
 		DiffText = { ctermfg = theme.diff.text },
 
 		-- The ~ char filling the empty lines
-		EndOfBuffer = { ctermfg = theme.ui.bg },
+		EndOfBuffer = { ctermfg = theme.ui.bg_0 },
 		ErrorMsg = { ctermfg = theme.diag.error },
 		WarningMsg = { ctermfg = theme.diag.warning },
-		LineNr = { ctermfg = theme.ui.bg_light },
+		LineNr = { ctermfg = theme.ui.bg_1 },
 		MatchParen = { ctermfg = theme.diag.error, cterm = { bold = true } },
+		NonText = { ctermfg = theme.ui.bg_1 },
 
-		StatusLine = { ctermfg = theme.ui.fg, ctermbg = theme.ui.bg_light, cterm = {} },
-		StatusLineNC = { ctermfg = theme.ui.fg_dim, ctermbg = theme.ui.bg_light, cterm = {} },
+		StatusLine = { ctermfg = theme.ui.fg_0, ctermbg = theme.ui.bg_1, cterm = {} },
+		StatusLineNC = { ctermfg = theme.ui.fg_1, ctermbg = theme.ui.bg_1, cterm = {} },
 
 		SpellBad = { ctermfg = theme.diag.warning, cterm = { underline = true } },
 		SpellCap = { ctermfg = theme.diag.warning, cterm = { underline = true } },
 		SpellLocal = { ctermfg = theme.diag.hint, cterm = { underline = true } },
 		SpellRare = { ctermfg = theme.diag.info, cterm = { underline = true } },
 
-		WinSeparator = { ctermfg = theme.ui.bg_light },
+		WinSeparator = { ctermfg = theme.ui.bg_1 },
 		VertSplit = { link = "WinSeparator" },
 
-		LspCodeLens = { ctermfg = theme.ui.bg_light },
-		LspCodeLensSeparator = { ctermfg = theme.ui.bg_light },
-		LspInlayHint = { ctermfg = theme.ui.bg_light, ctermbg = theme.ui.bg },
+		LspCodeLens = { ctermfg = theme.ui.bg_1 },
+		LspCodeLensSeparator = { ctermfg = theme.ui.bg_1 },
+		LspInlayHint = { ctermfg = theme.ui.bg_1, ctermbg = theme.ui.bg_0 },
 		LspSignatureActiveParameter = { ctermfg = theme.diag.success, cterm = { bold = true } },
 
 	},
@@ -168,7 +169,7 @@ local bindings = {
 	},
 	treesitter = {
 		-- @variable                       various variable names
-		["@variable"] = { ctermfg = theme.ui.fg },
+		["@variable"] = { ctermfg = theme.ui.fg_0 },
 		-- @variable.builtin (Special)     built-in variable names (e.g. `this`, `self`)
 		["@variable.builtin"] = { ctermfg = theme.syn.constant, cterm = { bold = true } },
 		-- @variable.parameter             parameters of a function
@@ -262,7 +263,7 @@ local bindings = {
 		-- @comment.documentation  comments documenting code
 		--
 		-- @comment.error          error-type comments (e.g. `ERROR`, `FIXME`, `DEPRECATED`)
-		["@comment.error"] = { ctermfg = theme.ui.fg, bg = theme.diag.error, cterm = { bold = true } },
+		["@comment.error"] = { ctermfg = theme.ui.fg_0, bg = theme.diag.error, cterm = { bold = true } },
 		-- @comment.warning        warning-type comments (e.g. `WARNING`, `FIX`, `HACK`)
 		["@comment.warning"] = { ctermfg = theme.ui.fg_reverse, bg = theme.diag.warning, cterm = { bold = true } },
 		-- @comment.todo           todo-type comments (e.g. `TODO`, `WIP`)
@@ -382,45 +383,41 @@ local bindings = {
 		MiniDiffOverDelete = { ctermfg = theme.diag.error },
 
 		-- Blink
-		BlinkCmpMenu = { ctermfg = theme.ui.fg },
-		BlinkCmpMenuBorder = { ctermfg = theme.ui.fg },
-		BlinkCmpMenuSelection = { ctermfg = theme.ui.fg, ctermbg = theme.ui.bg_light },
-		BlinkCmpMenuSearchMatch = { ctermfg = theme.ui.bg_light, ctermbg = theme.ui.bg_search },
-		BlinkCmpLabel = { ctermfg = theme.ui.fg },
-		BlinkCmpLabelDetail = { ctermfg = theme.ui.bg },
-		BlinkCmpLabelDescription = { ctermfg = theme.ui.bg_light },
+		BlinkCmpMenu = { ctermfg = theme.ui.fg_0 },
+		BlinkCmpMenuBorder = { ctermfg = theme.ui.fg_0 },
+		BlinkCmpMenuSelection = { ctermfg = theme.ui.fg_0, ctermbg = theme.ui.bg_1 },
+		BlinkCmpMenuSearchMatch = { ctermfg = theme.ui.bg_1, ctermbg = theme.ui.bg_search },
+		BlinkCmpLabel = { ctermfg = theme.ui.fg_0 },
+		BlinkCmpLabelDetail = { ctermfg = theme.ui.bg_0 },
+		BlinkCmpLabelDescription = { ctermfg = theme.ui.bg_1 },
 		BlinkCmpLabelMatch = { ctermfg = theme.diag.success },
-		BlinkCmpLabelDeprecated = { ctermfg = theme.ui.bg_light, cterm = { strikethrough = true } },
-		BlinkCmpSignature = { ctermfg = theme.ui.fg_dim, ctermbg = theme.ui.bg_light },
-		BlinkCmpSignatureBorder = { ctermfg = theme.ui.bg_light, ctermbg = theme.ui.bg_light },
-		BlinkCmpSignatureActiveParameter = { ctermfg = theme.syn.fun, ctermbg = theme.ui.bg_light },
-		BlinkCmpScrollbar = { ctermfg = theme.ui.fg, ctermbg = theme.ui.fg },
-		BlinkCmpScrollbarThumb = { ctermfg = theme.ui.fg_dim, ctermbg = theme.ui.fg },
-
-		-- IndentBlankLine.nvim
-		IblIndent = { ctermfg = theme.ui.bg_light },
+		BlinkCmpLabelDeprecated = { ctermfg = theme.ui.bg_1, cterm = { strikethrough = true } },
+		BlinkCmpSignature = { ctermfg = theme.ui.fg_1, ctermbg = theme.ui.bg_1 },
+		BlinkCmpSignatureBorder = { ctermfg = theme.ui.bg_1, ctermbg = theme.ui.bg_1 },
+		BlinkCmpSignatureActiveParameter = { ctermfg = theme.syn.fun, ctermbg = theme.ui.bg_1 },
+		BlinkCmpScrollbar = { ctermfg = theme.ui.fg_0, ctermbg = theme.ui.fg_0 },
+		BlinkCmpScrollbarThumb = { ctermfg = theme.ui.fg_1, ctermbg = theme.ui.fg_0 },
 
 		-- RenderMarkdown
-
-		RenderMarkdownH1 = { ctermfg = palette.blue, cterm = { bold = true } },
-		RenderMarkdownH2 = { ctermfg = palette.blue, cterm = { bold = true } },
-		RenderMarkdownH3 = { ctermfg = palette.blue, cterm = { bold = true } },
-		RenderMarkdownH4 = { ctermfg = palette.blue, cterm = { bold = true } },
-		RenderMarkdownH5 = { ctermfg = palette.blue, cterm = { bold = true } },
-		RenderMarkdownH6 = { ctermfg = palette.blue, cterm = { bold = true } },
-		RenderMarkdownCode = { ctermbg = palette.bg },
-		RenderMarkdownCodeInline = { ctermbg = palette.bg },
-		RenderMarkdownBullet = { ctermfg = palette.blue },
-		RenderMarkdownTableHead = { ctermfg = palette.blue, cterm = { bold = true } },
-		RenderMarkdownTableRow = { ctermfg = palette.blue },
-		RenderMarkdownSuccess = { ctermfg = palette.green },
-		RenderMarkdownInfo = { ctermfg = palette.blue_br },
-		RenderMarkdownHint = { ctermfg = palette.cyan_br },
-		RenderMarkdownWarn = { ctermfg = palette.yellow_br },
-		RenderMarkdownError = { ctermfg = palette.red_br },
-		RenderMarkdownQuote = { ctermfg = palette.bg_muted },
-		RenderMarkdownLink = { ctermfg = palette.green_br, cterm = { underline = true } },
-		RenderMarkdownImage = { ctermfg = palette.red },
+		RenderMarkdownH1 = { ctermfg = "none", cterm = { bold = true } },
+		RenderMarkdownH2 = { ctermfg = "none", cterm = { bold = true } },
+		RenderMarkdownH3 = { ctermfg = "none", cterm = { bold = true } },
+		RenderMarkdownH4 = { ctermfg = "none", cterm = { bold = true } },
+		RenderMarkdownH5 = { ctermfg = "none", cterm = { bold = true } },
+		RenderMarkdownH6 = { ctermfg = "none", cterm = { bold = true } },
+		RenderMarkdownCode = { ctermbg = "none" },
+		RenderMarkdownCodeInline = { ctermfg = theme.syn.str },
+		RenderMarkdownBullet = { ctermfg = "none" },
+		RenderMarkdownTableHead = { ctermfg = "none", cterm = { bold = true } },
+		RenderMarkdownTableRow = { ctermfg = "none" },
+		RenderMarkdownSuccess = { ctermfg = theme.diag.success },
+		RenderMarkdownInfo = { ctermfg = theme.diag.info },
+		RenderMarkdownHint = { ctermfg = theme.diag.hint },
+		RenderMarkdownWarn = { ctermfg = theme.diag.warn },
+		RenderMarkdownError = { ctermfg = theme.diag.error },
+		RenderMarkdownQuote = { ctermfg = theme.syn.comment },
+		RenderMarkdownLink = { ctermfg = "none", cterm = { underline = true } },
+		RenderMarkdownImage = { ctermfg = theme.syn.special1 },
 	},
 }
 
