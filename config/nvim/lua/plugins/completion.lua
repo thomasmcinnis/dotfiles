@@ -15,7 +15,7 @@ return {
 		-- See the full "keymap" documentation for information on defining your own keymap.
 		keymap = { preset = 'super-tab' },
 		enabled = function()
-			return not vim.tbl_contains({}, vim.bo.filetype)
+			return not vim.tbl_contains({ "markdown" }, vim.bo.filetype)
 				and vim.bo.buftype ~= "prompt"
 				and vim.b.completion ~= false
 		end,

@@ -405,7 +405,7 @@ local bindings = {
 		RenderMarkdownH4 = { ctermfg = "none", cterm = { bold = true } },
 		RenderMarkdownH5 = { ctermfg = "none", cterm = { bold = true } },
 		RenderMarkdownH6 = { ctermfg = "none", cterm = { bold = true } },
-		RenderMarkdownCode = { ctermbg = "none" },
+		RenderMarkdownCode = { ctermbg = theme.ui.bg_0 },
 		RenderMarkdownCodeInline = { ctermfg = theme.syn.str },
 		RenderMarkdownBullet = { ctermfg = "none" },
 		RenderMarkdownTableHead = { ctermfg = "none", cterm = { bold = true } },
