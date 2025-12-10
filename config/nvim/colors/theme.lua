@@ -56,22 +56,23 @@ local theme = {
 	},
 	syn = {
 		str = palette.green,
-		var = "none",
+		var = palette.blue,
 		number = palette.cyan,
-		constant = "none",
-		identifier = "none",
-		parameter = palette.blue,
-		fun = palette.blue,
+		constant = palette.white_br,
+		identifier = palette.white_br,
+		parameter = palette.white_br,
+		func_dec = palette.magenta,
+		method = palette.white_br,
 		statement = palette.blue,
-		keyword = palette.blue,
-		operator = "none",
-		preproc = palette.red,
-		type = palette.cyan,
+		keyword = palette.white_br,
+		operator = palette.white_br,
+		preproc = palette.white_br,
+		type = palette.white_br,
 		regex = palette.yellow,
 		deprecated = palette.white,
 		comment = palette.yellow,
-		punct = palette.magenta,
-		special1 = palette.magenta,
+		punct = palette.white,
+		special1 = palette.cyan,
 		special2 = palette.red,
 	}
 }
@@ -139,11 +140,11 @@ local bindings = {
 		Constant = { ctermfg = theme.syn.constant },
 		String = { ctermfg = theme.syn.str },
 		Character = { ctermfg = theme.syn.str },
-		Boolean = { ctermfg = theme.syn.special2 },
+		Boolean = { ctermfg = theme.syn.regex},
 		Number = { ctermfg = theme.syn.number },
 		Float = { link = "Number" },
-		Identifier = { ctermfg = theme.syn.var },
-		Function = { ctermfg = theme.syn.fun },
+		Identifier = { ctermfg = theme.syn.identifier },
+		Function = { ctermfg = theme.syn.func_dec },
 		Statement = { ctermfg = theme.syn.keyword },
 		-- Conditional
 		-- Repeat
@@ -169,9 +170,9 @@ local bindings = {
 	},
 	treesitter = {
 		-- @variable                       various variable names
-		["@variable"] = { ctermfg = theme.ui.fg_0 },
+		["@variable"] = { ctermfg = theme.syn.var },
 		-- @variable.builtin (Special)     built-in variable names (e.g. `this`, `self`)
-		["@variable.builtin"] = { ctermfg = theme.syn.constant, cterm = { bold = true } },
+		["@variable.builtin"] = { ctermfg = theme.syn.constant },
 		-- @variable.parameter             parameters of a function
 		["@variable.parameter"] = { ctermfg = theme.syn.parameter },
 		-- @variable.parameter.builtin     special parameters (e.g. `_`, `it`)
@@ -180,6 +181,7 @@ local bindings = {
 		--
 		-- @constant (Constant)              constant identifiers
 		-- @constant.builtin       built-in constant values
+		["@constant.builtin"] = { ctermfg = theme.syn.var },
 		-- @constant.macro         constants defined by the preprocessor
 		--
 		-- @module (Structure)      modules or namespaces
@@ -197,7 +199,7 @@ local bindings = {
 		["@string.special.symbol"] = { ctermfg = theme.syn.identifier },
 		-- @string.special.path    filenames
 		-- @string.special.url (Underlined)     URIs (e.g. hyperlinks)
-		["@string.special.url"] = { ctermfg = theme.syn.special1, cterm = { underline = true } },
+		["@string.special.url"] = { ctermfg = theme.syn.str, cterm = { underline = true } },
 		-- @character              character literals
 		-- @character.special      special characters (e.g. wildcards)
 		--
@@ -217,14 +219,17 @@ local bindings = {
 		-- @function               function definitions
 		-- @function.builtin       built-in functions
 		-- @function.call          function calls
+		["@function.call"] = { ctermfg = theme.syn.method },
+		--
 		-- @function.macro         preprocessor macros
 		--
 		-- @function.method        method definitions
 		-- @function.method.call   method calls
+		["@function.method.call"] = { link = "@function.call" },
 		--
 		-- @constructor            constructor calls and definitions
-		["@constructor"] = { ctermfg = theme.syn.special1 },
-		["@constructor.lua"] = { ctermfg = theme.syn.keyword },
+		["@constructor"] = { ctermfg = theme.syn.method },
+		["@constructor.lua"] = { ctermfg = theme.syn.punct },
 		-- @operator               symbolic operators (e.g. `+`, `*`)
 		["@operator"] = { link = "Operator" },
 		--
@@ -232,7 +237,7 @@ local bindings = {
 		-- @keyword.coroutine      keywords related to coroutines (e.g. `go` in Go, `async/await` in Python)
 		-- @keyword.function       keywords that define a function (e.g. `func` in Go, `def` in Python)
 		-- @keyword.operator       operators that are English words (e.g. `and`, `or`)
-		["@keyword.operator"] = { ctermfg = theme.syn.operator, cterm = { bold = true } },
+		["@keyword.operator"] = { ctermfg = theme.syn.operator },
 		-- @keyword.import         keywords for including modules (e.g. `import`, `from` in Python)
 		["@keyword.import"] = { link = "PreProc" },
 		-- @keyword.type           keywords defining composite types (e.g. `struct`, `enum`)
@@ -322,46 +327,48 @@ local bindings = {
 		["@tag.delimiter"] = { ctermfg = theme.syn.punct },
 	},
 	lsp = {
-		["@lsp.type.class"] = { link = "Structure" },
+		-- ["@lsp.type.class"] = { link = "Structure" },
 		-- ["@lsp.type.decorator"] = { link = "Function" },
 		-- ["@lsp.type.enum"] = { link = "Structure" },
 		-- ["@lsp.type.enumMember"] = { link = "Constant" },
 		-- ["@lsp.type.function"] = { link = "Function" },
 		-- ["@lsp.type.interface"] = { link = "Structure" },
-		["@lsp.type.macro"] = { link = "Macro" },
-		["@lsp.type.method"] = { link = "@function.method" }, -- Function
-		["@lsp.type.namespace"] = { link = "@module" }, -- Structure
-		["@lsp.type.parameter"] = { link = "@variable.parameter" }, -- Identifier
+		-- ["@lsp.type.macro"] = { link = "Macro" },
+		-- ["@lsp.type.method"] = { link = "@function.method" }, -- Function
+		["@lsp.type.method.javascript"] = { link = "@function.method.call" }, -- Function
+		-- ["@lsp.type.namespace"] = { link = "@module" }, -- Structure
+		["@lsp.type.parameter.javascript"] = { link = "@variable.parameter" }, -- Identifier
 		-- ["@lsp.type.property"] = { link = "Identifier" },
 		-- ["@lsp.type.struct"] = { link = "Structure" },
 		-- ["@lsp.type.type"] = { link = "Type" },
 		-- ["@lsp.type.typeParameter"] = { link = "TypeDef" },
-		["@lsp.type.variable"] = { ctermfg = "none" }, -- Identifier
-		["@lsp.type.comment"] = { link = "Comment" }, -- Comment
-		["@lsp.type.const"] = { link = "Constant" },
-		["@lsp.type.comparison"] = { link = "Operator" },
-		["@lsp.type.bitwise"] = { link = "Operator" },
-		["@lsp.type.punctuation"] = { link = "Delimiter" },
-		["@lsp.type.selfParameter"] = { link = "@variable.builtin" },
+		-- ["@lsp.type.variable"] = { link = "@variable.parameter" }, -- Identifier
+		-- ["@lsp.type.comment"] = { link = "Comment" }, -- Comment
+		-- ["@lsp.type.const"] = { link = "Constant" },
+		-- ["@lsp.type.comparison"] = { link = "Operator" },
+		-- ["@lsp.type.bitwise"] = { link = "Operator" },
+		-- ["@lsp.type.punctuation"] = { link = "Delimiter" },
+		-- ["@lsp.type.selfParameter"] = { link = "@variable.builtin" },
 		-- ["@lsp.type.builtinConstant"] = { link = "@constant.builtin" },
-		["@lsp.type.builtinConstant"] = { link = "@constant.builtin" },
-		["@lsp.type.magicFunction"] = { link = "@function.builtin" },
-		["@lsp.mod.readonly"] = { link = "Constant" },
-		["@lsp.mod.typeHint"] = { link = "Type" },
+		-- ["@lsp.type.builtinConstant"] = { link = "@constant.builtin" },
+		-- ["@lsp.type.magicFunction"] = { link = "@function.builtin" },
+		-- ["@lsp.mod.readonly"] = { link = "Constant" },
+		-- ["@lsp.mod.typeHint"] = { link = "Type" },
 		-- ["@lsp.mod.defaultLibrary"] = { link = "Special" },
 		-- ["@lsp.mod.builtin"] = { link = "Special" },
-		["@lsp.typemod.operator.controlFlow"] = { link = "@keyword.exception" }, -- rust ? operator
-		["@lsp.type.lifetime"] = { link = "Operator" },
-		["@lsp.typemod.keyword.documentation"] = { link = "Special" },
-		["@lsp.type.decorator.rust"] = { link = "PreProc" },
-		["@lsp.typemod.variable.global"] = { link = "Constant" },
-		["@lsp.typemod.variable.static"] = { link = "Constant" },
-		["@lsp.typemod.variable.defaultLibrary"] = { link = "Special" },
-		["@lsp.typemod.function.builtin"] = { link = "@function.builtin" },
-		["@lsp.typemod.function.defaultLibrary"] = { link = "@function.builtin" },
-		["@lsp.typemod.method.defaultLibrary"] = { link = "@function.builtin" },
-		["@lsp.typemod.variable.injected"] = { link = "@variable" },
-		["@lsp.typemod.function.readonly"] = { ctermfg = theme.syn.fun, bold = true },
+		-- ["@lsp.typemod.operator.controlFlow"] = { link = "@keyword.exception" }, -- rust ? operator
+		-- ["@lsp.type.lifetime"] = { link = "Operator" },
+		-- ["@lsp.typemod.keyword.documentation"] = { link = "Special" },
+		-- ["@lsp.type.decorator.rust"] = { link = "PreProc" },
+		-- ["@lsp.typemod.variable.global"] = { link = "Constant" },
+		-- ["@lsp.typemod.variable.static"] = { link = "Constant" },
+		-- ["@lsp.typemod.variable.defaultLibrary"] = { link = "Special" },
+		-- ["@lsp.typemod.function.builtin"] = { link = "@function.builtin" },
+		-- ["@lsp.typemod.function.defaultLibrary"] = { link = "@function.builtin" },
+		-- ["@lsp.typemod.method.defaultLibrary"] = { link = "@function.builtin" },
+		-- ["@lsp.typemod.variable.injected"] = { link = "@variable" },
+		-- ["@lsp.typemod.function.readonly"] = { ctermfg = theme.syn.func_dec, bold = true },
+		["@lsp.typemod.method.declaration"] = { link = "Function" },
 	},
 	plugins = {
 		-- Mini
@@ -394,7 +401,7 @@ local bindings = {
 		BlinkCmpLabelDeprecated = { ctermfg = theme.ui.bg_1, cterm = { strikethrough = true } },
 		BlinkCmpSignature = { ctermfg = theme.ui.fg_1, ctermbg = theme.ui.bg_1 },
 		BlinkCmpSignatureBorder = { ctermfg = theme.ui.bg_1, ctermbg = theme.ui.bg_1 },
-		BlinkCmpSignatureActiveParameter = { ctermfg = theme.syn.fun, ctermbg = theme.ui.bg_1 },
+		BlinkCmpSignatureActiveParameter = { ctermfg = theme.syn.func_dec, ctermbg = theme.ui.bg_1 },
 		BlinkCmpScrollbar = { ctermfg = theme.ui.fg_0, ctermbg = theme.ui.fg_0 },
 		BlinkCmpScrollbarThumb = { ctermfg = theme.ui.fg_1, ctermbg = theme.ui.fg_0 },
 

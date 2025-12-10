@@ -1,8 +1,8 @@
 # Dark
 
 background = #1c1d21
-foreground = #c2c2bf
-cursor-color = #c2c2bf
+foreground = #b3b3b0
+cursor-color = #b3b3b0
 cursor-text = #1c1d21
 palette = 0=#1c1f21
 palette = 1=#907171
@@ -19,4 +19,4 @@ palette = 11=#d2c5b5
 palette = 12=#bcc8d3
 palette = 13=#beb3c0
 palette = 14=#bbcbca
-palette = 15=#c2c2bf
+palette = 15=#b3b3b0
