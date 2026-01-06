@@ -69,6 +69,18 @@ npm install -g $(cat packages-npm.txt) --no-fund
 print_success "Global npm packages ready"
 
 # --------------------------------------------------------------------------
+# Install Clojure 
+# --------------------------------------------------------------------------
+print_info "Installing Clojure"
+curl -L -O https://github.com/clojure/brew-install/releases/latest/download/linux-install.sh && \
+chmod +x linux-install.sh && \
+./linux-install.sh --prefix $HOME/.local/
+rm ./linux-install.sh
+rm -rf ~/.config/clojure
+git clone git@github.com:practicalli/clojure-cli-config.git ~/.config/clojure
+print_success "Clojure ready"
+
+# --------------------------------------------------------------------------
 # Shell Configuration
 # --------------------------------------------------------------------------
 if [[ "$SHELL" != *"zsh"* ]]; then
@@ -121,7 +133,11 @@ for name in "${!plugins[@]}"; do
 done
 
 cat > "$HOME/.zshenv" << 'EOF'
-export ZDOTDIR="$HOME/.config/zsh"
+# Set XDG_CONFIG_HOME for clean management of configuration files
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:=$HOME/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:=$HOME/.local/share}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:=$HOME/.cache}"
+export ZDOTDIR="${ZDOTDIR:=$XDG_CONFIG_HOME/zsh}"
 EOF
 print_success "ZSH environment setup complete"
 
