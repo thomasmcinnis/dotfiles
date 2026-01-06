@@ -2,7 +2,7 @@ return {
 	{
 		"Olical/conjure",
 		enabled = true,
-		ft = { "racket", "scheme", "sicp" },
+		ft = { "racket", "scheme", "sicp", "clojure" },
 		lazy = true,
 		init = function()
 			-- for scheme we use a guile socket, requires starting a guile repl at the relative path below
@@ -10,7 +10,23 @@ return {
 			vim.g["conjure#filetype#scheme"] = "conjure.client.guile.socket"
 			vim.g["conjure#client#guile#socket#pipename"] = "./.guile-repl.socket"
 			vim.g['conjure#client#guile#socket#enable_completions'] = true
+
+			-- Hightlight evaluated forms
+			vim.g["conjure#highlight#enabled"] = true
+			-- show HUD REPL log at startup
+			vim.g["conjure#log#hud#enabled"] = false
 		end,
+	},
+	{
+		"julienvincent/nvim-paredit",
+		ft = { "racket", "scheme", "sicp", "clojure" },
+		config = function()
+			require("nvim-paredit").setup()
+		end
+	},
+	{
+		"gpanders/nvim-parinfer",
+		ft = { "racket", "scheme", "sicp", "clojure" },
 	},
 	{
 		"kovisoft/slimv",
