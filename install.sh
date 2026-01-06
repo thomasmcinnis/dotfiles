@@ -52,9 +52,14 @@ print_success "System packages ready"
 # Runtimes Setup with ASDF
 # --------------------------------------------------------------------------
 print_info "Setting up required tools"
+# Add nodeJS
 asdf plugin add nodejs
 asdf install nodejs lts && asdf set -u nodejs lts
 print_success "Node.js ready"
+# Add Java
+asdf plugin add java
+asdf install java openjdk-25 && asdf set -u java openjdk-25
+print_success "Java ready"
 
 # --------------------------------------------------------------------------
 # NPM Global Packages
