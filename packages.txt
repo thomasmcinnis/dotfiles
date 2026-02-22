@@ -3,6 +3,8 @@ asdf-vm
 base
 base-devel
 bat
+clojure
+clojure-lsp-bin
 docker
 docker-compose
 eza
@@ -10,6 +12,7 @@ fd
 fzf
 git
 btop
+jdk-openjdk
 jq
 lazygit
 less
@@ -20,6 +23,7 @@ mkcert
 openssh
 racket
 ripgrep
+rlwrap
 roswell
 sudo
 tmux

@@ -21,6 +21,14 @@ esac
 
 
 # --------------------------------------------------------------------------
+# Locale Configuration
+# --------------------------------------------------------------------------
+export LC_ALL=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+
+# --------------------------------------------------------------------------
 # HISTORY
 # --------------------------------------------------------------------------
 HISTFILE=~/.histfile
@@ -177,3 +185,5 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+alias claude="/home/thomasmcinnis/.claude/local/claude"
