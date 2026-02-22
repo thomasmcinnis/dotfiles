@@ -6,6 +6,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.lsp.inlay_hint.enable()
       end
 
+      if client:supports_method('textDocument/format') then
+        vim.keymap.set("n", "gf", function()
+          vim.lsp.buff.format()
+        end)
+      end
+
       if client:supports_method('textDocument/declaration') then
         vim.keymap.set("n", "gD", function()
           vim.lsp.buf.declaration({ bufnr = args.buf })

@@ -4,6 +4,7 @@ return {
     lazy = false,
     enabled = true,
     opts = {
+        scroll = { enabled = true },
         bigfile = { enabled = true },
         --- @class snacks.notifier.Config
         notifier = {

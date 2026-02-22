@@ -11,6 +11,7 @@ return {
 				'pylsp',
 				'html',
 				'cssls',
+				'clojure_lsp',
 				'jsonls',
 				'eslint',
 				'tailwindcss',
