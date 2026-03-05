@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+THERMAL_ZONE="/sys/class/thermal/thermal_zone0/temp"
+TEMP=$(cat $THERMAL_ZONE | awk '{printf "%d°C",$1/1000}')
+
+DATE_FORMATTED=$(date "+%a %F %H:%M")
+
+VOLUME=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{printf "%d%%\n",$2*100}')
+
+# OUTPUT
+echo " $VOLUME   $TEMP   $DATE_FORMATTED"

@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# System/Exit menu for fuzzel
+
+A=$(fuzzel --dmenu cat <<EOF
+Lock
+Logout
+Reboot
+Suspend
+Shutdown
+EOF
+)
+
+case "$A" in
+    Lock) swaylock -f -c 000000 ;;
+    Logout) swaymsg exit;;
+    Reboot) systemctl reboot ;;
+    Suspend) systemctl suspend ;;
+    Shutdown) systemctl -i poweroff ;;
+esac
+
+exit 0
