@@ -230,7 +230,7 @@ bar {
 #
 # Window Appearance:
 #
-client.focused #000000 #aa9b89 #000000
+client.focused #000000 #aa9b89 #000000 #aa9b89
 client.unfocused #000000 #535250 #000000
 
 default_border pixel 1
