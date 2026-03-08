@@ -7,7 +7,11 @@ font-feature = -calt
 adjust-cell-height = 30%
 adjust-cursor-height = 31%
 
+background-opacity = 0.97
+
 mouse-hide-while-typing = true
 
 macos-titlebar-proxy-icon = hidden
+
+gtk-single-instance = desktop
 

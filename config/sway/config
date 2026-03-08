@@ -242,5 +242,9 @@ gaps inner 5
 # hide_edge_borders smart
 font pango:JetBrainsMonoNL NerdFont Medium 12
 
+# listen dbus
+exec_always dbus-update-activation-environment --systemd --all
+
+
 include /etc/sway/config.d/*
 

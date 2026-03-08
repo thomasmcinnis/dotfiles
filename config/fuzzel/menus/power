@@ -3,6 +3,7 @@
 # System/Exit menu for fuzzel
 
 A=$(fuzzel --dmenu cat <<EOF
+Toggle Theme
 Lock
 Logout
 Reboot
@@ -12,6 +13,14 @@ EOF
 )
 
 case "$A" in
+    "Toggle Theme")
+        current=$(gsettings get org.gnome.desktop.interface color-scheme)
+        if [[ $current == "'prefer-dark'" ]]; then
+            gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
+        else
+            gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+        fi
+        ;;
     Lock) swaylock -f -c 000000 ;;
     Logout) swaymsg exit;;
     Reboot) systemctl reboot ;;
