@@ -11,6 +11,7 @@ eza
 fd
 fzf
 git
+glab
 btop
 jdk-openjdk
 jq
