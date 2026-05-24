@@ -51,9 +51,10 @@ output * bg ~/.images/loupe-mono-dark.jpg fill
 #       middle_emulation enabled
 #   }
 #
-#   input type:keyboard {
-#       xkb_layout "eu"
-#   }
+input type:keyboard {
+    repeat_delay 200
+    repeat_rate 30
+}
 #
 # You can also configure each device individually.
 # Read `man 5 sway-input` for more information about this section.
