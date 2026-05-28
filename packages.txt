@@ -29,6 +29,7 @@ roswell
 sudo
 tmux
 tree
+tree-sitter-cli
 unzip
 wget
 zsh
