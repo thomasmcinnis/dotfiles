@@ -3,8 +3,8 @@ return {
   branch = 'main',
   lazy = false,
   build = ':TSUpdate',
-  config = function()
-    local parsers = {
+  init = function()
+    local ensureInstalled = {
       'bash',
       'clojure',
       'c',
@@ -23,17 +23,21 @@ return {
       'javascript',
       'json',
     }
+    local alreadyInstalled = require('nvim-treesitter.config').get_installed()
+    local parsersToInstall = vim.iter(ensureInstalled)
+      :filter(function(parser)
+         return not vim.tbl_contains(alreadyInstalled, parser)
+      end)
+      :totable()
+    require('nvim-treesitter').install(parsersToInstall)
 
-    require('nvim-treesitter').install(parsers)
-
-    vim.api.nvim_create_autocmd('FileType', {
-      callback = function(args)
-        local ft = vim.bo[args.buf].filetype
-        local lang = vim.treesitter.language.get_lang(ft)
-        if lang and pcall(vim.treesitter.start, args.buf, lang) then
-          vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-        end
-      end,
-    })
+    vim.api.nvim_create_autocmd('FileType', { 
+      callback = function() 
+        -- Enable treesitter highlighting and disable regex syntax
+        pcall(vim.treesitter.start) 
+        -- Enable treesitter-based indentation
+        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()" 
+      end, 
+    }) 
   end,
 }
