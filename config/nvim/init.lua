@@ -61,11 +61,23 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 -- LSP
-local lang_server = { "lua_ls", "stylua", "clojure_lsp" }
+local required_servers = {
+    "clojure_lsp",
+    "cssls",
+    "eslint",
+    "html",
+    "jsonls",
+    "lua_ls",
+    "marksman",
+    "pylsp",
+    "stylua",
+    "vtsls",
+    "vue_ls",
+}
 require("mason").setup()
 require("mason-lspconfig").setup()
-require("mason-tool-installer").setup({ ensure_installed = lang_server })
-vim.lsp.enable(lang_server)
+require("mason-tool-installer").setup({ ensure_installed = required_servers })
+vim.lsp.enable(required_servers)
 
 local kind_icons = {
     Text = "󰉿",
