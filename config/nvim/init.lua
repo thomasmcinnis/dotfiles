@@ -3,10 +3,10 @@ vim.pack.add({
     "https://github.com/mason-org/mason.nvim",
     "https://github.com/mason-org/mason-lspconfig.nvim",
     "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
-    "https://github.com/nvim-treesitter/nvim-treesitter"
+    "https://github.com/nvim-treesitter/nvim-treesitter",
+    "https://github.com/alexghergh/nvim-tmux-navigation",
 })
 require("vim._core.ui2").enable({}) -- experimental updated messages etc.
-
 vim.cmd.colorscheme("theme")
 vim.g.have_nerd_font = true
 vim.g.mapleader = vim.keycode("<space>")
@@ -25,12 +25,14 @@ vim.o.expandtab = true
 vim.o.shiftwidth = 0
 vim.o.hlsearch = false
 vim.o.splitright = true
-vim.o.scrolloff = 10
+vim.o.scrolloff = 5
 vim.o.wrap = false
+-- autocomplete basics
 vim.o.complete = "o^5"
 vim.o.completeopt = "menuone,noselect,popup,fuzzy"
 vim.o.autocomplete = false -- prefer to hit i_CTRL-N to manually invoke
 vim.o.pumheight = 10
+
 vim.diagnostic.config({
     virtual_line = false,
     virtual_text = false,
@@ -137,6 +139,10 @@ vim.api.nvim_create_autocmd("LspProgress", {
         })
     end,
 })
+-- BUFFER NAVIGATION
+-- Make j/k move by screen lines when no count is given
+vim.keymap.set("n", "j", function() return vim.v.count == 0 and "gj" or "j" end, { expr = true, silent = true })
+vim.keymap.set("n", "k", function() return vim.v.count == 0 and "gk" or "k" end, { expr = true, silent = true })
 
 -- FILE NAVIGATION
 vim.keymap.set("n", "<leader>bn", ":bn<CR>", { desc = "Buffer next", silent = true })
@@ -168,4 +174,16 @@ vim.keymap.set("n", "<leader>un",
 -- DIAGNOSTICS
 vim.keymap.set("n", "<leader>dl", vim.diagnostic.setloclist, { desc = "Open diagnostic quickfix list" })
 vim.keymap.set("n", "<leader>dd", vim.diagnostic.open_float, { desc = "Open diagnosic under cursor" })
+
+require('nvim-tmux-navigation').setup({
+    disable_when_zoomed = true, -- defaults to false
+    keybindings = {
+        left = "<C-h>",
+        down = "<C-j>",
+        up = "<C-k>",
+        right = "<C-l>",
+        last_active = "<C-\\>",
+        next = "<C-Space>",
+    }
+})
 
