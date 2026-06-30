@@ -5,30 +5,30 @@ vim.pack.add({
     "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
     "https://github.com/nvim-treesitter/nvim-treesitter",
     "https://github.com/alexghergh/nvim-tmux-navigation",
-    "https://github.com/nvim-mini/mini.clue"
+    "https://github.com/nvim-mini/mini.clue",
 })
 local miniclue = require("mini.clue")
 miniclue.setup({
     triggers = {
         -- Leader triggers
-        { mode = { 'n', 'x' }, keys = '<Leader>' },
+        { mode = { "n", "x" }, keys = "<Leader>" },
         -- `[` and `]` keys
-        { mode = 'n', keys = '[' },
-        { mode = 'n', keys = ']' },
+        { mode = "n", keys = "[" },
+        { mode = "n", keys = "]" },
         -- Built-in completion
-        { mode = 'i', keys = '<C-x>' },
+        { mode = "i", keys = "<C-x>" },
         -- `g` key
-        { mode = { 'n', 'x' }, keys = 'g' },
+        { mode = { "n", "x" }, keys = "g" },
         -- Marks
-        { mode = { 'n', 'x' }, keys = "'" },
-        { mode = { 'n', 'x' }, keys = '`' },
+        { mode = { "n", "x" }, keys = "'" },
+        { mode = { "n", "x" }, keys = "`" },
         -- Registers
-        { mode = { 'n', 'x' }, keys = '"' },
-        { mode = { 'i', 'c' }, keys = '<C-r>' },
+        { mode = { "n", "x" }, keys = '"' },
+        { mode = { "i", "c" }, keys = "<C-r>" },
         -- Window commands
-        { mode = 'n', keys = '<C-w>' },
+        { mode = "n", keys = "<C-w>" },
         -- `z` key
-        { mode = { 'n', 'x' }, keys = 'z' },
+        { mode = { "n", "x" }, keys = "z" },
     },
     clues = {
         -- Enhance this by adding descriptions for <Leader> mapping groups
@@ -48,9 +48,10 @@ vim.g.mapleader = vim.keycode("<space>")
 vim.g.maplocalleader = vim.keycode("<CR>")
 vim.o.undofile = true
 vim.o.clipboard = "unnamedplus"
-vim.o.number = true
-vim.o.relativenumber = true
-vim.o.signcolumn = "yes"
+-- LineNr off, keybind <Leader>un toggles 
+vim.o.number = false
+vim.o.relativenumber = false
+vim.o.signcolumn = "no"
 vim.o.mouse = "a"
 vim.o.ignorecase = true
 vim.o.smartcase = true
@@ -79,9 +80,14 @@ vim.diagnostic.config({
 -- PICKERS
 -- Find Files
 function _G.RgFindFiles(cmdarg, _cmdcomplete)
-    local fnames = vim.fn.systemlist("rg --files --hidden --color=never --glob=\"!.git\"")
-    if #cmdarg == 0 then return fnames else return vim.fn.matchfuzzy(fnames, cmdarg) end
+    local fnames = vim.fn.systemlist('rg --files --hidden --color=never --glob="!.git"')
+    if #cmdarg == 0 then
+        return fnames
+    else
+        return vim.fn.matchfuzzy(fnames, cmdarg)
+    end
 end
+
 vim.o.findfunc = "v:lua.RgFindFiles" -- bind above function to the :find command
 vim.keymap.set("n", "<leader>ff", ":find ", { desc = "Find files" })
 -- Grep
@@ -158,6 +164,36 @@ vim.api.nvim_create_autocmd("LspAttach", {
                 }
             end,
         })
+
+        local client = vim.lsp.get_client_by_id(ev.data.client_id)
+        if client then
+            if client:supports_method("textDocument/formatting") then
+                vim.keymap.set("n", "gf", vim.lsp.buf.format, { desc = "Format buffer" })
+                -- need to figure out this one
+                -- local function format_range()
+                --             vim.lsp.buf.format({ async = true, range = {
+                --                     ["start"] = vim.api.nvim_buf_get_mark(0, "<"),
+                --                     ["end"] = vim.api.nvim_buf_get_mark(0, ">"),
+                --                 },
+                --             })
+                --         end
+                --             vim.keymap.set("v", "gf", format_range, { desc = "Format selected range" })
+            end
+
+            if client:supports_method("workspace/diagnostic") then
+                vim.keymap.set("n", "<leader>dq", vim.diagnostic.setqflist, { desc = "Workspace Errors" })
+                vim.keymap.set("n", "<leader>dl", vim.diagnostic.setloclist, { desc = "Open diagnostic quickfix list" })
+                vim.keymap.set("n", "<leader>dd", vim.diagnostic.open_float, { desc = "Open diagnosic under cursor" })
+            end
+
+            if client:supports_method("textDocument/declaration") then
+                vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Go do Decleration" })
+            end
+
+            if client:supports_method("textDocument/definition") then
+                vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to Definition " })
+            end
+        end
     end,
 })
 
@@ -176,37 +212,31 @@ vim.api.nvim_create_autocmd("LspProgress", {
 })
 -- BUFFER NAVIGATION
 -- Make j/k move by screen lines when no count is given
-vim.keymap.set("n", "j", function() return vim.v.count == 0 and "gj" or "j" end, { expr = true, silent = true })
-vim.keymap.set("n", "k", function() return vim.v.count == 0 and "gk" or "k" end, { expr = true, silent = true })
+vim.keymap.set("n", "j", function()
+    return vim.v.count == 0 and "gj" or "j"
+end, { expr = true, silent = true })
+vim.keymap.set("n", "k", function()
+    return vim.v.count == 0 and "gk" or "k"
+end, { expr = true, silent = true })
 
 -- UI
-vim.keymap.set("n", "<leader>ud",
-    function()
-        local new_config = not vim.diagnostic.config().virtual_text
-        vim.diagnostic.config({ virtual_text = new_config })
-    end,
-    { desc = "Toggle diagnostic virtual_text" }
-)
-vim.keymap.set("n", "<leader>un",
-    function ()
-        if vim.o.number then
-            vim.o.signcolumn = "no"
-            vim.o.number = false
-            vim.o.relativenumber = false
-        else
-            vim.o.signcolumn = "yes"
-            vim.o.number = true
-            vim.o.relativenumber = true
-        end
-    end,
-    { desc = "Toggle number", silent = true }
-)
+vim.keymap.set("n", "<leader>ud", function()
+    local new_config = not vim.diagnostic.config().virtual_text
+    vim.diagnostic.config({ virtual_text = new_config })
+end, { desc = "Toggle diagnostic virtual_text" })
+vim.keymap.set("n", "<leader>un", function()
+    if vim.o.number then
+        vim.o.signcolumn = "no"
+        vim.o.number = false
+        vim.o.relativenumber = false
+    else
+        vim.o.signcolumn = "yes"
+        vim.o.number = true
+        vim.o.relativenumber = true
+    end
+end, { desc = "Toggle number", silent = true })
 
--- DIAGNOSTICS
-vim.keymap.set("n", "<leader>dl", vim.diagnostic.setloclist, { desc = "Open diagnostic quickfix list" })
-vim.keymap.set("n", "<leader>dd", vim.diagnostic.open_float, { desc = "Open diagnosic under cursor" })
-
-require('nvim-tmux-navigation').setup({
+require("nvim-tmux-navigation").setup({
     disable_when_zoomed = true, -- defaults to false
     keybindings = {
         left = "<C-h>",
@@ -215,6 +245,5 @@ require('nvim-tmux-navigation').setup({
         right = "<C-l>",
         last_active = "<C-\\>",
         next = "<C-Space>",
-    }
+    },
 })
-
