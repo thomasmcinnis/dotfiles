@@ -12,6 +12,10 @@
       "rev": "2a6940af80375532e5e9e7c1f2fc6319a1b7a69d",
       "src": "https://github.com/mason-org/mason.nvim"
     },
+    "mini.clue": {
+      "rev": "10c1f25158551befb5218e60a0128e4b4ac0fb06",
+      "src": "https://github.com/nvim-mini/mini.clue"
+    },
     "nvim-lspconfig": {
       "rev": "3371bf298c1f56efc26771ee961f461176958fb5",
       "src": "https://github.com/neovim/nvim-lspconfig"
