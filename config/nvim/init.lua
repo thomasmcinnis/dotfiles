@@ -1,3 +1,6 @@
+vim.g.mapleader = vim.keycode("<space>")
+vim.g.maplocalleader = vim.keycode("<CR>")
+
 vim.pack.add({
     "https://github.com/neovim/nvim-lspconfig",
     "https://github.com/mason-org/mason.nvim",
@@ -6,7 +9,13 @@ vim.pack.add({
     "https://github.com/nvim-treesitter/nvim-treesitter",
     "https://github.com/alexghergh/nvim-tmux-navigation",
     "https://github.com/nvim-mini/mini.clue",
+    "https://github.com/Olical/conjure",
 })
+vim.filetype.add({ extension = { edn = "edn" }})
+vim.treesitter.language.register("clojure", "edn")
+--: Conjure globals
+vim.g["conjure#mapping#doc_word"] = false
+
 local miniclue = require("mini.clue")
 miniclue.setup({
     triggers = {
@@ -44,8 +53,6 @@ miniclue.setup({
 require("vim._core.ui2").enable({}) -- experimental updated messages etc.
 vim.cmd.colorscheme("theme")
 vim.g.have_nerd_font = true
-vim.g.mapleader = vim.keycode("<space>")
-vim.g.maplocalleader = vim.keycode("<CR>")
 vim.o.undofile = true
 vim.o.clipboard = "unnamedplus"
 -- LineNr off, keybind <Leader>un toggles 
@@ -120,7 +127,7 @@ local required_servers = {
 require("mason").setup()
 require("mason-lspconfig").setup()
 require("mason-tool-installer").setup({ ensure_installed = required_servers })
-vim.lsp.enable(required_servers)
+-- vim.lsp.enable(required_servers)
 
 local kind_icons = {
     Text = "󰉿",

@@ -1,5 +1,9 @@
 {
   "plugins": {
+    "conjure": {
+      "rev": "16b436c0124dae26250986fd4e660529d6bb14f0",
+      "src": "https://github.com/Olical/conjure"
+    },
     "mason-lspconfig.nvim": {
       "rev": "50bf3871b539896bd0650b882f6e6b467cc1c1eb",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim"
