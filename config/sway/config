@@ -1,7 +1,7 @@
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
-set $mod Mod1
+set $mod Mod4
 # Home row direction keys, like vim
 set $left h
 set $down j
@@ -54,6 +54,11 @@ output * bg ~/.images/loupe-mono-dark.jpg fill
 input type:keyboard {
     repeat_delay 200
     repeat_rate 30
+}
+
+input type:pointer {
+    accel_profile "flat"
+    pointer_accel 0.0
 }
 #
 # You can also configure each device individually.
@@ -234,12 +239,12 @@ bar {
 client.focused #000000 #aa9b89 #000000 #aa9b89
 client.unfocused #000000 #535250 #000000
 
-default_border pixel 1
+default_border pixel 2
 gaps top 0
 gaps left 10
 gaps right 10
 gaps bottom 10
-gaps inner 5
+gaps inner 10
 # hide_edge_borders smart
 font pango:JetBrainsMonoNL NerdFont Medium 12
 
