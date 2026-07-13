@@ -8,7 +8,6 @@ vim.pack.add({
     "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
     "https://github.com/nvim-treesitter/nvim-treesitter",
     "https://github.com/alexghergh/nvim-tmux-navigation",
-    "https://github.com/nvim-mini/mini.clue",
     "https://github.com/Olical/conjure",
 })
 vim.filetype.add({ extension = { edn = "edn" }})
@@ -16,40 +15,6 @@ vim.treesitter.language.register("clojure", "edn")
 --: Conjure globals
 vim.g["conjure#mapping#doc_word"] = false
 
-local miniclue = require("mini.clue")
-miniclue.setup({
-    triggers = {
-        -- Leader triggers
-        { mode = { "n", "x" }, keys = "<Leader>" },
-        -- `[` and `]` keys
-        { mode = "n", keys = "[" },
-        { mode = "n", keys = "]" },
-        -- Built-in completion
-        { mode = "i", keys = "<C-x>" },
-        -- `g` key
-        { mode = { "n", "x" }, keys = "g" },
-        -- Marks
-        { mode = { "n", "x" }, keys = "'" },
-        { mode = { "n", "x" }, keys = "`" },
-        -- Registers
-        { mode = { "n", "x" }, keys = '"' },
-        { mode = { "i", "c" }, keys = "<C-r>" },
-        -- Window commands
-        { mode = "n", keys = "<C-w>" },
-        -- `z` key
-        { mode = { "n", "x" }, keys = "z" },
-    },
-    clues = {
-        -- Enhance this by adding descriptions for <Leader> mapping groups
-        miniclue.gen_clues.square_brackets(),
-        miniclue.gen_clues.builtin_completion(),
-        miniclue.gen_clues.g(),
-        miniclue.gen_clues.marks(),
-        miniclue.gen_clues.registers(),
-        miniclue.gen_clues.windows(),
-        miniclue.gen_clues.z(),
-    },
-})
 require("vim._core.ui2").enable({}) -- experimental updated messages etc.
 vim.cmd.colorscheme("theme")
 vim.g.have_nerd_font = true
@@ -129,7 +94,6 @@ local required_servers = {
 require("mason").setup()
 require("mason-lspconfig").setup()
 require("mason-tool-installer").setup({ ensure_installed = required_servers })
--- vim.lsp.enable(required_servers)
 
 local kind_icons = {
     Text = "󰉿",
