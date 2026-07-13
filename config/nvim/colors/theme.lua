@@ -2,8 +2,9 @@
 -- No other color values are used. This enables the appearance of nvim to reflect
 -- the current selected terminal theme (dark or light) without coordination.
 --
--- The theme assumes that 'black' is intended as the background color, 'white' is the
--- foreground color, and their respective 'bright' values an intermediate surface.
+-- The theme assumes that black (0) is intended as the background color, bright white (15) is the
+-- foreground color. A light mode ansi theme should set black to be the brightest white, and 
+-- bright white to be the darkest black, so as to invert the surfaces.
 --
 -- Syntax highlighting primarily uses the normal color variants, with bright 
 -- reserved for certain diagnostic ui only.
@@ -32,73 +33,79 @@ local palette = {
 	cyan_br = 14, -- ansi 14 - bright cyan
 }
 
+local surface = {
+    top = palette.white_br,
+    mid = palette.white,
+    low = palette.black_br,
+    base = palette.black,
+}
+
 local theme = {
-	ui = {
-		fg_0 = palette.white_br,
-		fg_1 = palette.white,
-		fg_reverse = palette.black,
-		bg_0 = palette.black,
-		bg_1 = palette.black_br,
-		bg_search = palette.black_br,
-	},
 	diff = {
 		add = palette.green,
 		delete = palette.red,
 		change = palette.blue,
 		text = palette.yellow,
 	},
-	diag = {
+	diagnistic = {
 		ok = palette.green_br,
 		error = palette.red_br,
 		warning = palette.yellow_br,
 		info = palette.blue_br,
 		hint = palette.cyan_br,
 	},
-	syn = {
-		str = palette.green,
-		var = palette.blue,
-		number = palette.cyan,
+	syntax = {
+		str = palette.green_br,
+		var = palette.blue_br,
+		number = palette.green_br,
 		constant = palette.white_br,
 		identifier = palette.white_br,
 		parameter = palette.white_br,
-		func_dec = palette.magenta,
+		func_dec = palette.magenta_br,
 		method = palette.white_br,
-		statement = palette.blue,
+		statement = palette.blue_br,
 		keyword = palette.white_br,
 		operator = palette.white_br,
-		preproc = palette.white_br,
-		type = palette.white_br,
-		regex = palette.yellow,
+		preproc = palette.white,
+		type = palette.white,
+		regex = palette.green_br,
 		deprecated = palette.white,
 		comment = palette.yellow,
 		punct = palette.white,
-		special1 = palette.cyan,
-		special2 = palette.red,
+		special1 = palette.cyan_br,
+		special2 = palette.red_br,
 	}
 }
 
 local bindings = {
 	editor = {
-		CursorLine = { ctermfg = theme.ui.bg_0, ctermbg = theme.ui.fg_1 },
-		CurSearch = { ctermfg = palette.red_br, ctermbg = theme.ui.bg_search },
+		CursorLine = { ctermfg = surface.base, ctermbg = surface.mid },
+		CurSearch = { ctermfg = palette.red_br, ctermbg = surface.low },
 		Search = { link = "CurSearch" },
+		NormalFloat = { ctermfg = surface.top, ctermbg = surface.low },
+        FloatBorder = { ctermbg = surface.mid },
+		Pmenu = { ctermfg = surface.top, ctermbg = surface.low },
+		PmenuSel = { ctermfg = surface.base, ctermbg = surface.mid },
+        PmenuSbar = { ctermbg = surface.mid },
+        PmenuMatch = { ctermfg = palette.red, cterm = { bold = true } },
+        PmenuMatchSel = { ctermfg = surface.base, cterm = { bold = true } } ,
 
-		DiagnosticError = { ctermfg = theme.diag.error },
-		DiagnosticWarn = { ctermfg = theme.diag.warning },
-		DiagnosticInfo = { ctermfg = theme.diag.info },
-		DiagnosticHint = { ctermfg = theme.diag.hint },
-		DiagnosticOk = { ctermfg = theme.diag.ok },
+		DiagnosticError = { ctermfg = theme.diagnistic.error },
+		DiagnosticWarn = { ctermfg = theme.diagnistic.warning },
+		DiagnosticInfo = { ctermfg = theme.diagnistic.info },
+		DiagnosticHint = { ctermfg = theme.diagnistic.hint },
+		DiagnosticOk = { ctermfg = theme.diagnistic.ok },
 
-		DiagnosticFloatingError = { ctermfg = theme.diag.error },
-		DiagnosticFloatingWarn = { ctermfg = theme.diag.warning },
-		DiagnosticFloatingInfo = { ctermfg = theme.diag.info },
-		DiagnosticFloatingHint = { ctermfg = theme.diag.hint },
-		DiagnosticFloatingOk = { ctermfg = theme.diag.ok },
+		DiagnosticFloatingError = { ctermfg = theme.diagnistic.error },
+		DiagnosticFloatingWarn = { ctermfg = theme.diagnistic.warning },
+		DiagnosticFloatingInfo = { ctermfg = theme.diagnistic.info },
+		DiagnosticFloatingHint = { ctermfg = theme.diagnistic.hint },
+		DiagnosticFloatingOk = { ctermfg = theme.diagnistic.ok },
 
-		DiagnosticSignError = { ctermfg = theme.diag.error },
-		DiagnosticSignWarn = { ctermfg = theme.diag.warning },
-		DiagnosticSignInfo = { ctermfg = theme.diag.info },
-		DiagnosticSignHint = { ctermfg = theme.diag.hint },
+		DiagnosticSignError = { ctermfg = theme.diagnistic.error },
+		DiagnosticSignWarn = { ctermfg = theme.diagnistic.warning },
+		DiagnosticSignInfo = { ctermfg = theme.diagnistic.info },
+		DiagnosticSignHint = { ctermfg = theme.diagnistic.hint },
 
 		DiagnosticVirtualTextError = { link = "DiagnosticError" },
 		DiagnosticVirtualTextWarn = { link = "DiagnosticWarn" },
@@ -110,78 +117,78 @@ local bindings = {
 		DiffDelete = { ctermfg = theme.diff.delete },
 		DiffText = { ctermfg = theme.diff.text },
 
-		-- The ~ char filling the empty lines
-		EndOfBuffer = { ctermfg = theme.ui.bg_0 },
-		ErrorMsg = { ctermfg = theme.diag.error },
-		WarningMsg = { ctermfg = theme.diag.warning },
-		LineNr = { ctermfg = theme.ui.bg_1 },
-		MatchParen = { ctermfg = theme.diag.error, cterm = { bold = true } },
-		NonText = { ctermfg = theme.ui.bg_1 },
+		ErrorMsg = { ctermfg = theme.diagnistic.error },
+		WarningMsg = { ctermfg = theme.diagnistic.warning },
+		LineNr = { ctermfg = surface.mid },
+		MatchParen = { ctermfg = theme.diagnistic.error, cterm = { bold = true } },
+		NonText = { ctermfg = surface.low },
 
-		StatusLine = { ctermfg = theme.ui.fg_0, ctermbg = theme.ui.bg_1, cterm = {} },
-		StatusLineNC = { ctermfg = theme.ui.fg_1, ctermbg = theme.ui.bg_1, cterm = {} },
+        QuickFixLine = { ctermfg = surface.base, ctermbg = surface.mid },
 
-		SpellBad = { ctermfg = theme.diag.warning, cterm = { underline = true } },
-		SpellCap = { ctermfg = theme.diag.warning, cterm = { underline = true } },
-		SpellLocal = { ctermfg = theme.diag.hint, cterm = { underline = true } },
-		SpellRare = { ctermfg = theme.diag.info, cterm = { underline = true } },
+		StatusLine = { ctermfg = surface.top, ctermbg = surface.low, cterm = {} },
+		StatusLineNC = { ctermfg = surface.mid, ctermbg = surface.low, cterm = {} },
 
-		WinSeparator = { ctermfg = theme.ui.bg_1 },
+		SpellBad = { ctermfg = theme.diagnistic.warning, cterm = { underline = true } },
+		SpellCap = { ctermfg = theme.diagnistic.warning, cterm = { underline = true } },
+		SpellLocal = { ctermfg = theme.diagnistic.hint, cterm = { underline = true } },
+		SpellRare = { ctermfg = theme.diagnistic.info, cterm = { underline = true } },
+
+		WinSeparator = { ctermfg = surface.low },
 		VertSplit = { link = "WinSeparator" },
 
-		LspCodeLens = { ctermfg = theme.ui.bg_1 },
-		LspCodeLensSeparator = { ctermfg = theme.ui.bg_1 },
-		LspInlayHint = { ctermfg = theme.ui.bg_1, ctermbg = theme.ui.bg_0 },
-		LspSignatureActiveParameter = { ctermfg = theme.diag.success, cterm = { bold = true } },
+		LspCodeLens = { ctermfg = surface.low },
+		LspCodeLensSeparator = { ctermfg = surface.low },
+		LspInlayHint = { ctermfg = surface.low, ctermbg = surface.base },
+		LspSignatureActiveParameter = { ctermfg = theme.diagnistic.success, cterm = { bold = true } },
 
 	},
 	syntax = {
-		Comment = { ctermfg = theme.syn.comment },
-		Constant = { ctermfg = theme.syn.constant },
-		String = { ctermfg = theme.syn.str },
-		Character = { ctermfg = theme.syn.str },
-		Boolean = { ctermfg = theme.syn.regex},
-		Number = { ctermfg = theme.syn.number },
+		Comment = { ctermfg = theme.syntax.comment },
+		Constant = { ctermfg = theme.syntax.constant },
+		String = { ctermfg = theme.syntax.str },
+		Character = { ctermfg = theme.syntax.str },
+		Boolean = { ctermfg = theme.syntax.regex},
+		Number = { ctermfg = theme.syntax.number },
 		Float = { link = "Number" },
-		Identifier = { ctermfg = theme.syn.identifier },
-		Function = { ctermfg = theme.syn.func_dec },
-		Statement = { ctermfg = theme.syn.keyword },
+		Identifier = { ctermfg = theme.syntax.identifier },
+		Function = { ctermfg = theme.syntax.func_dec },
+		Statement = { ctermfg = theme.syntax.keyword },
 		-- Conditional
 		-- Repeat
 		-- Label
-		Operator = { ctermfg = theme.syn.operator },
-		Keyword = { ctermfg = theme.syn.keyword },
-		Exception = { ctermfg = theme.syn.special1 },
-		PreProc = { ctermfg = theme.syn.preproc },
+		Operator = { ctermfg = theme.syntax.operator },
+		Keyword = { ctermfg = theme.syntax.keyword },
+		Exception = { ctermfg = theme.syntax.special1 },
+		PreProc = { ctermfg = theme.syntax.preproc },
 		-- Include
 		-- Define
 		-- Macro
 		-- PreCondit
-		Type = { ctermfg = theme.syn.type },
+		Type = { ctermfg = theme.syntax.type },
 		-- StorageClass
 		-- Structure
 		-- Typedef
-		Special = { ctermfg = theme.syn.special1 },
+		Special = { ctermfg = theme.syntax.special1 },
 		-- SpecialChar
 		-- Tag
-		Delimiter = { ctermfg = theme.syn.punct },
-		Error = { ctermfg = theme.diag.error },
-		Todo = { ctermfg = theme.ui.fg_reverse, ctermbg = theme.diag.info, cterm = { bold = true } },
+		Delimiter = { ctermfg = theme.syntax.punct },
+		Error = { ctermfg = theme.diagnistic.error },
+		Todo = { ctermfg = surface.base, ctermbg = theme.diagnistic.info, cterm = { bold = true } },
 	},
 	treesitter = {
 		-- @variable                       various variable names
-		["@variable"] = { ctermfg = theme.syn.var },
+		["@variable"] = { ctermfg = theme.syntax.var },
 		-- @variable.builtin (Special)     built-in variable names (e.g. `this`, `self`)
-		["@variable.builtin"] = { ctermfg = theme.syn.constant },
+		["@variable.builtin"] = { ctermfg = theme.syntax.constant },
 		-- @variable.parameter             parameters of a function
-		["@variable.parameter"] = { ctermfg = theme.syn.parameter },
+		["@variable.parameter"] = { ctermfg = theme.syntax.parameter },
 		-- @variable.parameter.builtin     special parameters (e.g. `_`, `it`)
 		-- @variable.member                object and struct fields
-		["@variable.member"] = { ctermfg = theme.syn.identifier },
+		["@variable.member"] = { ctermfg = theme.syntax.identifier },
 		--
 		-- @constant (Constant)              constant identifiers
 		-- @constant.builtin       built-in constant values
-		["@constant.builtin"] = { ctermfg = theme.syn.var },
+		["@constant.builtin"] = { ctermfg = theme.syntax.var },
 		-- @constant.macro         constants defined by the preprocessor
 		--
 		-- @module (Structure)      modules or namespaces
@@ -191,15 +198,15 @@ local bindings = {
 		-- @string                 string literals
 		-- @string.documentation   string documenting code (e.g. Python docstrings)
 		-- @string.regexp          regular expressions
-		["@string.regexp"] = { ctermfg = theme.syn.regex },
+		["@string.regexp"] = { ctermfg = theme.syntax.regex },
 		-- @string.escape          escape sequences
-		["@string.escape"] = { ctermfg = theme.syn.regex, cterm = { bold = true } },
+		["@string.escape"] = { ctermfg = theme.syntax.regex, cterm = { bold = true } },
 		-- @string.special         other special strings (e.g. dates)
 		-- @string.special.symbol  symbols or atoms
-		["@string.special.symbol"] = { ctermfg = theme.syn.identifier },
+		["@string.special.symbol"] = { ctermfg = theme.syntax.identifier },
 		-- @string.special.path    filenames
 		-- @string.special.url (Underlined)     URIs (e.g. hyperlinks)
-		["@string.special.url"] = { ctermfg = theme.syn.str, cterm = { underline = true } },
+		["@string.special.url"] = { ctermfg = theme.syntax.str, cterm = { underline = true } },
 		-- @character              character literals
 		-- @character.special      special characters (e.g. wildcards)
 		--
@@ -219,7 +226,7 @@ local bindings = {
 		-- @function               function definitions
 		-- @function.builtin       built-in functions
 		-- @function.call          function calls
-		["@function.call"] = { ctermfg = theme.syn.method },
+		["@function.call"] = { ctermfg = theme.syntax.method },
 		--
 		-- @function.macro         preprocessor macros
 		--
@@ -228,8 +235,8 @@ local bindings = {
 		["@function.method.call"] = { link = "@function.call" },
 		--
 		-- @constructor            constructor calls and definitions
-		["@constructor"] = { ctermfg = theme.syn.method },
-		["@constructor.lua"] = { ctermfg = theme.syn.punct },
+		["@constructor"] = { ctermfg = theme.syntax.method },
+		["@constructor.lua"] = { ctermfg = theme.syntax.punct },
 		-- @operator               symbolic operators (e.g. `+`, `*`)
 		["@operator"] = { link = "Operator" },
 		--
@@ -237,17 +244,17 @@ local bindings = {
 		-- @keyword.coroutine      keywords related to coroutines (e.g. `go` in Go, `async/await` in Python)
 		-- @keyword.function       keywords that define a function (e.g. `func` in Go, `def` in Python)
 		-- @keyword.operator       operators that are English words (e.g. `and`, `or`)
-		["@keyword.operator"] = { ctermfg = theme.syn.operator },
+		["@keyword.operator"] = { ctermfg = theme.syntax.operator },
 		-- @keyword.import         keywords for including modules (e.g. `import`, `from` in Python)
 		["@keyword.import"] = { link = "PreProc" },
 		-- @keyword.type           keywords defining composite types (e.g. `struct`, `enum`)
 		-- @keyword.modifier       keywords defining type modifiers (e.g. `const`, `static`, `public`)
 		-- @keyword.repeat         keywords related to loops (e.g. `for`, `while`)
 		-- @keyword.return         keywords like `return` and `yield`
-		["@keyword.return"] = { ctermfg = theme.syn.special2 },
+		["@keyword.return"] = { ctermfg = theme.syntax.special2 },
 		-- @keyword.debug          keywords related to debugging
 		-- @keyword.exception      keywords related to exceptions (e.g. `throw`, `catch`)
-		["@keyword.exception"] = { ctermfg = theme.diag.error },
+		["@keyword.exception"] = { ctermfg = theme.diagnistic.error },
 
 		["@keyword.luap"] = { link = "@string.regex" },
 		--
@@ -258,22 +265,22 @@ local bindings = {
 		-- @keyword.directive.define    preprocessor definition directives
 		--
 		-- @punctuation.delimiter  delimiters (e.g. `;`, `.`, `,`)
-		["@punctuation.delimiter"] = { ctermfg = theme.syn.punct },
+		["@punctuation.delimiter"] = { ctermfg = theme.syntax.punct },
 		-- @punctuation.bracket    brackets (e.g. `()`, `{}`, `[]`)
-		["@punctuation.bracket"] = { ctermfg = theme.syn.punct },
+		["@punctuation.bracket"] = { ctermfg = theme.syntax.punct },
 		-- @punctuation.special    special symbols (e.g. `{}` in string interpolation)
-		["@punctuation.special"] = { ctermfg = theme.syn.special1 },
+		["@punctuation.special"] = { ctermfg = theme.syntax.special1 },
 		--
 		-- @comment                line and block comments
 		-- @comment.documentation  comments documenting code
 		--
 		-- @comment.error          error-type comments (e.g. `ERROR`, `FIXME`, `DEPRECATED`)
-		["@comment.error"] = { ctermfg = theme.ui.fg_0, bg = theme.diag.error, cterm = { bold = true } },
+		["@comment.error"] = { ctermfg = surface.top, bg = theme.diagnistic.error, cterm = { bold = true } },
 		-- @comment.warning        warning-type comments (e.g. `WARNING`, `FIX`, `HACK`)
-		["@comment.warning"] = { ctermfg = theme.ui.fg_reverse, bg = theme.diag.warning, cterm = { bold = true } },
+		["@comment.warning"] = { ctermfg = surface.base, bg = theme.diagnistic.warning, cterm = { bold = true } },
 		-- @comment.todo           todo-type comments (e.g. `TODO`, `WIP`)
 		-- @comment.note           note-type comments (e.g. `NOTE`, `INFO`, `XXX`)
-		["@comment.note"] = { ctermfg = theme.ui.fg_reverse, bg = theme.diag.hint, cterm = { bold = true } },
+		["@comment.note"] = { ctermfg = surface.base, bg = theme.diagnistic.hint, cterm = { bold = true } },
 		--
 		-- @markup.strong          bold text
 		["@markup.strong"] = { cterm = { bold = true } },
@@ -322,9 +329,9 @@ local bindings = {
 		-- @tag                    XML-style tag names (e.g. in XML, HTML, etc.)
 		-- @tag.builtin            XML-style tag names (e.g. HTML5 tags)
 		-- @tag.attribute          XML-style tag attributes
-		["@tag.attribute"] = { ctermfg = theme.syn.identifier },
+		["@tag.attribute"] = { ctermfg = theme.syntax.identifier },
 		-- @tag.delimiter          XML-style tag delimiters
-		["@tag.delimiter"] = { ctermfg = theme.syn.punct },
+		["@tag.delimiter"] = { ctermfg = theme.syntax.punct },
 	},
 	lsp = {
 		-- ["@lsp.type.class"] = { link = "Structure" },
@@ -371,40 +378,6 @@ local bindings = {
 		["@lsp.typemod.method.declaration"] = { link = "Function" },
 	},
 	plugins = {
-		-- Mini
-		MiniIconsAzure = { ctermfg = palette.cyan },
-		MiniIconsBlue = { ctermfg = palette.blue },
-		MiniIconsCyan = { ctermfg = palette.cyan },
-		MiniIconsGreen = { ctermfg = palette.green },
-		MiniIconsGrey = { ctermfg = palette.white },
-		MiniIconsOrange = { ctermfg = palette.yellow },
-		MiniIconsPurple = { ctermfg = palette.magenta },
-		MiniIconsRed = { ctermfg = palette.red },
-		MiniIconsYellow = { ctermfg = palette.yellow },
-
-		MiniDiffSignAdd = { ctermfg = theme.diag.success },
-		MiniDiffSignChange = { ctermfg = theme.diag.warning },
-		MiniDiffSignDelete = { ctermfg = theme.diag.error },
-		MiniDiffOverAdd = { ctermfg = theme.diag.success },
-		MiniDiffOverChange = { ctermfg = theme.diag.warning },
-		MiniDiffOverDelete = { ctermfg = theme.diag.error },
-
-		-- Blink
-		BlinkCmpMenu = { ctermfg = theme.ui.fg_0 },
-		BlinkCmpMenuBorder = { ctermfg = theme.ui.fg_0 },
-		BlinkCmpMenuSelection = { ctermfg = theme.ui.fg_0, ctermbg = theme.ui.bg_1 },
-		BlinkCmpMenuSearchMatch = { ctermfg = theme.ui.bg_1, ctermbg = theme.ui.bg_search },
-		BlinkCmpLabel = { ctermfg = theme.ui.fg_0 },
-		BlinkCmpLabelDetail = { ctermfg = theme.ui.bg_0 },
-		BlinkCmpLabelDescription = { ctermfg = theme.ui.bg_1 },
-		BlinkCmpLabelMatch = { ctermfg = theme.diag.success },
-		BlinkCmpLabelDeprecated = { ctermfg = theme.ui.bg_1, cterm = { strikethrough = true } },
-		BlinkCmpSignature = { ctermfg = theme.ui.fg_1, ctermbg = theme.ui.bg_1 },
-		BlinkCmpSignatureBorder = { ctermfg = theme.ui.bg_1, ctermbg = theme.ui.bg_1 },
-		BlinkCmpSignatureActiveParameter = { ctermfg = theme.syn.func_dec, ctermbg = theme.ui.bg_1 },
-		BlinkCmpScrollbar = { ctermfg = theme.ui.fg_0, ctermbg = theme.ui.fg_0 },
-		BlinkCmpScrollbarThumb = { ctermfg = theme.ui.fg_1, ctermbg = theme.ui.fg_0 },
-
 		-- RenderMarkdown
 		RenderMarkdownH1 = { ctermfg = "none", cterm = { bold = true } },
 		RenderMarkdownH2 = { ctermfg = "none", cterm = { bold = true } },
@@ -412,19 +385,19 @@ local bindings = {
 		RenderMarkdownH4 = { ctermfg = "none", cterm = { bold = true } },
 		RenderMarkdownH5 = { ctermfg = "none", cterm = { bold = true } },
 		RenderMarkdownH6 = { ctermfg = "none", cterm = { bold = true } },
-		RenderMarkdownCode = { ctermbg = theme.ui.bg_0 },
-		RenderMarkdownCodeInline = { ctermfg = theme.syn.str },
+		RenderMarkdownCode = { ctermbg = surface.base },
+		RenderMarkdownCodeInline = { ctermfg = theme.syntax.str },
 		RenderMarkdownBullet = { ctermfg = "none" },
 		RenderMarkdownTableHead = { ctermfg = "none", cterm = { bold = true } },
 		RenderMarkdownTableRow = { ctermfg = "none" },
-		RenderMarkdownSuccess = { ctermfg = theme.diag.success },
-		RenderMarkdownInfo = { ctermfg = theme.diag.info },
-		RenderMarkdownHint = { ctermfg = theme.diag.hint },
-		RenderMarkdownWarn = { ctermfg = theme.diag.warn },
-		RenderMarkdownError = { ctermfg = theme.diag.error },
-		RenderMarkdownQuote = { ctermfg = theme.syn.comment },
+		RenderMarkdownSuccess = { ctermfg = theme.diagnistic.success },
+		RenderMarkdownInfo = { ctermfg = theme.diagnistic.info },
+		RenderMarkdownHint = { ctermfg = theme.diagnistic.hint },
+		RenderMarkdownWarn = { ctermfg = theme.diagnistic.warn },
+		RenderMarkdownError = { ctermfg = theme.diagnistic.error },
+		RenderMarkdownQuote = { ctermfg = theme.syntax.comment },
 		RenderMarkdownLink = { ctermfg = "none", cterm = { underline = true } },
-		RenderMarkdownImage = { ctermfg = theme.syn.special1 },
+		RenderMarkdownImage = { ctermfg = theme.syntax.special1 },
 	},
 }
 
