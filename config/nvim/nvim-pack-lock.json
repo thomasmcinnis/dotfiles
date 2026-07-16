@@ -1,0 +1,36 @@
+{
+  "plugins": {
+    "conjure": {
+      "rev": "16b436c0124dae26250986fd4e660529d6bb14f0",
+      "src": "https://github.com/Olical/conjure"
+    },
+    "mason-lspconfig.nvim": {
+      "rev": "50bf3871b539896bd0650b882f6e6b467cc1c1eb",
+      "src": "https://github.com/mason-org/mason-lspconfig.nvim"
+    },
+    "mason-tool-installer.nvim": {
+      "rev": "443f1ef8b5e6bf47045cb2217b6f748a223cf7dc",
+      "src": "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim"
+    },
+    "mason.nvim": {
+      "rev": "2a6940af80375532e5e9e7c1f2fc6319a1b7a69d",
+      "src": "https://github.com/mason-org/mason.nvim"
+    },
+    "mini.clue": {
+      "rev": "10c1f25158551befb5218e60a0128e4b4ac0fb06",
+      "src": "https://github.com/nvim-mini/mini.clue"
+    },
+    "nvim-lspconfig": {
+      "rev": "3371bf298c1f56efc26771ee961f461176958fb5",
+      "src": "https://github.com/neovim/nvim-lspconfig"
+    },
+    "nvim-tmux-navigation": {
+      "rev": "4898c98702954439233fdaf764c39636681e2861",
+      "src": "https://github.com/alexghergh/nvim-tmux-navigation"
+    },
+    "nvim-treesitter": {
+      "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter"
+    }
+  }
+}
