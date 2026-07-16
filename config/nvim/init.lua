@@ -9,10 +9,22 @@ vim.pack.add({
     "https://github.com/nvim-treesitter/nvim-treesitter",
     "https://github.com/alexghergh/nvim-tmux-navigation",
     "https://github.com/Olical/conjure",
+    "https://github.com/julienvincent/nvim-paredit"
 })
+
+--: Treesitter
+-- Add edn support
 vim.filetype.add({ extension = { edn = "edn" }})
 vim.treesitter.language.register("clojure", "edn")
---: Conjure globals
+-- Turn on treesitter for all files. Will probably error if no parser installed?
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "*" },
+    callback = function()
+        pcall(vim.treesitter.start)
+    end,
+})
+--: Lisp/Clojure
+require("nvim-paredit").setup()
 vim.g["conjure#mapping#doc_word"] = false
 
 require("vim._core.ui2").enable({}) -- experimental updated messages etc.
@@ -64,10 +76,23 @@ end
 
 vim.o.findfunc = "v:lua.RgFindFiles" -- bind above function to the :find command
 vim.keymap.set("n", "<leader>ff", ":find ", { desc = "Find files" })
--- Grep
 vim.opt.grepprg = "rg --vimgrep --glob='!.git'" -- will need to put together an ignore list
 vim.opt.grepformat = "%f:%l:%c:%m"
-vim.keymap.set("n", "<leader>fg", ":silent grep! ", { desc = "Grep" })
+-- Grep into the quickfix list. `target` is "%" (current file) or "" (cwd).
+-- Opens the quickfix window on results, otherwise echoes that nothing matched.
+local function grep(args, target)
+    local before = #vim.fn.getqflist()
+    vim.cmd("silent grep! " .. args .. " " .. target)
+    if #vim.fn.getqflist() == before then
+        vim.notify("Grep: no results for '" .. args .. "'", vim.log.levels.INFO)
+    else
+        vim.cmd("cwindow")
+    end
+end
+vim.api.nvim_create_user_command("Grep", function(o) grep(o.args, "") end, { nargs = "+" })
+vim.api.nvim_create_user_command("GrepFile", function(o) grep(o.args, "%") end, { nargs = "+" })
+vim.keymap.set("n", "<leader>fg", ":Grep ", { desc = "Grep (cwd)" })
+vim.keymap.set("n", "<leader>fG", ":GrepFile ", { desc = "Grep (current file)" })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
     desc = "Highlight when yanking(copying) text",
