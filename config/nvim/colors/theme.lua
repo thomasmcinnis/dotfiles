@@ -56,22 +56,23 @@ local theme = {
     },
     syntax = {
         str = palette.green_br,
-        var = palette.blue_br,
-        number = palette.green_br,
+        var = palette.white_br,
+        number = palette.magenta_br,
         constant = palette.white_br,
         identifier = palette.white_br,
         parameter = palette.white_br,
-        func_dec = palette.magenta_br,
+        func_dec = palette.blue_br,
+        func_call = palette.white_br,
         method = palette.white_br,
         statement = palette.blue_br,
         keyword = palette.white_br,
         operator = palette.white_br,
         preproc = palette.white,
         type = palette.white,
-        regex = palette.green_br,
+        regex = palette.magenta_br,
         deprecated = palette.white,
-        comment = palette.yellow,
-        punct = palette.white,
+        comment = palette.yellow_br,
+        punct = palette.yellow,
         special1 = palette.cyan_br,
         special2 = palette.red_br,
     }
@@ -89,6 +90,10 @@ local bindings = {
         PmenuSbar = { ctermbg = surface.mid },
         PmenuMatch = { ctermfg = palette.red, cterm = { bold = true } },
         PmenuMatchSel = { ctermfg = surface.base, cterm = { bold = true } } ,
+        LineNr = { ctermfg = palette.yellow },
+        CursorLineNR = { ctermfg = palette.yellow_br, cterm = { bold = true } },
+
+        Folded = { ctermfg = theme.diagnistic.info, cterm = { bold = true } },
 
         DiagnosticError = { ctermfg = theme.diagnistic.error },
         DiagnosticWarn = { ctermfg = theme.diagnistic.warning },
@@ -119,7 +124,6 @@ local bindings = {
 
         ErrorMsg = { ctermfg = theme.diagnistic.error },
         WarningMsg = { ctermfg = theme.diagnistic.warning },
-        LineNr = { ctermfg = surface.mid },
         MatchParen = { ctermfg = theme.diagnistic.error, cterm = { bold = true } },
         NonText = { ctermfg = surface.low },
 
@@ -162,7 +166,7 @@ local bindings = {
         PreProc = { ctermfg = theme.syntax.preproc },
         -- Include
         -- Define
-        -- Macro
+        Macro = { link = "Keyword" },
         -- PreCondit
         Type = { ctermfg = theme.syntax.type },
         -- StorageClass
@@ -200,7 +204,7 @@ local bindings = {
         -- @string.regexp          regular expressions
         ["@string.regexp"] = { ctermfg = theme.syntax.regex },
         -- @string.escape          escape sequences
-        ["@string.escape"] = { ctermfg = theme.syntax.regex, cterm = { bold = true } },
+        ["@string.escape"] = { ctermfg = theme.syntax.regex },
         -- @string.special         other special strings (e.g. dates)
         -- @string.special.symbol  symbols or atoms
         ["@string.special.symbol"] = { ctermfg = theme.syntax.identifier },
@@ -214,14 +218,16 @@ local bindings = {
         -- @number                 numeric literals
         -- @number.float           floating-point number literals
         --
-        -- @type                   type or class definitions and annotations
         -- @type.builtin           built-in types
+        ["@type.builtin.c"] = { link = "Type" },
+        ["@type.builtin.typescript"] = { link = "Constant" },
         -- @type.definition        identifiers in type definitions (e.g. `typedef <type> <identifier>` in C)
         --
         -- @attribute              attribute annotations (e.g. Python decorators, Rust lifetimes)
         ["@attribute"] = { link = "Constant" },
         -- @attribute.builtin      builtin annotations (e.g. `@property` in Python)
         -- @property               the key in key/value pairs
+        --
         --
         -- @function               function definitions
         -- @function.builtin       built-in functions
@@ -248,13 +254,14 @@ local bindings = {
         -- @keyword.import         keywords for including modules (e.g. `import`, `from` in Python)
         ["@keyword.import"] = { link = "PreProc" },
         -- @keyword.type           keywords defining composite types (e.g. `struct`, `enum`)
+        ["@keyword.type"] = { link = "Type" },
         -- @keyword.modifier       keywords defining type modifiers (e.g. `const`, `static`, `public`)
         -- @keyword.repeat         keywords related to loops (e.g. `for`, `while`)
         -- @keyword.return         keywords like `return` and `yield`
-        ["@keyword.return"] = { ctermfg = theme.syntax.special2 },
+        ["@keyword.return"] = { ctermfg = theme.syntax.keyword },
         -- @keyword.debug          keywords related to debugging
         -- @keyword.exception      keywords related to exceptions (e.g. `throw`, `catch`)
-        ["@keyword.exception"] = { ctermfg = theme.diagnistic.error },
+        ["@keyword.exception"] = { ctermfg = theme.syntax.keyword },
 
         ["@keyword.luap"] = { link = "@string.regex" },
         --
