@@ -11,7 +11,6 @@ vim.pack.add({
     "https://github.com/Olical/conjure",
     "https://github.com/julienvincent/nvim-paredit"
 })
-
 --: Treesitter
 -- Add edn support
 vim.filetype.add({ extension = { edn = "edn" }})
@@ -35,6 +34,8 @@ vim.o.clipboard = "unnamedplus"
 -- LineNr off, keybind <Leader>un toggles 
 vim.o.number = false
 vim.o.relativenumber = false
+vim.o.cursorline = true
+vim.o.cursorlineopt = "number"
 vim.o.signcolumn = "no"
 vim.o.mouse = "a"
 vim.o.ignorecase = true
@@ -50,7 +51,7 @@ vim.o.splitright = true
 vim.o.scrolloff = 5
 vim.o.wrap = false
 -- autocomplete basics
-vim.o.complete = "o^5"
+-- vim.o.complete = "o^"
 vim.o.completeopt = "menuone,noselect,popup,fuzzy"
 vim.o.autocomplete = false -- prefer to hit i_CTRL-N to manually invoke
 vim.o.pumheight = 10
@@ -194,20 +195,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end
     end,
 })
-
-vim.api.nvim_create_autocmd("LspProgress", {
-    callback = function(ev)
-        local value = ev.data.params.value
-        vim.api.nvim_echo({ { value.message or "done" } }, false, {
-            id = "lsp." .. ev.data.params.token,
-            kind = "progress",
-            source = "vim.lsp",
-            title = value.title,
-            status = value.kind ~= "end" and "running" or "success",
-            percent = value.percentage,
-        })
-    end,
-})
 -- BUFFER NAVIGATION
 -- Make j/k move by screen lines when no count is given
 vim.keymap.set("n", "j", function()
@@ -226,11 +213,9 @@ vim.keymap.set("n", "<leader>un", function()
     if vim.o.number then
         vim.o.signcolumn = "no"
         vim.o.number = false
-        vim.o.relativenumber = false
     else
         vim.o.signcolumn = "yes"
         vim.o.number = true
-        vim.o.relativenumber = true
     end
 end, { desc = "Toggle number", silent = true })
 
