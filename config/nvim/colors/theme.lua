@@ -91,7 +91,7 @@ local bindings = {
         PmenuMatch = { ctermfg = palette.red, cterm = { bold = true } },
         PmenuMatchSel = { ctermfg = surface.base, cterm = { bold = true } } ,
         LineNr = { ctermfg = palette.yellow },
-        CursorLineNR = { ctermfg = palette.yellow_br, cterm = { bold = true } },
+        CursorLineNR = { ctermfg = palette.yellow },
 
         Folded = { ctermfg = theme.diagnistic.info, cterm = { bold = true } },
 

@@ -32,6 +32,7 @@ vim.g.have_nerd_font = true
 vim.o.undofile = true
 vim.o.clipboard = "unnamedplus"
 -- LineNr off, keybind <Leader>un toggles 
+vim.opt.statuscolumn = "%s%=%l%{&number || &relativenumber ? ' │ ' : ''}"
 vim.o.number = false
 vim.o.relativenumber = false
 vim.o.cursorline = true
