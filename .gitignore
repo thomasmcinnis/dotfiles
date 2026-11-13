@@ -1,2 +1,5 @@
 lazy-lock.json
+.clj*
+.lsp*
+.nrepl*
 
