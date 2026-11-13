@@ -29,6 +29,7 @@ vim.g["conjure#mapping#doc_word"] = false
 require("vim._core.ui2").enable({}) -- experimental updated messages etc.
 vim.cmd.colorscheme("theme")
 vim.g.have_nerd_font = true
+vim.o.exrc = true -- allow a .nvim.lua file in a project dir for project specific nvim settings
 vim.o.undofile = true
 vim.o.clipboard = "unnamedplus"
 -- LineNr off, keybind <Leader>un toggles 
@@ -83,9 +84,8 @@ vim.opt.grepformat = "%f:%l:%c:%m"
 -- Grep into the quickfix list. `target` is "%" (current file) or "" (cwd).
 -- Opens the quickfix window on results, otherwise echoes that nothing matched.
 local function grep(args, target)
-    local before = #vim.fn.getqflist()
     vim.cmd("silent grep! " .. args .. " " .. target)
-    if #vim.fn.getqflist() == before then
+    if #vim.fn.getqflist() == 0 then
         vim.notify("Grep: no results for '" .. args .. "'", vim.log.levels.INFO)
     else
         vim.cmd("cwindow")
