@@ -231,3 +231,9 @@ require("nvim-tmux-navigation").setup({
         next = "<C-Space>",
     },
 })
+
+-- Netrw
+vim.g.netrw_banner = 0
+vim.g.netrw_liststyle = 3
+vim.g.netrwlocalrmdir = "rm -r"
+vim.keymap.set("n", "<leader>e", ":Lexplore<CR>")
